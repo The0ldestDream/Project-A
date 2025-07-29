@@ -3,14 +3,15 @@ using System.Collections.Generic;
 
 public class BinaryTree
 {
-    
+
     public int maxDepth;
     public int minWidth;
     public int minHeight;
 
+    public int minSize = 10;
     public BNode root;
 
-    public void GenerateTree(Rect starting_area) // Define a size for the root node
+    public void GenerateTree(RectInt starting_area) // Define a size for the root node
     {
         root = new BNode(starting_area);
 
@@ -63,22 +64,26 @@ public class BinaryTree
 
             int rndInt = Random.Range(0, 2);
             Vector2 nodeCenter;
-            Rect left_sector = node.sector_bounds;
-            Rect right_sector = node.sector_bounds;
+            RectInt left_sector = node.sector_bounds;
+            RectInt right_sector = node.sector_bounds;
 
             if (rndInt == 0)
             {
                 // Split horizontally - Left Sector is Bottom Half and Right Sector is Top Half
-                nodeCenter = node.getCenter();
 
-                // Split line needs to go between the line of grid cells
-                // Choose a split position
-                // Get the world position of grid cells nearby
-                // Calculate the inbetween as the splitline
+                //Define a min and max values to choose a valid split from
+                //Choose a split line
+                //Create new values
+                int min = node.sector_bounds.y + minSize;
+                int max = node.sector_bounds.y + node.sector_bounds.height - minSize;
 
-                float splitPos = nodeCenter.y;
+                if(max<=min)
+                {
+                    return;
+                }
+                int splitLine = Random.Range(min,max);
 
-                float splitLine = splitPos;
+
 
                 left_sector.height = splitLine - left_sector.y;
                 right_sector.y = splitLine;
@@ -88,16 +93,21 @@ public class BinaryTree
             else
             {
                 // Split Vertically
-                nodeCenter = node.getCenter();
-                // float splitLine = Random.Range(nodeCenter.x - 10, nodeCenter.x + 10);
-                float splitLine = nodeCenter.x;
+                int min = node.sector_bounds.x + minSize;
+                int max = node.sector_bounds.x + node.sector_bounds.width - minSize;
 
+
+                if (max <= min)
+                {
+                    return;
+                }
+
+                int splitLine = Random.Range(min, max);
 
                 left_sector.width = splitLine - left_sector.x;
                 right_sector.x = splitLine;
                 right_sector.width = (node.sector_bounds.x + node.sector_bounds.width) - splitLine;
 
-                
             }
 
             BNode leftnode = new BNode(left_sector); // Splitting LOGIC

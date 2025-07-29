@@ -6,11 +6,11 @@ public class BNode
     public BNode left_child;
     public BNode right_child;
 
-
-    public Rect sector_bounds; 
+    private const int tileSize = 1;
+    public RectInt sector_bounds; 
     public int depth = 0;
 
-    public BNode(Rect bounds)
+    public BNode(RectInt bounds)
     {
         parent_node = null;
         left_child = null;
@@ -20,12 +20,15 @@ public class BNode
 
     public Vector2 getCenter()
     {
-        return sector_bounds.center;
+        float centerX = (sector_bounds.x + (sector_bounds.width / 2f)) * tileSize;
+        float centerY = (sector_bounds.y + (sector_bounds.height / 2f)) * tileSize;
+        return new Vector2(centerX, centerY);
+
     }
 
     public Vector2 getSectorSize()
     {
-        return sector_bounds.size;
+        return sector_bounds.size * tileSize;
     }
 
 

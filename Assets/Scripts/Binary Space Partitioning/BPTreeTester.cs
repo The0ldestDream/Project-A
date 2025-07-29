@@ -19,8 +19,11 @@ public class BPTreeTester : MonoBehaviour
     {
         ourGrid = ourGridV.testGrid;
 
+       
+
         tree.maxDepth = treeDepth;
-        tree.GenerateTree(new Rect(0, 0, ourGrid.width, ourGrid.height));
+        //tree.GenerateTree(new Rect(0, 0, ourGrid.width * ourGrid.getCellWidth(), ourGrid.height * ourGrid.getCellHeight()));
+        tree.GenerateTree(new RectInt(0, 0, ourGrid.width, ourGrid.height));
     }
 
     // Update is called once per frame

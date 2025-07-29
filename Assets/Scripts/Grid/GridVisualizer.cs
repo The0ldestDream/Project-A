@@ -36,16 +36,8 @@ public class GridVisualizer : MonoBehaviour
                     for (int y = 0; y < testGrid.height; y++)
                     {
 
-
-                        //Vector2 position = new Vector2(
-                        //    (testGrid.gridOrigin.x) + x * testGrid.gridArray[x, y].cellwidth + testGrid.gridArray[x, y].cellwidth / 2f,
-                        //    (testGrid.gridOrigin.y) + y * testGrid.gridArray[x, y].cellheight + testGrid.gridArray[x, y].cellheight / 2f
-                        //    );  // Position of each cell
-
-
                         Vector2 size = new Vector2(testGrid.gridArray[x, y].cellwidth, testGrid.gridArray[x, y].cellheight); // Size of each grid cell 
                         Gizmos.DrawWireCube(testGrid.gridArray[x, y].worldPos, size);
-
 
                     }
                 }
