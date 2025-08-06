@@ -4,6 +4,7 @@ public class BPTreeTester : MonoBehaviour
 {
 
     public BinaryTree tree = new BinaryTree();
+    public TerrainGeneration tGen = new TerrainGeneration();
     public GridVisualizer ourGridV;
     public GridSystem ourGrid;
     public int treeDepth = 2;
@@ -19,11 +20,12 @@ public class BPTreeTester : MonoBehaviour
     {
         ourGrid = ourGridV.testGrid;
 
-       
-
         tree.maxDepth = treeDepth;
         //tree.GenerateTree(new Rect(0, 0, ourGrid.width * ourGrid.getCellWidth(), ourGrid.height * ourGrid.getCellHeight()));
         tree.GenerateTree(new RectInt(0, 0, ourGrid.width, ourGrid.height));
+
+        tGen.GenerateTerrain(tree);
+
     }
 
     // Update is called once per frame

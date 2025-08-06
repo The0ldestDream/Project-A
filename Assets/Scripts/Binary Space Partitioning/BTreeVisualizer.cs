@@ -6,6 +6,7 @@ public class BTreeVisualizer : MonoBehaviour
 
     public BPTreeTester treetester;
     private BinaryTree vTree;
+    private TerrainGeneration vGen;
     public bool showAllNodes = true;
     public bool showLeaf = true;
 
@@ -13,7 +14,7 @@ public class BTreeVisualizer : MonoBehaviour
     void Start()
     {
         vTree = treetester.tree;
-
+        vGen = treetester.tGen;
     }
 
     // Update is called once per frame
@@ -53,6 +54,25 @@ public class BTreeVisualizer : MonoBehaviour
         }
     }
 
+    public void drawRooms(List<Room> rooms)
+    {
+        Gizmos.color = Color.purple;
+        foreach (Room room in rooms)
+        {
+            Gizmos.DrawWireCube(room.getCenter(), room.getSectorSize());
+        }
+    }
+    public void drawCorridors(List<Corridor> corridors)
+    {
+        Gizmos.color = Color.yellow;
+        foreach (Corridor corridor in corridors)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireCube(corridor.getCenter(corridor.hSeg), corridor.getSectorSize(corridor.hSeg));
+            Gizmos.color = Color.teal;
+            Gizmos.DrawWireCube(corridor.getCenter(corridor.vSeg), corridor.getSectorSize(corridor.vSeg));
+        }
+    }
     private void OnDrawGizmos()
     {
         
@@ -73,6 +93,13 @@ public class BTreeVisualizer : MonoBehaviour
             drawLeafNodes(vTree.getLeafList());
         }
 
+
+        if (vGen == null)
+        {
+            return;
+        }
+        drawRooms(vGen.allRooms);
+        drawCorridors(vGen.allCorridors);
     }
 
   

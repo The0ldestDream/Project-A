@@ -60,10 +60,9 @@ public class BinaryTree
 
         if (node.depth != maxdepth)
         {
-            Debug.Log("Splitting at depth: " + node.depth);
+            //Debug.Log("Splitting at depth: " + node.depth);
 
             int rndInt = Random.Range(0, 2);
-            Vector2 nodeCenter;
             RectInt left_sector = node.sector_bounds;
             RectInt right_sector = node.sector_bounds;
 
@@ -126,15 +125,9 @@ public class BinaryTree
         }
         else
         {
-
             Debug.Log("Leaf Generated!");
         }
 
     }
 
-    private float getGridCellsPos()
-    {
-
-        return 2;
-    }
 }

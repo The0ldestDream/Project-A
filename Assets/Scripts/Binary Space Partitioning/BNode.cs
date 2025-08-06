@@ -10,6 +10,11 @@ public class BNode
     public RectInt sector_bounds; 
     public int depth = 0;
 
+    //Room assigned from being a leaf node
+    public Room assignedRoom = null;
+    //Room assigned from its child node
+    public Room childRoom = null;
+
     public BNode(RectInt bounds)
     {
         parent_node = null;
@@ -17,6 +22,7 @@ public class BNode
         right_child = null;
         sector_bounds = bounds; //Dimensions of the Node's Section
     }
+
 
     public Vector2 getCenter()
     {
