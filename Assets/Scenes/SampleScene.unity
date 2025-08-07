@@ -372,7 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ourGridV: {fileID: 1962901845}
-  treeDepth: 6
+  treeDepth: 30
 --- !u!4 &1962901843
 Transform:
   m_ObjectHideFlags: 0

@@ -1,28 +1,58 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class BTreeVisualizer : MonoBehaviour
+public class Visualizer : MonoBehaviour
 {
+    public SetupTest setupTest;
 
-    public BPTreeTester treetester;
-    private BinaryTree vTree;
+    private GridSystem vGrid;
+    private BinaryTree vtree;
     private TerrainGeneration vGen;
-    public bool showAllNodes = true;
+
+    private List<BNode> leafNodes;
+
+    //Toggles
+    public bool showGrid = true;
+    public bool showAllNodes = false;
     public bool showLeaf = true;
+    public bool showRooms = true;
+    public bool showCorridors = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        vTree = treetester.tree;
-        vGen = treetester.tGen;
+        vGrid = setupTest.testGrid;
+        vtree = setupTest.tree;
+        vGen = setupTest.tGen;
+        leafNodes = setupTest.leafNodes;
+
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public void drawGrid()
     {
-        
-    }
+        Gizmos.color = Color.red;
+        if (showGrid)
+        {
+            if (vGrid != null && vGrid.gridArray != null)
+            {
+                Gizmos.color = Color.red;
 
+                // Loop through the gridArray and draw a wire cube at each position
+                for (int x = 0; x < vGrid.width; x++)
+                {
+                    for (int y = 0; y < vGrid.height; y++)
+                    {
+
+                        Vector2 size = new Vector2(vGrid.gridArray[x, y].cellwidth, vGrid.gridArray[x, y].cellheight); // Size of each grid cell 
+                        Gizmos.DrawWireCube(vGrid.gridArray[x, y].worldPos, size);
+
+                    }
+                }
+
+            }
+        }
+    }
 
     public void drawNodes(BNode node)
     {
@@ -44,7 +74,6 @@ public class BTreeVisualizer : MonoBehaviour
             drawNodes(node.right_child);
         }
     }
-
     public void drawLeafNodes(List<BNode> leaves)
     {
         Gizmos.color = Color.blue;
@@ -73,24 +102,41 @@ public class BTreeVisualizer : MonoBehaviour
             Gizmos.DrawWireCube(corridor.getCenter(corridor.vSeg), corridor.getSectorSize(corridor.vSeg));
         }
     }
-    private void OnDrawGizmos()
+
+
+    // Update is called once per frame
+    void Update()
     {
         
+    }
 
-        if (vTree == null)
+
+    private void OnDrawGizmos()
+    {
+
+        if (vGrid == null)
+        {
+            return;
+        }
+        if (showGrid == true)
+        {
+            drawGrid();
+        }
+
+        if (vtree == null)
         {
             return;
         }
 
         if (showAllNodes)
         {
-            
-            drawNodes(vTree.root);
-         
+
+            drawNodes(vtree.root);
+
         }
         if (showLeaf)
         {
-            drawLeafNodes(vTree.getLeafList());
+            drawLeafNodes(leafNodes);
         }
 
 
@@ -98,9 +144,17 @@ public class BTreeVisualizer : MonoBehaviour
         {
             return;
         }
-        drawRooms(vGen.allRooms);
-        drawCorridors(vGen.allCorridors);
+        if(showRooms)
+        {
+            drawRooms(vGen.allRooms);
+        }
+        if (showCorridors)
+        {
+            drawCorridors(vGen.allCorridors);
+        }
+        
     }
 
-  
+
 }
+
