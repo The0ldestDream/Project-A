@@ -17,6 +17,7 @@ public class Visualizer : MonoBehaviour
     public bool showLeaf = true;
     public bool showRooms = true;
     public bool showCorridors = true;
+    public bool showTiles = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,14 +37,34 @@ public class Visualizer : MonoBehaviour
         {
             if (vGrid != null && vGrid.gridArray != null)
             {
-                Gizmos.color = Color.red;
 
                 // Loop through the gridArray and draw a wire cube at each position
                 for (int x = 0; x < vGrid.width; x++)
                 {
                     for (int y = 0; y < vGrid.height; y++)
                     {
-
+                        if (showTiles)
+                        {
+                            switch (vGrid.gridArray[x, y].TypeOfTile)
+                            {
+                                case TileType.roomTile:
+                                    Gizmos.color = Color.purple;
+                                    break;
+                                case TileType.corridorTile:
+                                    Gizmos.color = Color.teal;
+                                    break;
+                                case TileType.doorTile:
+                                    Gizmos.color = Color.darkGoldenRod;
+                                    break;
+                                default:
+                                    Gizmos.color = Color.red;
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            Gizmos.color = Color.red;
+                        }
                         Vector2 size = new Vector2(vGrid.gridArray[x, y].cellwidth, vGrid.gridArray[x, y].cellheight); // Size of each grid cell 
                         Gizmos.DrawWireCube(vGrid.gridArray[x, y].worldPos, size);
 
@@ -121,6 +142,10 @@ public class Visualizer : MonoBehaviour
         if (showGrid == true)
         {
             drawGrid();
+        }
+        if (showTiles)
+        {
+            //drawTiles(vGrid);
         }
 
         if (vtree == null)

@@ -31,6 +31,8 @@ public class SetupTest : MonoBehaviour
         //Generate Terrain
         tGen.GenerateTerrain(tree);
 
+        //Tell the grid which cells have become Rooms and Corridors
+        tGen.SetTileTypes(testGrid);
 
     }
 

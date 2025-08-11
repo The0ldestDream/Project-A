@@ -59,7 +59,6 @@ public class TerrainGeneration
         }
     }
 
-
     private void GenerateCorridor(Room leftRoom, Room rightRoom)
     {
         //Creating Corridors
@@ -113,7 +112,6 @@ public class TerrainGeneration
         allCorridors.Add(newCorridor);
     }
 
-
     private RectInt GenerateRandomRoomSize(RectInt leafarea)
     {
 
@@ -132,6 +130,65 @@ public class TerrainGeneration
 
 
         return new RectInt(x,y, roomWidth,roomHeight);
+    }
+
+    public void SetTileTypes(GridSystem gridSystem)
+    {
+        //Set Corridors tiles first then Room tiles
+        //This way Room tiles can overwrite the Corridors if the are reaching/passing through a room
+        GridCell[,] gridCells = gridSystem.gridArray;
+
+        List<GridCell> corridorCells = new List<GridCell>();
+
+        for (int X = 0; X < allCorridors.Count; X++)
+        {
+            for (int Y = 0; Y < allCorridors[X].cTiles.Count; Y++)
+            {
+                gridCells[allCorridors[X].cTiles[Y].x, allCorridors[X].cTiles[Y].y].TypeOfTile = TileType.corridorTile;
+                corridorCells.Add(gridCells[allCorridors[X].cTiles[Y].x, allCorridors[X].cTiles[Y].y]);
+            }
+        }
+
+        foreach (Room room in allRooms)
+        {
+            int minX = room.roomBounds.xMin;
+            int maxX = room.roomBounds.xMax;
+            int minY = room.roomBounds.yMin;
+            int maxY = room.roomBounds.yMax;
+
+            for (int x = minX; x < maxX; x++)
+            {
+                for (int y = minY; y < maxY; y++)
+                {
+                    gridCells[x, y].TypeOfTile = TileType.roomTile;
+                    Debug.Log("Room Tile Set");
+                 
+                }
+            }
+        }
+
+        //Find all grid cells that are corridor tiles
+        //Then check its neighbours for grid cells that are room tiles
+        //Then change those into door tiles
+        //Maybe check if its next to another corridor then extend that door tile?
+
+        //Since the room tiles override the corridor tiles, we need to remove the room tile cells from the list
+        corridorCells.RemoveAll(x => x.TypeOfTile == TileType.roomTile);
+
+
+        for (int x = 0; x < corridorCells.Count; x++)
+        {
+            for (int i = 0; i < corridorCells[x].neighbours.Count; i++)
+            {
+                if (corridorCells[x].neighbours[i].TypeOfTile == TileType.roomTile) // Change this to a wall tile after
+                {
+                    corridorCells[x].neighbours[i].TypeOfTile = TileType.doorTile;
+                }
+            }
+
+        }
+
+
     }
 
 }
