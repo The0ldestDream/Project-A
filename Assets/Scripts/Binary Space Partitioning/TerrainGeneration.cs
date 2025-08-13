@@ -67,9 +67,15 @@ public class TerrainGeneration
         //Loop in the other direction until we arrive at pointb
 
 
-        Vector2Int pointA = new Vector2Int(Random.Range(leftRoom.roomBounds.xMin,leftRoom.roomBounds.xMax-1), Random.Range(leftRoom.roomBounds.yMin, leftRoom.roomBounds.yMax - 1));
-        Vector2Int pointB = new Vector2Int(Random.Range(rightRoom.roomBounds.xMin, rightRoom.roomBounds.xMax - 1), Random.Range(rightRoom.roomBounds.yMin, rightRoom.roomBounds.yMax - 1));
+        //Vector2Int pointA = new Vector2Int(Random.Range(leftRoom.roomBounds.xMin,leftRoom.roomBounds.xMax-1), Random.Range(leftRoom.roomBounds.yMin, leftRoom.roomBounds.yMax - 1));
+        //Vector2Int pointB = new Vector2Int(Random.Range(rightRoom.roomBounds.xMin, rightRoom.roomBounds.xMax - 1), Random.Range(rightRoom.roomBounds.yMin, rightRoom.roomBounds.yMax - 1));
+        List<Vector2Int> pointsA = GetEdgePoints(leftRoom, true);
+        List<Vector2Int> pointsB = GetEdgePoints(rightRoom, true);
+        var Points = GetClosestPoints(pointsA, pointsB);
 
+
+        Vector2Int pointA = Points.pointA;
+        Vector2Int pointB = Points.pointB;
 
         Corridor newCorridor = new Corridor();
 
@@ -132,6 +138,92 @@ public class TerrainGeneration
         return new RectInt(x,y, roomWidth,roomHeight);
     }
 
+    private List<Vector2Int> GetEdgePoints(Room room, bool RemoveCornerPoints)
+    {
+        
+        List<Vector2Int> edgePoints = new List<Vector2Int>();
+
+        //Four Edges
+        //Bottom Left to Bottom Right = (xmin,ymin) -> (xmax,ymin)
+        //Bottom Left to Top Left = (xmin,ymin) -> (xmin,ymax)
+        //Bottom Right to Top Right = (xmax,ymin) -> (xmax,ymax)
+        //Top Left to Top Right = (xmin,ymax) -> (xmax,ymax)
+
+        Vector2Int botL = new Vector2Int(room.roomBounds.x, room.roomBounds.y);
+        Vector2Int botR = new Vector2Int(room.roomBounds.xMax-1, room.roomBounds.y);
+        Vector2Int topL = new Vector2Int(room.roomBounds.x, room.roomBounds.yMax-1);
+        Vector2Int topR = new Vector2Int(room.roomBounds.xMax-1, room.roomBounds.yMax-1);
+
+        for (int x = botL.x; x <= botR.x; x++)
+        {
+            edgePoints.Add(new Vector2Int(x, botR.y));
+        }
+        for (int y = botL.y; y <= topL.y; y++)
+        {
+            edgePoints.Add(new Vector2Int(topL.x, y));
+        }
+        for (int y = botR.y; y <= topR.y; y++)
+        {
+            edgePoints.Add(new Vector2Int(topR.x, y));
+        }
+        for (int x = topL.x; x <= topR.x; x++)
+        {
+            edgePoints.Add(new Vector2Int(x, topR.y));
+        }
+
+        if (RemoveCornerPoints == true)
+        {
+
+            edgePoints.RemoveAll(x => x == botL);
+            edgePoints.RemoveAll(x => x == botR);
+            edgePoints.RemoveAll(x => x == topR);
+            edgePoints.RemoveAll(x => x == topL);
+
+
+        }
+        
+        
+        return edgePoints;
+    }
+
+    private (Vector2Int pointA, Vector2Int pointB) GetClosestPoints(List<Vector2Int> edgesA, List<Vector2Int> edgesB)
+    {
+        Vector2Int pointA = new Vector2Int();
+        Vector2Int pointB = new Vector2Int();
+
+
+        Vector2Int currentShortestPointA = new Vector2Int();
+        Vector2Int currentShortestPointB = new Vector2Int();
+        int shortestManhattanDistance = 1000000000; //Random High Number
+
+        foreach (Vector2Int edgeA in edgesA)
+        {
+            foreach (Vector2Int edgeB in edgesB)
+            {
+
+                int ManhattanDistance;
+
+                ManhattanDistance = Mathf.Abs(edgeA.x - edgeB.x) + Mathf.Abs(edgeA.y - edgeB.y);
+
+                if (ManhattanDistance < shortestManhattanDistance)
+                {
+                    shortestManhattanDistance = ManhattanDistance;
+                    currentShortestPointA = edgeA;
+                    currentShortestPointB = edgeB;
+                }
+
+            }
+        }
+
+        pointA = currentShortestPointA;
+        pointB = currentShortestPointB;
+
+        return (pointA, pointB);
+    }
+
+
+
+
     public void SetTileTypes(GridSystem gridSystem)
     {
         //Set Corridors tiles first then Room tiles
@@ -165,6 +257,15 @@ public class TerrainGeneration
                  
                 }
             }
+
+            List<Vector2Int> roomEdges = GetEdgePoints(room, false);
+            for (int x = 0; x < roomEdges.Count; x++)
+            {
+
+                gridCells[roomEdges[x].x, roomEdges[x].y].TypeOfTile = TileType.wallTile;
+
+            }
+
         }
 
         //Find all grid cells that are corridor tiles
@@ -178,14 +279,23 @@ public class TerrainGeneration
 
         for (int x = 0; x < corridorCells.Count; x++)
         {
-            for (int i = 0; i < corridorCells[x].neighbours.Count; i++)
+            for (int i = 0; i < corridorCells[x].neighbours.Count-4; i++)
             {
-                if (corridorCells[x].neighbours[i].TypeOfTile == TileType.roomTile) // Change this to a wall tile after
+                if (corridorCells[x].neighbours[i].TypeOfTile == TileType.wallTile) // Change this to a wall tile after
                 {
                     corridorCells[x].neighbours[i].TypeOfTile = TileType.doorTile;
                 }
             }
-
+        }
+        for (int x = 0; x < corridorCells.Count; x++)
+        {
+            for (int i = 0; i < corridorCells[x].neighbours.Count; i++)
+            {
+                if (corridorCells[x].neighbours[i].TypeOfTile == TileType.emptyTile)
+                {
+                    corridorCells[x].neighbours[i].TypeOfTile = TileType.wallTile;
+                }
+            }
         }
 
 

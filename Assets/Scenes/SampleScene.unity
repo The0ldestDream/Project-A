@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7160e472b7919428ec4bb11829d0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 100
-  treeDepth: 4
+  gridSize: 400
+  treeDepth: 12
 --- !u!4 &455127991
 Transform:
   m_ObjectHideFlags: 0

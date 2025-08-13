@@ -54,16 +54,19 @@ public class Visualizer : MonoBehaviour
                                     Gizmos.color = Color.teal;
                                     break;
                                 case TileType.doorTile:
-                                    Gizmos.color = Color.darkGoldenRod;
+                                    Gizmos.color = Color.yellow;
+                                    break;
+                                case TileType.wallTile:
+                                    Gizmos.color = Color.white;
                                     break;
                                 default:
-                                    Gizmos.color = Color.red;
+                                    Gizmos.color = Color.black;
                                     break;
                             }
                         }
                         else
                         {
-                            Gizmos.color = Color.red;
+                            Gizmos.color = Color.black;
                         }
                         Vector2 size = new Vector2(vGrid.gridArray[x, y].cellwidth, vGrid.gridArray[x, y].cellheight); // Size of each grid cell 
                         Gizmos.DrawWireCube(vGrid.gridArray[x, y].worldPos, size);
