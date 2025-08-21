@@ -154,8 +154,8 @@ MonoBehaviour:
   showAllNodes: 0
   showLeaf: 1
   showRooms: 1
-  showCorridors: 1
-  showTiles: 0
+  showCorridors: 0
+  showTiles: 1
 --- !u!114 &455127990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7160e472b7919428ec4bb11829d0ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 400
-  treeDepth: 12
+  gridSize: 200
+  treeDepth: 8
 --- !u!4 &455127991
 Transform:
   m_ObjectHideFlags: 0

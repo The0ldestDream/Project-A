@@ -12,7 +12,7 @@ public class GridCell
     public int x, y;
     public List<GridCell> neighbours = new List<GridCell>();
 
-    //Gameplay
+    //Grid Information
     public TileType TypeOfTile = TileType.emptyTile;
     public int cost;
     public bool walkable;
@@ -24,6 +24,9 @@ public class GridCell
 
         cellheight = 1;
         cellwidth = 1;
+
+        cost = 1;
+        walkable = true;
     }
 
 }

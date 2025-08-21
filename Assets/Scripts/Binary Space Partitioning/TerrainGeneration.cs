@@ -8,13 +8,19 @@ public class TerrainGeneration
 
     public List<Room> allRooms = new List<Room>();
     public List<Corridor> allCorridors = new List<Corridor>();
+    private AStarPathfinding AStarPathfinder = new AStarPathfinding();
+    private GridSystem gridSystem1;
 
-    public void GenerateTerrain(BinaryTree tree)
+    public void GenerateTerrain(BinaryTree tree, GridSystem gridSystem)
     {
+        gridSystem1 = gridSystem;
         leafNodes = tree.getLeafList();
 
-        GenerateRooms();
-        ConnectNodes(tree.root);
+        GenerateRooms(); // Generate the Rooms
+        SetRoomTileTypes(gridSystem); // Set Tiles around the rooms
+        ConnectNodes(tree.root); // Generate the Corridors
+        SetCorridorTileTypes(gridSystem); // Set Tiles around the Corridors
+
 
     }
 
@@ -74,44 +80,19 @@ public class TerrainGeneration
         var Points = GetClosestPoints(pointsA, pointsB);
 
 
+
+
+        
         Vector2Int pointA = Points.pointA;
         Vector2Int pointB = Points.pointB;
 
+        List<GridCell> CorridorCells = AStarPathfinder.Pathfinding(gridSystem1.gridArray[pointA.x, pointA.y], gridSystem1.gridArray[pointB.x,pointB.y], gridSystem1);
+
         Corridor newCorridor = new Corridor();
 
-        if (Random.Range(0, 100) > 50)
+        foreach (GridCell cell in CorridorCells)
         {
-            //Horizontal first
-            for (int x= Mathf.Min(pointA.x, pointB.x); x <= Mathf.Max(pointA.x,pointB.x); x++)
-            {
-                newCorridor.cTiles.Add(new Vector2Int(x, pointA.y));
-                Debug.Log("Horizontal loop finished");
-
-            }
-            newCorridor.hSeg = new RectInt(Mathf.Min(pointA.x, pointB.x),pointA.y,Mathf.Abs(pointB.x - pointA.x)+1, 1);
-
-
-            //Vertical Second
-            for (int y = Mathf.Min(pointA.y, pointB.y); y <= Mathf.Max(pointA.y, pointB.y); y++)
-            {
-                newCorridor.cTiles.Add(new Vector2Int(pointB.x, y));
-            }
-            newCorridor.vSeg = new RectInt(pointB.x, Mathf.Min(pointA.y, pointB.y), 1, Mathf.Abs(pointB.y - pointA.y) + 1);
-        }
-        else
-        {
-            //Vertical first
-            for (int y = Mathf.Min(pointA.y, pointB.y); y <= Mathf.Max(pointA.y, pointB.y); y++)
-            {
-                newCorridor.cTiles.Add(new Vector2Int(pointA.x, y));
-            }
-            newCorridor.vSeg = new RectInt(pointB.x, Mathf.Min(pointA.y, pointB.y), 1, Mathf.Abs(pointB.y - pointA.y) + 1);
-            //Horizontal Second
-            for (int x = Mathf.Min(pointA.x, pointB.x); x <= Mathf.Max(pointA.x, pointB.x); x++)
-            {
-                newCorridor.cTiles.Add(new Vector2Int(x, pointB.y));
-            }
-            newCorridor.hSeg = new RectInt(Mathf.Min(pointA.x, pointB.x), pointA.y, Mathf.Abs(pointB.x - pointA.x) + 1, 1);
+            newCorridor.cTiles.Add(new Vector2Int(cell.x, cell.y));
         }
 
 
@@ -125,8 +106,8 @@ public class TerrainGeneration
         //Placeholder Calculation
         //For the min value, I just decided the room should be at least of the size of the subsection
         //Definatley need some checks here to make sure the room has a valid size
-        int roomWidth = Random.Range((leafarea.width / 2), leafarea.width-1);
-        int roomHeight = Random.Range((leafarea.height / 2), leafarea.height - 1);
+        int roomWidth = Random.Range((leafarea.width / 2), leafarea.width-2);
+        int roomHeight = Random.Range((leafarea.height / 2), leafarea.height - 2);
 
         //Decide on a position in the section to have the room spawn in
         //For more variance
@@ -194,7 +175,7 @@ public class TerrainGeneration
 
         Vector2Int currentShortestPointA = new Vector2Int();
         Vector2Int currentShortestPointB = new Vector2Int();
-        int shortestManhattanDistance = 1000000000; //Random High Number
+        int shortestManhattanDistance = int.MaxValue; 
 
         foreach (Vector2Int edgeA in edgesA)
         {
@@ -223,11 +204,63 @@ public class TerrainGeneration
 
 
 
-
-    public void SetTileTypes(GridSystem gridSystem)
+    private void SetRoomTileTypes(GridSystem gridSystem)
     {
         //Set Corridors tiles first then Room tiles
         //This way Room tiles can overwrite the Corridors if the are reaching/passing through a room
+        GridCell[,] gridCells = gridSystem.gridArray;
+
+
+
+        foreach (Room room in allRooms)
+        {
+            int minX = room.roomBounds.xMin;
+            int maxX = room.roomBounds.xMax-1;
+            int minY = room.roomBounds.yMin;
+            int maxY = room.roomBounds.yMax-1;
+
+            for (int x = minX; x < maxX; x++)
+            {
+                for (int y = minY; y < maxY; y++)
+                {
+                    gridCells[x, y].TypeOfTile = TileType.roomTile;
+                    gridCells[x, y].walkable = true;
+                    Debug.Log("Room Tile Set");
+                 
+                }
+            }
+
+            List<Vector2Int> roomEdges = GetEdgePoints(room, false);
+            for (int x = 0; x < roomEdges.Count; x++)
+            {
+
+                gridCells[roomEdges[x].x, roomEdges[x].y].TypeOfTile = TileType.wallTile;
+                gridCells[roomEdges[x].x, roomEdges[x].y].walkable = false;
+            }
+            foreach (Vector2Int point in roomEdges)
+            {
+                for (int x = 0; x < gridCells[point.x,point.y].neighbours.Count; x++)
+                {
+                    if (gridCells[point.x, point.y].neighbours[x].TypeOfTile == TileType.emptyTile)
+                    {
+                        gridCells[point.x, point.y].neighbours[x].cost = 3;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    private void SetCorridorTileTypes(GridSystem gridSystem)
+    {
+        //Find all grid cells that are corridor tiles
+        //Then check its neighbours for grid cells that are room tiles
+        //Then change those into door tiles
+        //Maybe check if its next to another corridor then extend that door tile?
+
+        //Since the room tiles override the corridor tiles, we need to remove the room tile cells from the list
+
         GridCell[,] gridCells = gridSystem.gridArray;
 
         List<GridCell> corridorCells = new List<GridCell>();
@@ -241,52 +274,20 @@ public class TerrainGeneration
             }
         }
 
-        foreach (Room room in allRooms)
-        {
-            int minX = room.roomBounds.xMin;
-            int maxX = room.roomBounds.xMax;
-            int minY = room.roomBounds.yMin;
-            int maxY = room.roomBounds.yMax;
-
-            for (int x = minX; x < maxX; x++)
-            {
-                for (int y = minY; y < maxY; y++)
-                {
-                    gridCells[x, y].TypeOfTile = TileType.roomTile;
-                    Debug.Log("Room Tile Set");
-                 
-                }
-            }
-
-            List<Vector2Int> roomEdges = GetEdgePoints(room, false);
-            for (int x = 0; x < roomEdges.Count; x++)
-            {
-
-                gridCells[roomEdges[x].x, roomEdges[x].y].TypeOfTile = TileType.wallTile;
-
-            }
-
-        }
-
-        //Find all grid cells that are corridor tiles
-        //Then check its neighbours for grid cells that are room tiles
-        //Then change those into door tiles
-        //Maybe check if its next to another corridor then extend that door tile?
-
-        //Since the room tiles override the corridor tiles, we need to remove the room tile cells from the list
         corridorCells.RemoveAll(x => x.TypeOfTile == TileType.roomTile);
 
-
+        // Creating Door Tiles
         for (int x = 0; x < corridorCells.Count; x++)
         {
-            for (int i = 0; i < corridorCells[x].neighbours.Count-4; i++)
+
+            if (corridorCells[x].TypeOfTile == TileType.wallTile)
             {
-                if (corridorCells[x].neighbours[i].TypeOfTile == TileType.wallTile) // Change this to a wall tile after
-                {
-                    corridorCells[x].neighbours[i].TypeOfTile = TileType.doorTile;
-                }
+                corridorCells[x].TypeOfTile = TileType.doorTile;
             }
+
         }
+
+        //Walls around Corridors
         for (int x = 0; x < corridorCells.Count; x++)
         {
             for (int i = 0; i < corridorCells[x].neighbours.Count; i++)
@@ -294,11 +295,13 @@ public class TerrainGeneration
                 if (corridorCells[x].neighbours[i].TypeOfTile == TileType.emptyTile)
                 {
                     corridorCells[x].neighbours[i].TypeOfTile = TileType.wallTile;
+                    corridorCells[x].neighbours[i].walkable = false;
                 }
             }
         }
 
-
     }
+
+
 
 }

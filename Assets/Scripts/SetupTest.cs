@@ -29,10 +29,9 @@ public class SetupTest : MonoBehaviour
         leafNodes = tree.getLeafList();
 
         //Generate Terrain
-        tGen.GenerateTerrain(tree);
+        tGen.GenerateTerrain(tree, testGrid);
 
         //Tell the grid which cells have become Rooms and Corridors
-        tGen.SetTileTypes(testGrid);
 
     }
 
