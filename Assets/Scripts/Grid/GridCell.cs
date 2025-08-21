@@ -15,7 +15,7 @@ public class GridCell
     //Grid Information
     public TileType TypeOfTile = TileType.emptyTile;
     public int cost;
-    public bool walkable;
+    public bool walkable = true;
 
     public GridCell(int xPos, int yPos)
     {
@@ -26,7 +26,6 @@ public class GridCell
         cellwidth = 1;
 
         cost = 1;
-        walkable = true;
     }
 
 }

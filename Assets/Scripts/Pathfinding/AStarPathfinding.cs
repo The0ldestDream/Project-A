@@ -50,10 +50,10 @@ public class AStarPathfinding
             openSet.Remove(current);
             foreach (GridCell neighbour in current.neighbours)
             {
-                //if (neighbour.walkable == false)
-                //{
-                //    continue;
-                //}
+                if (neighbour.walkable == false)
+                {
+                    continue;
+                }
 
                 if (!CheckIfCardinal(current,neighbour))
                 {
@@ -97,6 +97,12 @@ public class AStarPathfinding
         GridCell currentNode = end;
         while (currentNode != start)
         {
+            if (!CheckIfCardinal(currentNode, cameFrom[currentNode]))
+            {
+                Debug.LogWarning($"Diagonal in path! {currentNode.x},{currentNode.y} -> {cameFrom[currentNode].x},{cameFrom[currentNode].y}");
+            }
+
+
             cells.Add(currentNode);
             currentNode = cameFrom[currentNode];
         }

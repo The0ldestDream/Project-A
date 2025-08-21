@@ -16,8 +16,11 @@ public class Visualizer : MonoBehaviour
     public bool showAllNodes = false;
     public bool showLeaf = true;
     public bool showRooms = true;
-    public bool showCorridors = true;
+    
     public bool showTiles = false;
+    public bool showCorridors = true;
+    public bool showRoomTiles = true;
+    public bool showWallTiles = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -48,25 +51,34 @@ public class Visualizer : MonoBehaviour
                             switch (vGrid.gridArray[x, y].TypeOfTile)
                             {
                                 case TileType.roomTile:
-                                    Gizmos.color = Color.purple;
+                                    if (showRoomTiles)
+                                    {
+                                        Gizmos.color = Color.purple;
+                                    }
                                     break;
                                 case TileType.corridorTile:
-                                    Gizmos.color = Color.teal;
+                                    if (showCorridors)
+                                    {
+                                        Gizmos.color = Color.teal;
+                                    }
                                     break;
                                 case TileType.doorTile:
                                     Gizmos.color = Color.yellow;
                                     break;
                                 case TileType.wallTile:
-                                    Gizmos.color = Color.white;
+                                    if (showWallTiles)
+                                    {
+                                        Gizmos.color = Color.white;
+                                    }                                
                                     break;
                                 default:
-                                    Gizmos.color = Color.black;
+                                    Gizmos.color = Color.clear;
                                     break;
                             }
                         }
                         else
                         {
-                            Gizmos.color = Color.black;
+                            Gizmos.color = Color.clear;
                         }
                         Vector2 size = new Vector2(vGrid.gridArray[x, y].cellwidth, vGrid.gridArray[x, y].cellheight); // Size of each grid cell 
                         Gizmos.DrawWireCube(vGrid.gridArray[x, y].worldPos, size);
@@ -176,10 +188,7 @@ public class Visualizer : MonoBehaviour
         {
             drawRooms(vGen.allRooms);
         }
-        if (showCorridors)
-        {
-            drawCorridors(vGen.allCorridors);
-        }
+
         
     }
 
