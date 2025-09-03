@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Visualizer : MonoBehaviour
 {
-    public SetupTest setupTest;
+    public LevelGenerator setupTest;
 
     private GridSystem vGrid;
     private BinaryTree vtree;
@@ -25,7 +25,7 @@ public class Visualizer : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        vGrid = setupTest.testGrid;
+        vGrid = setupTest.ourGrid;
         vtree = setupTest.tree;
         vGen = setupTest.tGen;
         leafNodes = setupTest.leafNodes;

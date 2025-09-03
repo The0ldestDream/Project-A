@@ -8,6 +8,8 @@ public class TerrainGeneration
 
     public List<Room> allRooms = new List<Room>();
     public List<Corridor> allCorridors = new List<Corridor>();
+    public List<GridCell> allDoors = new List<GridCell>();
+
     private AStarPathfinding AStarPathfinder = new AStarPathfinding();
     private GridSystem gridSystem;
 
@@ -67,10 +69,6 @@ public class TerrainGeneration
 
     private void GenerateCorridor(Room leftRoom, Room rightRoom)
     {
-        //Creating Corridors
-        //I want to create L shape corridors
-        //Loop in one direction until the pointa x or y matchs the pointb x or y
-        //Loop in the other direction until we arrive at pointb
 
         //Vector2Int pointA = new Vector2Int(Random.Range(leftRoom.roomBounds.xMin,leftRoom.roomBounds.xMax-1), Random.Range(leftRoom.roomBounds.yMin, leftRoom.roomBounds.yMax - 1));
         //Vector2Int pointB = new Vector2Int(Random.Range(rightRoom.roomBounds.xMin, rightRoom.roomBounds.xMax - 1), Random.Range(rightRoom.roomBounds.yMin, rightRoom.roomBounds.yMax - 1));
@@ -82,6 +80,10 @@ public class TerrainGeneration
         Vector2Int pointB = Points.pointB;
 
         List<GridCell> CorridorCells = AStarPathfinder.Pathfinding(gridSystem.gridArray[pointA.x, pointA.y], gridSystem.gridArray[pointB.x,pointB.y], gridSystem);
+
+
+        allDoors.Add(gridSystem.gridArray[pointA.x, pointA.y]);
+        allDoors.Add(gridSystem.gridArray[pointB.x, pointB.y]);
 
         Corridor newCorridor = new Corridor();
 
@@ -149,11 +151,10 @@ public class TerrainGeneration
 
         if (RemoveCornerPoints == true)
         {
-
-            edgePoints.Remove(botL);
-            edgePoints.Remove(botR);
-            edgePoints.Remove(topR);
-            edgePoints.Remove(topL);
+            edgePoints.RemoveWhere(x => x == botL);
+            edgePoints.RemoveWhere(x => x == botR);
+            edgePoints.RemoveWhere(x => x == topR);
+            edgePoints.RemoveWhere(x => x == topL);
 
 
         }
@@ -231,6 +232,7 @@ public class TerrainGeneration
 
                 gridCells[point.x, point.y].TypeOfTile = TileType.wallTile;
                 gridCells[point.x, point.y].walkable = true;
+                gridCells[point.x, point.y].cost = 10;
             }
             foreach (Vector2Int point in roomEdges)
             {
@@ -249,15 +251,26 @@ public class TerrainGeneration
 
     private void SetFinalTileTypes(GridSystem gridSystem)
     {
-        //Find all grid cells that are corridor tiles
-        //Then check its neighbours for grid cells that are room tiles
-        //Then change those into door tiles
-        //Maybe check if its next to another corridor then extend that door tile?
+        //Reset the GridCells
+        //Paint the Corridors
+        //Paint the Rooms
+        //Paint the Walls on the Rooms
+        //Choose the Door Tiles
+        //Paint the Walls on the Corridors
 
-        //Since the room tiles override the corridor tiles, we need to remove the room tile cells from the list
+
 
         GridCell[,] gridCells = gridSystem.gridArray;
 
+        for (int X = 0; X < gridSystem.width; X++)
+        {
+            for (int Y = 0; Y < gridSystem.height; Y++)
+            {
+                gridCells[X, Y].TypeOfTile = TileType.emptyTile;
+                gridCells[X, Y].walkable = false;
+                gridCells[X, Y].cost = 0;
+            }
+        }
 
         List<GridCell> corridorCells = new List<GridCell>();
 
@@ -306,19 +319,15 @@ public class TerrainGeneration
                         gridCells[point.x, point.y].neighbours[x].walkable = false;
                     }
 
-                    if (gridCells[point.x, point.y].neighbours[x].TypeOfTile == TileType.corridorTile)
-                    {
-                        gridCells[point.x, point.y].TypeOfTile = TileType.doorTile;
-                    }
-
                 }
             }
 
         }
 
-
-
-
+        foreach (GridCell door in allDoors)
+        {
+            gridCells[door.x, door.y].TypeOfTile = TileType.doorTile;
+        }    
 
 
         //Walls around Corridors
@@ -334,8 +343,31 @@ public class TerrainGeneration
             }
         }
 
+
+        int roomCounter = 0;
+        int wallCounter = 0;
+
+        for (int X = 0; X < gridSystem.width; X++)
+        {
+            for (int Y = 0; Y < gridSystem.height; Y++)
+            {
+
+                if (gridCells[X,Y].TypeOfTile == TileType.roomTile)
+                {
+                    roomCounter += 1;
+                }
+                else if (gridCells[X, Y].TypeOfTile == TileType.wallTile)
+                {
+                    wallCounter += 1;
+                }
+
+            }
+        }
+
+        Debug.Log("Number of Room Tiles: " + roomCounter);
+        Debug.Log("Number of Wall Tiles: " + wallCounter);
+
+
     }
-
-
 
 }
