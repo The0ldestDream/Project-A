@@ -14,6 +14,8 @@ public class GridCell
 
     //Grid Information
     public TileType TypeOfTile = TileType.emptyTile;
+    public EntityType EntityOnTile = EntityType.None;
+
     public int cost;
     public bool walkable = true;
 

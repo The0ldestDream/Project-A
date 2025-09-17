@@ -7,4 +7,7 @@ public class TileSetData : ScriptableObject
     public Tile floor;
     public Tile wall;
     public Tile door;
+    public Tile stairs;
+    public Tile spawn; //For Testing Purposes
+
 }

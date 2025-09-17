@@ -5,7 +5,9 @@ public class LevelRenderer : MonoBehaviour
 {
     public LevelGenerator lGen;
     public Tilemap tilemap;
-    public TileSetData tileData; 
+    public TileSetData tileData;
+
+    private bool renderLevel = false;
 
     public void RenderLevel()
     {
@@ -31,15 +33,36 @@ public class LevelRenderer : MonoBehaviour
 
             }
         }
+
+        foreach (Room room in lGen.tGen.allRooms)
+        {
+            if (room.TypeOfRoom == RoomType.SpawnRoom)
+            {
+                int x = Random.Range(room.roomBounds.xMin + 2, room.roomBounds.xMax - 2);
+                int y = Random.Range(room.roomBounds.yMin + 2, room.roomBounds.yMax - 2);
+                Vector3Int cellPos = new Vector3Int(x, y, 0);
+
+                tilemap.SetTile(cellPos, tileData.spawn);
+
+            }
+            if (room.TypeOfRoom == RoomType.StairRoom)
+            {
+                int x = Random.Range(room.roomBounds.xMin + 2, room.roomBounds.xMax - 2);
+                int y = Random.Range(room.roomBounds.yMin + 2, room.roomBounds.yMax - 2);
+                Vector3Int cellPos = new Vector3Int(x, y, 0);
+
+                tilemap.SetTile(cellPos, tileData.stairs);
+            }
+        }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (lGen.generationDone == true)
+        if (renderLevel)
         {
-            RenderLevel();
-            lGen.generationDone = false;
+
         }
     }
 }

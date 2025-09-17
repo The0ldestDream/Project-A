@@ -8,7 +8,7 @@ public class TerrainGeneration
 
     public List<Room> allRooms = new List<Room>();
     public List<Corridor> allCorridors = new List<Corridor>();
-    public List<GridCell> allDoors = new List<GridCell>();
+    public List<Door> allDoors = new List<Door>();
 
     private AStarPathfinding AStarPathfinder = new AStarPathfinding();
     private GridSystem gridSystem;
@@ -82,8 +82,13 @@ public class TerrainGeneration
         List<GridCell> CorridorCells = AStarPathfinder.Pathfinding(gridSystem.gridArray[pointA.x, pointA.y], gridSystem.gridArray[pointB.x,pointB.y], gridSystem);
 
 
-        allDoors.Add(gridSystem.gridArray[pointA.x, pointA.y]);
-        allDoors.Add(gridSystem.gridArray[pointB.x, pointB.y]);
+        Door doorA = new Door();
+        doorA.doorLocation = gridSystem.gridArray[pointA.x, pointA.y];
+        Door doorB = new Door();
+        doorB.doorLocation = gridSystem.gridArray[pointB.x, pointB.y];
+
+        allDoors.Add(doorA);
+        allDoors.Add(doorB);
 
         Corridor newCorridor = new Corridor();
 
@@ -324,10 +329,24 @@ public class TerrainGeneration
 
         }
 
-        foreach (GridCell door in allDoors)
+        foreach (Door door in allDoors)
         {
-            gridCells[door.x, door.y].TypeOfTile = TileType.doorTile;
+            gridCells[door.doorLocation.x, door.doorLocation.y].TypeOfTile = TileType.doorTile;
         }    
+
+        foreach (Room r in allRooms)
+        {
+            HashSet<Vector2Int> roomEdges = GetEdgePoints(r, false);
+            foreach (Vector2Int point in roomEdges)
+            {
+                if (gridCells[point.x,point.y].TypeOfTile == TileType.doorTile)
+                {
+                    Door door = allDoors.Find(x => x.doorLocation == gridCells[point.x, point.y]);
+                    r.roomDoors.Add(door);
+                }
+            }
+        }
+
 
 
         //Walls around Corridors

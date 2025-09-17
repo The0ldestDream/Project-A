@@ -15,3 +15,5 @@ MonoBehaviour:
   floor: {fileID: 11400000, guid: 52a10a594c05e044683bf7ee97f4a7cf, type: 2}
   wall: {fileID: 11400000, guid: e0285c94c5c584947adcb6153136cae5, type: 2}
   door: {fileID: 11400000, guid: 693a6b907dddf0844bc160e7a4766bea, type: 2}
+  stairs: {fileID: 11400000, guid: 4af83d8944808c84f8c801e5898b8600, type: 2}
+  spawn: {fileID: 11400000, guid: 753d3ad1d6be3e84cbc0c8006e2cd8af, type: 2}

@@ -24,9 +24,11 @@ public class GridSystem
                 gridArray[x, y] = new GridCell(x, y);
             }
         }
+        setNeighbours();
+        setWorldPositions();
     }
 
-    public void setNeighbours()
+    private void setNeighbours()
     {
         for (int x = 0; x < width; x++)
         {
@@ -38,7 +40,7 @@ public class GridSystem
         }
     }
 
-    public void setWorldPositions()
+    private void setWorldPositions()
     {
         for (int x = 0; x < width; x++)
         {
@@ -56,7 +58,7 @@ public class GridSystem
         }
     }
 
-    public List<GridCell> getNeighbours(GridCell centerCell)
+    private List<GridCell> getNeighbours(GridCell centerCell)
     {
         List<GridCell> cellNeighbours = new List<GridCell>();
 
