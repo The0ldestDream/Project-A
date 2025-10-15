@@ -43,7 +43,7 @@ public class AStarPathfinding
             GridCell current = openSet.OrderBy(cell => fScore[cell]).First();
             if (current == end)
             {
-                return CreateCorridorList(cameFrom);
+                return CreatePath(cameFrom);
             }
 
             closedSet.Add(current);
@@ -90,7 +90,7 @@ public class AStarPathfinding
         return null; // No Path Found
     }
 
-    private List<GridCell> CreateCorridorList(Dictionary<GridCell, GridCell> cameFrom)
+    private List<GridCell> CreatePath(Dictionary<GridCell, GridCell> cameFrom)
     {
         List<GridCell> cells = new List<GridCell>();
 
@@ -108,6 +108,7 @@ public class AStarPathfinding
         }
 
         cells.Add(start);
+        cells.Reverse();
 
         return cells;
     }

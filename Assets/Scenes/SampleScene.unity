@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 2047137650}
   - component: {fileID: 2047137649}
   m_Layer: 0
-  m_Name: EventManager
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -556,6 +556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelGenerator: {fileID: 2047137650}
   levelRenderer: {fileID: 2047137649}
+  roomManager: {fileID: 0}
   PlayerAgent: {fileID: 1563802960888283061, guid: c1420465539ac7147805291a6f89aa4d, type: 3}
 --- !u!114 &2047137649
 MonoBehaviour:

@@ -5,14 +5,16 @@ public abstract class AgentAction
     public string ActionName;
     
     public int ActionLevel;
+    public int maxActionLevel;
     public float ActionExperience;
     public float ExperienceNeededToLevelUp;
 
-    public AgentAction(string name, int startingLevel, float expLevelUp)
+    public AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
     {
         ActionName = name;
         ExperienceNeededToLevelUp = expLevelUp;
         ActionLevel = startingLevel;
+        maxActionLevel = maxLevel;
 
     }
 

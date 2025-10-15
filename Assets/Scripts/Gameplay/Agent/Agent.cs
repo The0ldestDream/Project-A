@@ -6,18 +6,21 @@ public class Agent
     public GridCell gridPos;
 
     //Agent Components
-    public List<AgentClass> agentClasses;
+    public List<AgentClass> agentClasses = new List<AgentClass>();
     public AgentRace agentRace;
-
-    public List<AgentTrait> agentTraits;
+    public AStarPathfinding pathfinding = new AStarPathfinding();
 
     //Agent Information
-    public int AgentLevel;
+    public int AgentLevel = 1;
+
+    public List<AgentAction> allActions = new List<AgentAction>();
+    public List<AgentTrait> allTraits = new List<AgentTrait>();
+
     AgentAlignment alignment;
     //List of Status Effects
 
 
-    public Agent(GridSystem grid, GridCell spawnPoint, AgentRace race, AgentAlignment agentAlignment)
+    public Agent(GridSystem grid, GridCell spawnPoint, AgentRace race, AgentClass agentClass) // Add these AgentAlignment agentAlignment,
     {
         gridPos = spawnPoint;
         grid.gridArray[spawnPoint.x, spawnPoint.y].EntityOnTile = EntityType.Agent;
@@ -26,8 +29,17 @@ public class Agent
 
         //Agent Information
         agentRace = race;
-        alignment = agentAlignment;
+        agentClasses.Add(agentClass);
+        
+        foreach (AgentAction action in agentClass.ClassActions)
+        {
+            allActions.Add(action);
+        }
 
+        foreach (AgentTrait trait in agentRace.RaceTraits)
+        {
+            allTraits.Add(trait);
+        }
     }
 
 
@@ -44,6 +56,18 @@ public class Agent
         }
 
         //Debug.Log("The Player is at Grid Cell: (" + gridPos.x + ", " + gridPos.y + ")");
+    }
+
+    public void CombatMoveTo(GridSystem grid, GridCell Destination)
+    {
+        List<GridCell> path = pathfinding.Pathfinding(gridPos, Destination, grid);
+
+        foreach (GridCell cell in path)
+        {
+            MoveTo(grid, cell);
+        }
+
+
     }
 
 

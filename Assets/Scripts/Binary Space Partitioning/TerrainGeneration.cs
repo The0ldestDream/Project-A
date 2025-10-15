@@ -166,7 +166,7 @@ public class TerrainGeneration
         
         
         return edgePoints;
-    }
+    } //Put this method into the Room Class
 
     private (Vector2Int pointA, Vector2Int pointB) GetClosestPoints(HashSet<Vector2Int> edgesA, HashSet<Vector2Int> edgesB)
     {

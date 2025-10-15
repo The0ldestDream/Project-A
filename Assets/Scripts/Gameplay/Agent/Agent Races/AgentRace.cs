@@ -5,12 +5,15 @@ public abstract class AgentRace
 
     public string RaceName;
 
-    public List<AgentAction> RaceActions;
-    public List<AgentTrait> RaceTraits;
+    public List<AgentAction> RaceActions = new List<AgentAction>();
+    public List<AgentTrait> RaceTraits = new List<AgentTrait>();
 
     public AgentRace(string Name)
     {
         RaceName = Name;
+
+        AddActions();
+        AddTraits();
     }
 
     public abstract void AddActions();

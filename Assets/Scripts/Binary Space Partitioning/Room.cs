@@ -11,6 +11,13 @@ public class Room
     public List<Door> roomDoors = new List<Door>();
 
 
+    public void AddDoor(Door door)
+    {
+
+        roomDoors.Add(door);
+
+    }
+
     public Vector2 getCenter()
     {
         float centerX = (roomBounds.x + (roomBounds.width / 2f));
