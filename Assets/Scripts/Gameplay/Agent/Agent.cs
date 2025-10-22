@@ -71,6 +71,8 @@ public class Agent
     }
 
 
+
+
     //Setting Information
     public int GetAgentLevel(List<AgentClass> classes)
     {

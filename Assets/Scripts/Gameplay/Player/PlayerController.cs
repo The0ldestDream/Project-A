@@ -1,15 +1,21 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
     public Agent agent;
+    AgentController agentController;
     public GridSystem grid;
+
     private Vector2 moveDirection;
-    public void Init(Agent player, GridSystem ourGrid)
+    private Vector2 mosPos;
+    
+    public void Init(Agent player, GridSystem ourGrid, AgentController AC)
     {
         agent = player;
         grid = ourGrid;
+        agentController = AC;
     }
 
 
@@ -35,7 +41,7 @@ public class PlayerController : MonoBehaviour
         {
             DestinationCell.x += 1;
 
-            if (IsValidMove(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]))
+            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
             {
                 agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
             }
@@ -45,7 +51,7 @@ public class PlayerController : MonoBehaviour
         if (moveDirection.y > 0)
         {
             DestinationCell.y += 1;
-            if (IsValidMove(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]))
+            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
             {
                 agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
             }
@@ -54,7 +60,7 @@ public class PlayerController : MonoBehaviour
         if (moveDirection.x < 0)
         {
             DestinationCell.x -= 1;
-            if (IsValidMove(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]))
+            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
             {
                 agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
             }
@@ -63,7 +69,7 @@ public class PlayerController : MonoBehaviour
         if (moveDirection.y < 0)
         {
             DestinationCell.y -= 1;
-            if (IsValidMove(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]))
+            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
             {
                 agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
             }
@@ -76,11 +82,22 @@ public class PlayerController : MonoBehaviour
 
     public void ClickMove(InputAction.CallbackContext context)
     {
+        Vector2 clickLocation = Mouse.current.position.ReadValue();
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector2(clickLocation.x, clickLocation.y));
+
+        Debug.Log(worldPosition);
+        GridCell Destination = ConvertWorldToGridLocation(worldPosition);
+
+        agentController.ClickMoveTo(grid, Destination);
 
     }
 
 
-    private bool IsValidMove(GridSystem grid, GridCell DestinationCell)
+
+
+
+
+    private bool IsValidMove(GridCell DestinationCell)
     {
         if (DestinationCell.x < 0 || DestinationCell.x >= grid.width || DestinationCell.y < 0 || DestinationCell.y >= grid.height || !grid.gridArray[DestinationCell.x, DestinationCell.y].walkable)
         {
@@ -90,11 +107,25 @@ public class PlayerController : MonoBehaviour
         return DestinationCell.walkable;
     }
 
-    private GridCell ConvertWorldToGridLocation(GridSystem grid, Vector2 ClickLocation)
+    private GridCell ConvertWorldToGridLocation(Vector2 Location)
     {
-        GridCell newLocation = null;
 
-        return newLocation;
+        Vector2Int ClickLocation = Vector2Int.RoundToInt(Location);
+
+
+        if(IsValidMove(grid.gridArray[ClickLocation.x, ClickLocation.y]))
+        {
+            GridCell newLocation = grid.gridArray[ClickLocation.x, ClickLocation.y];
+            Debug.Log("This is grid cell at location: (" + newLocation.x + ", "+ newLocation.y + ")");
+            return newLocation;
+        }
+        else
+        {
+            Debug.Log("Grid cell outside room bounds");
+            return null;
+        }
+
+        
     }
 
 
