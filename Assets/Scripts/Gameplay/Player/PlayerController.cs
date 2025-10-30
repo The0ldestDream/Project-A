@@ -6,11 +6,13 @@ public class PlayerController : MonoBehaviour
 {
     public Agent agent;
     AgentController agentController;
-    public GridSystem grid;
-
+    public GridSystem grid; 
+    
     private Vector2 moveDirection;
     private Vector2 mosPos;
-    
+    private PlayerMode mode = PlayerMode.Exploration;
+
+
     public void Init(Agent player, GridSystem ourGrid, AgentController AC)
     {
         agent = player;
@@ -82,17 +84,32 @@ public class PlayerController : MonoBehaviour
 
     public void ClickMove(InputAction.CallbackContext context)
     {
-        Vector2 clickLocation = Mouse.current.position.ReadValue();
-        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector2(clickLocation.x, clickLocation.y));
 
-        Debug.Log(worldPosition);
-        GridCell Destination = ConvertWorldToGridLocation(worldPosition);
+        if (mode == PlayerMode.Combat)
+        {
+            Vector2 clickLocation = Mouse.current.position.ReadValue();
+            Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector2(clickLocation.x, clickLocation.y));
 
-        agentController.ClickMoveTo(grid, Destination);
+            Debug.Log(worldPosition);
+            GridCell Destination = ConvertWorldToGridLocation(worldPosition);
+
+            agentController.ClickMoveTo(grid, Destination);
+        }
 
     }
 
+    public void InteractDoor(InputAction.CallbackContext context)
+    {
+        Vector2 readInput = context.ReadValue<Vector2>();
 
+        //get forward dir
+        //check if door there
+        //check if door is locked
+        //if not open door
+
+
+
+    }
 
 
 
