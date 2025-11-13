@@ -18,7 +18,7 @@ public class LevelGenerator : MonoBehaviour
     public Room spawnRoom;
     public Room stairRoom;
 
-    public void GenerateLevel()
+    public void GenerateLevel(int gridSize, int treeDepth)
     {
         //Generate the Grid
         ourGrid.GenerateGrid(gridSize, gridSize);

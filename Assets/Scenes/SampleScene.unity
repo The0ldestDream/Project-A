@@ -531,10 +531,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2047137647}
-  - component: {fileID: 2047137648}
-  - component: {fileID: 2047137650}
-  - component: {fileID: 2047137651}
   - component: {fileID: 2047137653}
+  - component: {fileID: 2047137655}
+  - component: {fileID: 2047137654}
+  - component: {fileID: 2047137656}
   - component: {fileID: 2047137652}
   m_Layer: 0
   m_Name: Manager
@@ -558,50 +558,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2047137648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047137646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62cfdc9a33dc50341ab3d122363c8e59, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelGenerator: {fileID: 2047137650}
-  levelRenderer: {fileID: 2047137653}
-  roomManager: {fileID: 2047137651}
-  PlayerAgent: {fileID: 1563802960888283061, guid: c1420465539ac7147805291a6f89aa4d, type: 3}
-  camera: {fileID: 519420028}
---- !u!114 &2047137650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047137646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e16e72b3ad08b0646b317b6ac01b2995, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gridSize: 100
-  treeDepth: 2
---- !u!114 &2047137651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047137646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7c423b44fe74e784e80ebe97c82db6b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  levelGenerator: {fileID: 2047137650}
 --- !u!114 &2047137652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -609,12 +565,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2047137646}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55b44affb7b8299488160eda6ae1f3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  setupTest: {fileID: 2047137650}
+  setupTest: {fileID: 0}
   showGrid: 1
   showAllNodes: 1
   showLeaf: 0
@@ -635,9 +591,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23bf0f96bc1615c46b3ca9fa2d53d810, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lGen: {fileID: 2047137650}
+  lGen: {fileID: 2047137655}
   tilemap: {fileID: 515587672}
   tileData: {fileID: 11400000, guid: bca513990d3f8ed41a997d3fc10fca13, type: 2}
+--- !u!114 &2047137654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047137646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c233803228ecdc0499dfce272927e9d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelGenerator: {fileID: 2047137655}
+  levelRenderer: {fileID: 2047137653}
+  levelGenerated: 0
+  PlayerAgent: {fileID: 1563802960888283061, guid: c1420465539ac7147805291a6f89aa4d, type: 3}
+  spawnedPlayer: {fileID: 0}
+  camera: {fileID: 519420028}
+--- !u!114 &2047137655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047137646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16e72b3ad08b0646b317b6ac01b2995, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gridSize: 200
+  treeDepth: 2
+--- !u!114 &2047137656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047137646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbcf727814483cd459b47c8605b92d6c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 0
+  playerCharacter: {fileID: 0}
+  level: {fileID: 2047137654}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

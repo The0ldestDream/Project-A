@@ -5,12 +5,17 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public Agent agent;
-    AgentController agentController;
+    public AgentController agentController;
     public GridSystem grid; 
     
-    private Vector2 moveDirection;
+    private Vector2Int moveDirection;
     private Vector2 mosPos;
     private PlayerMode mode = PlayerMode.Exploration;
+
+
+    //Refactor later
+    public List<Door> doors = new List<Door>();
+
 
 
     public void Init(Agent player, GridSystem ourGrid, AgentController AC)
@@ -33,86 +38,74 @@ public class PlayerController : MonoBehaviour
 
     public void Move(InputAction.CallbackContext context)
     {
+        if (!context.performed) return;
+
+        if (mode != PlayerMode.Exploration) return;
+
+
         Vector2 readInput = context.ReadValue<Vector2>();
-        moveDirection = readInput;//Vector2Int.RoundToInt(readInput);
-        GridCell DestinationCell = agent.gridPos;
+        moveDirection = Vector2Int.RoundToInt(readInput);
+        
+        Vector2Int DestinationCell = new Vector2Int(agent.gridPos.x, agent.gridPos.y);
+        DestinationCell += moveDirection;
 
-        Debug.Log("The Player is at Grid Cell: (" + agent.gridPos.x + ", " + agent.gridPos.y + ")");
-        Debug.Log("The Player wants to move Destination Cell: (" + DestinationCell.x + ", " + DestinationCell.y + ")");
-        if (moveDirection.x > 0)
+        //Debug.Log("The Player is at Grid Cell: (" + agent.gridPos.x + ", " + agent.gridPos.y + ")");
+        //Debug.Log("The Player wants to move Destination Cell: (" + DestinationCell.x + ", " + DestinationCell.y + ")");
+
+        DestinationCell.x = Mathf.Clamp(DestinationCell.x, 0, grid.width - 1);
+        DestinationCell.y = Mathf.Clamp(DestinationCell.y, 0, grid.height - 1);
+
+        GridCell dCell = grid.gridArray[DestinationCell.x, DestinationCell.y];
+        
+        if (IsValidMove(dCell))
         {
-            DestinationCell.x += 1;
-
-            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
-            {
-                agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
-            }
-
+            agent.MoveTo(grid, dCell);
         }
 
-        if (moveDirection.y > 0)
-        {
-            DestinationCell.y += 1;
-            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
-            {
-                agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
-            }
-                
-        }
-        if (moveDirection.x < 0)
-        {
-            DestinationCell.x -= 1;
-            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
-            {
-                agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
-            }
-                
-        }
-        if (moveDirection.y < 0)
-        {
-            DestinationCell.y -= 1;
-            if (IsValidMove(grid.gridArray[DestinationCell.x, DestinationCell.y]))
-            {
-                agent.MoveTo(grid, grid.gridArray[DestinationCell.x, DestinationCell.y]);
-            }
-                
-        }
+        //Debug.Log("The Player has moved to Grid Cell: (" + agent.gridPos.x + ", " + agent.gridPos.y + ")");
 
-        Debug.Log("The Player is at Grid Cell: (" + agent.gridPos.x + ", " + agent.gridPos.y + ")");
-        Debug.Log("The Player wants to move Destination Cell: (" + DestinationCell.x + ", " + DestinationCell.y + ")");
+
+
     }
 
     public void ClickMove(InputAction.CallbackContext context)
     {
 
-        if (mode == PlayerMode.Combat)
-        {
-            Vector2 clickLocation = Mouse.current.position.ReadValue();
-            Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector2(clickLocation.x, clickLocation.y));
+        if (mode != PlayerMode.Combat) return;
 
-            Debug.Log(worldPosition);
-            GridCell Destination = ConvertWorldToGridLocation(worldPosition);
+        Vector2 clickLocation = Mouse.current.position.ReadValue();
+        Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector2(clickLocation.x, clickLocation.y));
 
-            agentController.ClickMoveTo(grid, Destination);
-        }
+        Debug.Log(worldPosition);
+        GridCell Destination = ConvertWorldToGridLocation(worldPosition);
 
+        agentController.ClickMoveTo(grid, Destination);
     }
 
     public void InteractDoor(InputAction.CallbackContext context)
     {
-        Vector2 readInput = context.ReadValue<Vector2>();
-
-        //get forward dir
-        //check if door there
-        //check if door is locked
-        //if not open door
+        if (!context.started) return;
 
 
+        foreach (GridCell neighbour in grid.gridArray[agent.gridPos.x, agent.gridPos.y].neighbours)
+        {
+            if (neighbour.TypeOfTile == TileType.doorTile)
+            {
+                
+                Door interactedDoor = doors.Find(x => x.doorLocation == neighbour);
+
+                GameManager.RaisePlayerInteracted(interactedDoor);
+            }
+        }
 
     }
 
 
-
+    public void ChangeMode(PlayerMode newMode)
+    {
+        mode = newMode;
+        Debug.Log("Player's mode has changed to " + mode);
+    }
 
     private bool IsValidMove(GridCell DestinationCell)
     {

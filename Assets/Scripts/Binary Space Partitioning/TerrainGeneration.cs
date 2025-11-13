@@ -284,6 +284,7 @@ public class TerrainGeneration
             for (int Y = 0; Y < allCorridors[X].cTiles.Count; Y++)
             {
                 gridCells[allCorridors[X].cTiles[Y].x, allCorridors[X].cTiles[Y].y].TypeOfTile = TileType.corridorTile;
+                gridCells[allCorridors[X].cTiles[Y].x, allCorridors[X].cTiles[Y].y].walkable = true;
                 corridorCells.Add(gridCells[allCorridors[X].cTiles[Y].x, allCorridors[X].cTiles[Y].y]);
             }
         }
@@ -345,6 +346,9 @@ public class TerrainGeneration
                     r.roomDoors.Add(door);
                 }
             }
+
+            r.SetDoorsOwner();
+            r.roomState = RoomState.Uncleared;
         }
 
 

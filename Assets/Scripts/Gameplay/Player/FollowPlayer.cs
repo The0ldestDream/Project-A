@@ -18,6 +18,5 @@ public class FollowPlayer : MonoBehaviour
         transform.position = currentPos;
 
 
-
     }
 }

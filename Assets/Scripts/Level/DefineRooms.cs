@@ -15,6 +15,7 @@ public class DefineRooms
             randomRoom = tGen.allRooms[RanRoom];
         }
 
+        randomRoom.roomState = RoomState.Cleared;
         return randomRoom;
 
     }

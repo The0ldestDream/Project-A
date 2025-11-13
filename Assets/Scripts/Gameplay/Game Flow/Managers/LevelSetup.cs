@@ -1,41 +1,45 @@
 using UnityEngine;
 
-public class EventManager : MonoBehaviour
+public class LevelSetup : MonoBehaviour
 {
-
     public LevelGenerator levelGenerator;
     public LevelRenderer levelRenderer;
 
-    public RoomManager roomManager;
-
-    private bool levelGenerated = false;
+    public bool levelGenerated = false;
 
     public GameObject PlayerAgent;
-    public GameObject camera; 
+    public GameObject spawnedPlayer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public GameObject camera;
+
+
+    //Events
+
+
+
+
+
+    void Init()
     {
-        roomManager.init(levelGenerator);
+
     }
 
     // Update is called once per frame
     void Update()
     {
         GenerateEntireLevel(levelGenerated);
-        
+
     }
-
-
 
     private void GenerateEntireLevel(bool levelGen)
     {
         if (levelGen == false)
         {
-            levelGenerator.GenerateLevel();
+            levelGenerator.GenerateLevel(200,4);
             levelRenderer.RenderLevel();
-            levelGenerated = true;
+            
             SpawnPlayer(levelGenerator.spawnRoom);
+            levelGenerated = true;
         }
     }
 
@@ -50,9 +54,12 @@ public class EventManager : MonoBehaviour
         GameObject player = Instantiate(PlayerAgent, randomPos, Quaternion.identity);
         PlayerController PC = player.GetComponent<PlayerController>();
         AgentController AC = player.GetComponent<AgentController>();
-        Agent playerAgent = new Agent(levelGenerator.ourGrid, levelGenerator.ourGrid.gridArray[x, y], new Human("Human"), new Fighter("Fighter", 1, 1));         
+        Agent playerAgent = new Agent(levelGenerator.ourGrid, levelGenerator.ourGrid.gridArray[x, y], new Human("Human"), new Fighter("Fighter", 1, 1));
         AC.Init(playerAgent);
         PC.Init(playerAgent, levelGenerator.ourGrid, AC);
+
+
+        spawnedPlayer = player;
 
         FollowPlayer followPlayer = camera.GetComponent<FollowPlayer>();
         followPlayer.Init(player.transform);
