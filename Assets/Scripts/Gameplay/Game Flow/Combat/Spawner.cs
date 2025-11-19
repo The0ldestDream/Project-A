@@ -10,6 +10,9 @@ public class Spawner : MonoBehaviour
 
     List<GameObject> EnemyAgents = new List<GameObject>();
 
+    List<AgentRace> agentRaces = new List<AgentRace> {new Human()};
+    List<AgentClass> agentClasses = new List<AgentClass> { new Fighter(1, 1) };
+
     // Update is called once per frame
     void Update()
     {
@@ -27,7 +30,7 @@ public class Spawner : MonoBehaviour
         //Workflow for spawning an agent
         GameObject agent = Instantiate(EnemyAgent, randomPos, Quaternion.identity);
         AgentController AC = agent.GetComponent<AgentController>();
-        Agent EAgent = new Agent(LS.levelGenerator.ourGrid, LS.levelGenerator.ourGrid.gridArray[x, y], new Human("Human"), new Fighter("Fighter", 1, 1));
+        Agent EAgent = new Agent(LS.levelGenerator.ourGrid, LS.levelGenerator.ourGrid.gridArray[x, y], new Human(), new Fighter(1, 1), AgentAlignment.Enemy);
         AC.Init(EAgent);
 
         EnemyAgents.Add(agent);

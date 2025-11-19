@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Punch : AgentAction
 {
-    public Punch(string name, int startingLevel, int maxLevel, float expLevelUp) : base(name, startingLevel, maxLevel, expLevelUp)
+    public Punch(int startingLevel, float expLevelUp) : base("Punch", startingLevel, 99, expLevelUp)
     {
 
     }

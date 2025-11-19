@@ -15,17 +15,16 @@ public class Agent
 
     public List<AgentAction> allActions = new List<AgentAction>();
     public List<AgentTrait> allTraits = new List<AgentTrait>();
+    public StatSheet statSheet;
 
     AgentAlignment alignment;
     //List of Status Effects
 
 
-    public Agent(GridSystem grid, GridCell spawnPoint, AgentRace race, AgentClass agentClass) // Add these AgentAlignment agentAlignment,
+    public Agent(GridSystem grid, GridCell spawnPoint, AgentRace race, AgentClass agentClass, AgentAlignment agentAlignment) 
     {
         gridPos = spawnPoint;
         grid.gridArray[spawnPoint.x, spawnPoint.y].EntityOnTile = EntityType.Agent;
-
-
 
         //Agent Information
         agentRace = race;
@@ -40,6 +39,10 @@ public class Agent
         {
             allTraits.Add(trait);
         }
+
+        alignment = agentAlignment;
+
+        statSheet = new StatSheet(10,10,10,10);
     }
 
 

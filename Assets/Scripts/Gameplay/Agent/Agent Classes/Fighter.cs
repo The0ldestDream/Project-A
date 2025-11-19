@@ -3,10 +3,10 @@ using UnityEngine;
 public class Fighter : AgentClass
 {
     
-    public Fighter(string name, int startingLevel, float expLevelUp) : base(name, startingLevel, expLevelUp)
+    public Fighter(int startingLevel, float expLevelUp) : base("Fighter", startingLevel, expLevelUp)
     {
         //Add starting actions
-        ClassActions.Add(new Stab("Stab", 1, 99, 0));
+        ClassActions.Add(new Stab(1, 0));
 
 
     }

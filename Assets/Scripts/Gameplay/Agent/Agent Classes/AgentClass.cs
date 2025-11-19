@@ -13,7 +13,7 @@ public abstract class AgentClass
     public List<AgentAction> ClassActions = new List<AgentAction>();
 
 
-    public AgentClass(string name, int startingLevel, float expLevelUp)
+    protected AgentClass(string name, int startingLevel, float expLevelUp)
     {
         ClassName = name;
         ExperienceNeededToLevelUp = expLevelUp;

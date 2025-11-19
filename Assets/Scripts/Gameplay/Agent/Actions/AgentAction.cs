@@ -9,7 +9,7 @@ public abstract class AgentAction
     public float ActionExperience;
     public float ExperienceNeededToLevelUp;
 
-    public AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
+    protected AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
     {
         ActionName = name;
         ExperienceNeededToLevelUp = expLevelUp;

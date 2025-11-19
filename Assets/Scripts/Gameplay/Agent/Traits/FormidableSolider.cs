@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class FormidableSolider : AgentTrait
 {
-    public FormidableSolider(string name, int startingLevel, float expLevelUp) : base(name, startingLevel, expLevelUp)
+    public FormidableSolider(int startingLevel, float expLevelUp) : base("Formidable Solider", startingLevel, expLevelUp)
     {
 
     }

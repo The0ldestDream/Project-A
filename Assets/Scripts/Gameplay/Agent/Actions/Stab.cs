@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Stab : AgentAction
 {
-    public Stab(string name, int startingLevel, int maxLevel, float expLevelUp) : base(name, startingLevel, maxLevel, expLevelUp)
+    public Stab(int startingLevel, float expLevelUp) : base("Stab", startingLevel, 99, expLevelUp)
     {
 
     }

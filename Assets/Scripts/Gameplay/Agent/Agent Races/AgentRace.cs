@@ -8,12 +8,9 @@ public abstract class AgentRace
     public List<AgentAction> RaceActions = new List<AgentAction>();
     public List<AgentTrait> RaceTraits = new List<AgentTrait>();
 
-    public AgentRace(string Name)
+    protected AgentRace(string Name)
     {
         RaceName = Name;
-
-        AddActions();
-        AddTraits();
     }
 
     public abstract void AddActions();
