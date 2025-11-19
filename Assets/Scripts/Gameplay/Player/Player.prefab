@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4891390c9a7cad24bacc2778707d1baa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentController: {fileID: 0}
 --- !u!114 &-3695780964041548678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,5 +231,5 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 1
+  m_MaskInteraction: 0
   m_SpriteSortPoint: 0

@@ -6,7 +6,7 @@ public class Door
     //Class Information
     public GridCell doorLocation;
     public bool doorOpen;
-    public bool doorLocked;
+    public bool doorLocked = false;
 
     public Room DoorOwner;
 
@@ -27,7 +27,7 @@ public class Door
     {
         if (door == this)
         {
-            if (doorOpen == false)
+            if (doorOpen == false && doorLocked != true)
             {
                 doorOpen = true;
                 doorLocation.walkable = true;
