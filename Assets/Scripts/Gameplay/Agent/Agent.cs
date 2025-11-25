@@ -17,7 +17,10 @@ public class Agent
     public List<AgentTrait> allTraits = new List<AgentTrait>();
     public StatSheet statSheet;
 
+    public List<AgentResource> allResources = new List<AgentResource>();
+
     AgentAlignment alignment;
+
     //List of Status Effects
 
 
@@ -41,8 +44,8 @@ public class Agent
         }
 
         alignment = agentAlignment;
-
         statSheet = new StatSheet(10,10,10,10);
+        allResources.Add(new Health());
     }
 
 
@@ -60,21 +63,6 @@ public class Agent
 
         //Debug.Log("The Player is at Grid Cell: (" + gridPos.x + ", " + gridPos.y + ")");
     }
-
-    public void CombatMoveTo(GridSystem grid, GridCell Destination)
-    {
-        List<GridCell> path = pathfinding.Pathfinding(gridPos, Destination, grid);
-
-        foreach (GridCell cell in path)
-        {
-            MoveTo(grid, cell);
-        }
-
-
-    }
-
-
-
 
     //Setting Information
     public int GetAgentLevel(List<AgentClass> classes)
