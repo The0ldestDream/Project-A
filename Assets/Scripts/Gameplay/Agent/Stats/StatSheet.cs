@@ -3,7 +3,7 @@ using System.Collections.Generic;
 public class StatSheet
 {
 
-    List<Stat> AgentStatSheet = new List<Stat>();
+    public List<Stat> AgentStatSheet = new List<Stat>();
     int minValue = 7;
 
     public StatSheet(int StrengthValue, int ConsititutionValue, int IntelligenceValue, int DexterityValue)

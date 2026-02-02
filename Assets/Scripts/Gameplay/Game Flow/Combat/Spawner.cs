@@ -8,10 +8,10 @@ public class Spawner : MonoBehaviour
     public GameObject EnemyAgent;
 
 
-    List<GameObject> EnemyAgents = new List<GameObject>();
+    public List<GameObject> EnemyAgents = new List<GameObject>();
 
-    List<AgentRace> agentRaces = new List<AgentRace> {new Human()};
-    List<AgentClass> agentClasses = new List<AgentClass> { new Fighter(1, 1) };
+    private List<AgentRace> agentRaces = new List<AgentRace> {new Human()};
+    private List<AgentClass> agentClasses = new List<AgentClass> { new Fighter(1, 1) };
 
     // Update is called once per frame
     void Update()

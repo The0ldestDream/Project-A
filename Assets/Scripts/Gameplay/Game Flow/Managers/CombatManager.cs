@@ -2,12 +2,19 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class CombatManager : MonoBehaviour
 {
     public Spawner AgentSpawner;
     public GameManager gameManager;
 
+    private bool combatFinished;
+    private List<AgentController> AgentsInCombat = new List<AgentController>();
+
+    Queue<AgentController> TurnOrder = new Queue<AgentController>();
+
+    public AgentController currentAgent;
 
     void Start()
     {
@@ -23,31 +30,93 @@ public class CombatManager : MonoBehaviour
     {
         //Spawn Combat Grid over room
         //Spawn Enemy Agents
-
-        Debug.Log("Spawned Enemy Units: ");
         AgentSpawner.SpawnAgent(room);
-
-
-
-        Combat();
+        // Get all agents involved in combat
+        AgentsInCombat = GetAgentsInCombat(room);
+        Debug.Log("Spawned Enemy Units: ");
+        foreach (AgentController agent in AgentsInCombat)
+        {
+            Debug.Log(agent);
+        }
+        TurnOrder = DetermineTurnOrder(AgentsInCombat);
+        currentAgent = TurnOrder.Peek();
+        StartNextTurn(currentAgent);
     }
 
 
 
-    public void Combat()
+    public void StartNextTurn(AgentController nextAgent)
     {
-        //
-        Debug.Log("Combat Has Started");
-        //CombatSetup();
-
+        
+        //Tell them to do their turn
+        currentAgent.StartTurn();
 
     }
 
-    IEnumerator AgentInput()
+    public void HandleTurnEnded(AgentController agent)
+    {
+        if (currentAgent != agent)
+        {
+            
+        }
+        TurnOrder.Enqueue(TurnOrder.Dequeue()); // Takes the item that has been removed and places it at the end like a rotation. Might need a way to track the number of turns.
+        //Want to set the new current agent
+        currentAgent = TurnOrder.Peek();
+        StartNextTurn(currentAgent);
+        //Handles
+        //Any end of turn effects, check if agent is dead, end of combat conditions
+    }
+
+
+
+    public Queue<AgentController> DetermineTurnOrder(List<AgentController> AgentsInCombat)
+    {
+        Queue<AgentController> AgentTurnOrder = new Queue<AgentController>();
+
+        foreach (AgentController agent in AgentsInCombat)
+        {
+            AgentTurnOrder.Enqueue(agent);
+            
+        }
+
+        AgentTurnOrder.Enqueue(AgentTurnOrder.Dequeue()); // getting the player to the front
+
+        return AgentTurnOrder;
+    }
+
+    public List<AgentController> GetAgentsInCombat(Room room) //Probably will need to change to check cells instead
+    {
+        List<AgentController> AgentsInSpace = new List<AgentController>();
+
+        foreach (GameObject AgentObject in AgentSpawner.EnemyAgents)
+        {
+            
+            AgentController ac = AgentObject.GetComponent<AgentController>();
+            SubscribeAgent(ac);
+
+
+            AgentsInSpace.Add(ac);
+        }
+
+        AgentsInSpace.Add(gameManager.playerCharacter.agentController);
+        SubscribeAgent(gameManager.playerCharacter.agentController);
+        return AgentsInSpace;
+    }
+
+
+    private void EndCombat()
     {
 
-        yield return null;
     }
+
+
+    private void SubscribeAgent(AgentController ac)
+    {
+        ac.OnTurnEnded -= HandleTurnEnded;
+        ac.OnTurnEnded += HandleTurnEnded;
+    }
+
+
 
     //Events 
     public static event Action<Room> OnCombatStarted;

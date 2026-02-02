@@ -82,10 +82,9 @@ public class PlayerController : MonoBehaviour
         agentController.ClickMoveTo(grid, Destination);
     }
 
-    public void InteractDoor(InputAction.CallbackContext context)
+    public void InteractDoor(InputAction.CallbackContext context) //Change this later into a interact with anything
     {
         if (!context.started) return;
-
 
         foreach (GridCell neighbour in grid.gridArray[agent.gridPos.x, agent.gridPos.y].neighbours)
         {
@@ -100,6 +99,27 @@ public class PlayerController : MonoBehaviour
 
     }
 
+
+    public void EndTurn(InputAction.CallbackContext context)
+    {
+        if (!context.started) return;
+
+        if (mode == PlayerMode.Combat)
+        {
+            if (agentController.state == CombatState.TurnInProgress)
+            {
+                agentController.EndTurn();
+            }
+            else
+            {
+                Debug.Log("Can't end turn because its another's agent turn");
+            }
+        }
+        else
+        {
+            Debug.Log("Not in Combat");
+        }
+    }
 
     public void ChangeMode(PlayerMode newMode)
     {

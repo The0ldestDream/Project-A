@@ -19,7 +19,9 @@ public class Agent
 
     public List<AgentResource> allResources = new List<AgentResource>();
 
-    AgentAlignment alignment;
+    public bool isAlive;
+
+    public AgentAlignment alignment;
 
     //List of Status Effects
 
@@ -43,10 +45,15 @@ public class Agent
             allTraits.Add(trait);
         }
 
+
         alignment = agentAlignment;
         statSheet = new StatSheet(10,10,10,10);
         allResources.Add(new Health());
+        allResources.Add(new ActionPoint());
+        isAlive = true;
     }
+
+
 
 
     //Movement
@@ -77,6 +84,10 @@ public class Agent
         return level;
     }
 
+    //public T GetResource<T>() where T : AgentResource
+    //{
+    //    return resource
+    //}
     private void SetEntityOnTile(GridSystem grid, bool OnTile)
     {
         if (OnTile)

@@ -5,8 +5,6 @@ public abstract class AgentResource
 
     public string ResourceName;
 
-    
-
     public int ResourceLevel;
 
     public int currentAmount;

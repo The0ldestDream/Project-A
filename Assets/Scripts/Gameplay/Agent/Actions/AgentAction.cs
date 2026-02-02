@@ -6,8 +6,12 @@ public abstract class AgentAction
     
     public int ActionLevel;
     public int maxActionLevel;
+
     public float ActionExperience;
     public float ExperienceNeededToLevelUp;
+
+    public AgentResource ResourceToUse;
+    public int ResourceCost;
 
     protected AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
     {
@@ -16,9 +20,12 @@ public abstract class AgentAction
         ActionLevel = startingLevel;
         maxActionLevel = maxLevel;
 
+        //Temporary
+        ResourceToUse = new ActionPoint();
+        ResourceCost = 1;
     }
 
-    public abstract void Action();
+    public abstract void Action(Agent ActionOwner);
 
     public void GainExperience(float experienceGained)
     {
