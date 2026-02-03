@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public LevelSetup level;
     public CombatManager combatManager;
-
+    public UIManager uiManager;
 
     private void OnEnable()
     {
@@ -37,8 +37,6 @@ public class GameManager : MonoBehaviour
             playerCharacter = level.spawnedPlayer.GetComponent<PlayerController>();
 
             playerCharacter.doors = level.levelGenerator.tGen.allDoors;
-
-            Debug.Log("");
         }
     }
 

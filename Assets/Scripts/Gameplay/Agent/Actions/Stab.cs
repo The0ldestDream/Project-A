@@ -10,7 +10,7 @@ public class Stab : AgentAction
     public override void Action(Agent ActionOwner)
     {
         Debug.Log("Stab has been Used");
-        //ActionOwner.allResources
+        UseResource(ActionOwner, ResourceToUse, ResourceCost);
     }
 
     public override void ActionUniqueLevelUp()

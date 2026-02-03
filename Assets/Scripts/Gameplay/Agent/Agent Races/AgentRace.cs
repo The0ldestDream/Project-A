@@ -27,4 +27,16 @@ public abstract class AgentRace
         RaceTraits.Add(newTrait);
     }
 
+    public void GiveActionsandTraits(Agent OwnerAgent)
+    {
+        foreach (AgentAction action in RaceActions)
+        {
+            OwnerAgent.allActions.Add(action);
+        }
+
+        foreach (AgentTrait trait in RaceTraits)
+        {
+            OwnerAgent.allTraits.Add(trait);
+        }
+    }
 }

@@ -34,16 +34,10 @@ public class Agent
         //Agent Information
         agentRace = race;
         agentClasses.Add(agentClass);
-        
-        foreach (AgentAction action in agentClass.ClassActions)
-        {
-            allActions.Add(action);
-        }
 
-        foreach (AgentTrait trait in agentRace.RaceTraits)
-        {
-            allTraits.Add(trait);
-        }
+        agentClass.GiveActions(this);
+
+        agentRace.GiveActionsandTraits(this);
 
 
         alignment = agentAlignment;
@@ -84,10 +78,6 @@ public class Agent
         return level;
     }
 
-    //public T GetResource<T>() where T : AgentResource
-    //{
-    //    return resource
-    //}
     private void SetEntityOnTile(GridSystem grid, bool OnTile)
     {
         if (OnTile)

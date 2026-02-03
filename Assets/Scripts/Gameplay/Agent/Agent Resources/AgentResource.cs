@@ -10,8 +10,6 @@ public abstract class AgentResource
     public int currentAmount;
     public int maxAmount;
 
-
-
     public AgentResource(string Name, int Level, int _maxAmount)
     {
         ResourceName = Name;

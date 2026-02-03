@@ -49,4 +49,12 @@ public abstract class AgentClass
 
     }
 
+
+    public void GiveActions(Agent OwnerAgent)
+    {
+        foreach (AgentAction action in ClassActions)
+        {
+            OwnerAgent.allActions.Add(action);
+        }
+    }
 }

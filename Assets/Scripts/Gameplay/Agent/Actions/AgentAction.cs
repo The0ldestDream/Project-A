@@ -21,6 +21,7 @@ public abstract class AgentAction
         maxActionLevel = maxLevel;
 
         //Temporary
+        //Maybe change to a dict so it looks like -> ResourcesToUse("ActionPoint" : 1, "SpellSlot" : 2)
         ResourceToUse = new ActionPoint();
         ResourceCost = 1;
     }
@@ -47,5 +48,28 @@ public abstract class AgentAction
     }
 
     public abstract void ActionUniqueLevelUp();
+
+    public void UseResource(Agent ActionOwner, AgentResource resource, int actioncost)
+    {
+        AgentResource usedresource = ActionOwner.allResources.Find(x => x == resource);
+
+        if (usedresource.currentAmount > 0)
+        {
+            int newAmount = usedresource.currentAmount - actioncost;
+            if (newAmount > 0)
+            {
+                usedresource.currentAmount = newAmount;
+            }
+            else
+            {
+                Debug.Log("Agent does not have enough resource");
+            }
+        }
+        else
+        {
+            Debug.Log("Agent does not have enough resource");
+        }
+
+    }
 
 }
