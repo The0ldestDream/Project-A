@@ -51,7 +51,22 @@ public abstract class AgentAction
 
     public void UseResource(Agent ActionOwner, AgentResource resource, int actioncost)
     {
-        AgentResource usedresource = ActionOwner.allResources.Find(x => x == resource);
+        AgentResource usedresource = null;
+
+        foreach (AgentResource usableResource in ActionOwner.allResources)
+        {
+            if (resource.ResourceName == usableResource.ResourceName)
+            {
+                usedresource = usableResource;
+            }
+        }
+        if (usedresource == null)
+        {
+            Debug.Log("No resource found");
+        }
+
+
+
 
         if (usedresource.currentAmount > 0)
         {

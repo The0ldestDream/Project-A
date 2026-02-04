@@ -10,6 +10,7 @@ public class Punch : AgentAction
     public override void Action(Agent ActionOwner)
     {
         Debug.Log("Punch has been Used");
+        UseResource(ActionOwner, ResourceToUse, ResourceCost);
     }
 
     public override void ActionUniqueLevelUp()

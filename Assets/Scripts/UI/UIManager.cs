@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     public AgentController agenttouse;
 
     bool buttonscreated = false;
-    private Vector2 buttonOffset = new Vector2(0, -50);
+    private Vector2 buttonOffset = new Vector2(0, -100);
     public List<Button> buttons = new List<Button>();
 
     private void FixedUpdate()
