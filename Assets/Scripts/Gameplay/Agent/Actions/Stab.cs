@@ -11,6 +11,11 @@ public class Stab : AgentAction
     {
         Debug.Log("Stab has been Used");
         UseResource(ActionOwner, ResourceToUse, ResourceCost);
+
+
+        //Temp 
+
+
     }
 
     public override void ActionUniqueLevelUp()

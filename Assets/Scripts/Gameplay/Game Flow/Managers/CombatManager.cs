@@ -60,15 +60,19 @@ public class CombatManager : MonoBehaviour
             
         }
         TurnOrder.Enqueue(TurnOrder.Dequeue()); // Takes the item that has been removed and places it at the end like a rotation. Might need a way to track the number of turns.
-        EndOfTurnEvents(currentAgent);
-
         
+        EndOfTurnEvents(currentAgent);
 
         if (CheckIfCombatHasEnded())
         {
             //We need to declare that it has ended and clear everything
             //Transition game states back to exploration
-
+            
+            foreach (AgentController ac in TurnOrder)
+            {
+                UnsubscribeAgent(ac);
+            }
+            RaiseOnCombatEnded();
         }
         else
         {
@@ -157,20 +161,24 @@ public class CombatManager : MonoBehaviour
         ac.OnTurnEnded -= HandleTurnEnded;
         ac.OnTurnEnded += HandleTurnEnded;
     }
-
+    private void UnsubscribeAgent(AgentController ac)
+    {
+        ac.OnTurnEnded -= HandleTurnEnded;
+    }
 
 
     //Events 
-    public static event Action<Room> OnCombatStarted;
-    public static event Action OnCombatEnded;
-    public static void RaiseOnCombatStarted(Room room)
+    public event Action<Room> OnCombatStarted;
+    public event Action OnCombatEnded;
+    public void RaiseOnCombatStarted(Room room)
     {
         OnCombatStarted?.Invoke(room);
     }
-    public static void RaiseOnCombatEnded()
+    public void RaiseOnCombatEnded()
     {
         OnCombatEnded?.Invoke();
     }
+
 
     public void OnEnable()
     {

@@ -15,12 +15,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         OnPlayerInteracted += HandleDoorInteraction;
+        combatManager.OnCombatEnded += HandleTransitionToExploration;
     }
 
     private void OnDisable()
     {
         OnPlayerInteracted -= HandleDoorInteraction;
-
+        combatManager.OnCombatEnded -= HandleTransitionToExploration;
     }
 
 
@@ -68,8 +69,17 @@ public class GameManager : MonoBehaviour
             currentDoor.doorOpen = false;
         }
 
-        CombatManager.RaiseOnCombatStarted(door.DoorOwner);
+        combatManager.RaiseOnCombatStarted(door.DoorOwner);
     }
+
+    public void HandleTransitionToExploration()
+    {
+        ChangeMode(PlayerMode.Combat, playerCharacter);
+
+    }
+
+
+
 
     private IEnumerator TriggerTheStateChange(Door door)
     {
@@ -89,6 +99,12 @@ public class GameManager : MonoBehaviour
 
     //Events
     public static event Action<Door> OnPlayerInteracted;
+    public static event Action OnCombatEnded;
+
+    public static void RaiseCombatEnded()
+    {
+        OnCombatEnded?.Invoke();
+    }
 
     public static void RaisePlayerInteracted(Door door)
     {

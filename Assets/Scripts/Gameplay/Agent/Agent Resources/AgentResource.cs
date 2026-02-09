@@ -15,6 +15,7 @@ public abstract class AgentResource
         ResourceName = Name;
         ResourceLevel = Level;
         maxAmount = _maxAmount;
+        currentAmount = maxAmount;
     }
 
     public abstract void OnLevelUp(int ClassLevel);

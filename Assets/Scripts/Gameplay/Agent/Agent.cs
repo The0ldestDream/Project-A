@@ -30,6 +30,8 @@ public class Agent
     {
         gridPos = spawnPoint;
         grid.gridArray[spawnPoint.x, spawnPoint.y].EntityOnTile = EntityType.Agent;
+        grid.gridArray[spawnPoint.x, spawnPoint.y].AgentOnTile = this;
+
 
         //Agent Information
         agentRace = race;
@@ -83,10 +85,12 @@ public class Agent
         if (OnTile)
         {
             grid.gridArray[gridPos.x, gridPos.y].EntityOnTile = EntityType.Agent;
+            grid.gridArray[gridPos.x, gridPos.y].AgentOnTile = this;
         }
         else if (!OnTile)
         {
             grid.gridArray[gridPos.x, gridPos.y].EntityOnTile = EntityType.None;
+            grid.gridArray[gridPos.x, gridPos.y].AgentOnTile = null;
         }
 
     }

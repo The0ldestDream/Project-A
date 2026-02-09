@@ -13,6 +13,13 @@ public abstract class AgentAction
     public AgentResource ResourceToUse;
     public int ResourceCost;
 
+
+    //Targeting Variables
+    TargetCategory target;
+    int Range; //Anything for melee would be 1
+    int TargetCount;
+
+
     protected AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
     {
         ActionName = name;
@@ -66,12 +73,10 @@ public abstract class AgentAction
         }
 
 
-
-
         if (usedresource.currentAmount > 0)
         {
             int newAmount = usedresource.currentAmount - actioncost;
-            if (newAmount > 0)
+            if (newAmount >= 0)
             {
                 usedresource.currentAmount = newAmount;
             }
