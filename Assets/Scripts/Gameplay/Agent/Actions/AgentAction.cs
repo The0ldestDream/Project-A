@@ -15,9 +15,9 @@ public abstract class AgentAction
 
 
     //Targeting Variables
-    TargetCategory target;
-    int Range; //Anything for melee would be 1
-    int TargetCount;
+    public TargetCategory target;
+    public int Range; //Anything for melee would be 1
+    public int TargetCount;
 
 
     protected AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
