@@ -9,6 +9,8 @@ public class CombatManager : MonoBehaviour
     public Spawner AgentSpawner;
     public GameManager gameManager;
 
+    public TargetingSystem targeting;
+
     private bool combatFinished;
     private List<AgentController> AgentsInCombat = new List<AgentController>();
 
@@ -84,7 +86,6 @@ public class CombatManager : MonoBehaviour
     }
 
 
-
     public void EndOfTurnEvents(AgentController agent)
     {
         //Handles any end of turn effects, check if agent is dead, end of combat conditions
@@ -156,6 +157,18 @@ public class CombatManager : MonoBehaviour
         return AgentsInSpace;
     }
 
+
+    public void StartTargeting(Agent ActionOwner, AgentAction action)
+    {
+        List<Target> targets = targeting.ReturnValidTargets(gameManager.level.levelGenerator.ourGrid, ActionOwner, action);
+
+        OnTargetingStarted?.Invoke(targets);
+    }
+
+
+
+
+
     private void SubscribeAgent(AgentController ac)
     {
         ac.OnTurnEnded -= HandleTurnEnded;
@@ -170,6 +183,9 @@ public class CombatManager : MonoBehaviour
     //Events 
     public event Action<Room> OnCombatStarted;
     public event Action OnCombatEnded;
+    public event Action<List<Target>> OnTargetingStarted;
+
+
     public void RaiseOnCombatStarted(Room room)
     {
         OnCombatStarted?.Invoke(room);

@@ -11,6 +11,7 @@ public class AgentController : MonoBehaviour
     public CombatState state;
 
 
+
     public void Init(Agent agent)
     {
         myAgent = agent;

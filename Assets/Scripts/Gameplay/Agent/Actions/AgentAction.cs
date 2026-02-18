@@ -33,7 +33,7 @@ public abstract class AgentAction
         ResourceCost = 1;
     }
 
-    public abstract void Action(Agent ActionOwner);
+    public abstract void Action(Agent ActionOwner, Target ActionTarget);
 
     public void GainExperience(float experienceGained)
     {

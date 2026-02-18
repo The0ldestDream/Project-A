@@ -22,15 +22,11 @@ public class TargetingSystem
            
                 foreach (Target target in TargetsWithinRange)
                 {
-
                     if (target.agent != null)
                     {
                         validTargets.Add(target);
                     }
-
-           
                 }
-
                 break;
 
             case TargetCategory.Tile:
@@ -43,8 +39,6 @@ public class TargetingSystem
         }
         return validTargets;
     }
-
-
 
     public List<Target> FindTargetsWithinRange(GridSystem grid, Agent ActionOwner, int ActionRange)
     {
@@ -65,6 +59,4 @@ public class TargetingSystem
         }
         return targets;
     }
-
-
 }
