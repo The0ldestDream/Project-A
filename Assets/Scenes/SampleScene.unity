@@ -965,7 +965,7 @@ MonoBehaviour:
   playerCharacter: {fileID: 0}
   level: {fileID: 2047137654}
   combatManager: {fileID: 0}
-  uiManager: {fileID: 0}
+  uiManager: {fileID: 2047137657}
 --- !u!114 &2047137657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,10 +979,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   gameManager: {fileID: 2047137656}
+  combatUI: {fileID: 0}
+  UImode: 0
   buttonPrefab: {fileID: 1094081758321851451, guid: 5a40baff3314572498d9c2b13b49ddbe, type: 3}
   panel: {fileID: 545446867}
   agenttouse: {fileID: 0}
-  buttons: []
+  TargetButtons: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

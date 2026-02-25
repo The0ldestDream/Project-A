@@ -7,7 +7,7 @@ public class AgentController : MonoBehaviour
 {
 
     public Agent myAgent;
-
+    public AStarPathfinding pathfinding;
     public CombatState state;
 
 
@@ -15,6 +15,7 @@ public class AgentController : MonoBehaviour
     public void Init(Agent agent)
     {
         myAgent = agent;
+        myAgent.controller = this;
     }
 
     void Update()
@@ -49,21 +50,12 @@ public class AgentController : MonoBehaviour
 
     }
 
-
-    public void UseAction(AgentAction action)
-    {
-
-    }
-
-
-
-
     //Movement
-    public void ClickMoveTo(GridSystem grid, GridCell Destination)
+    public void MoveTo(GridCell Destination)
     {
-        List<GridCell> path = myAgent.pathfinding.Pathfinding(myAgent.gridPos, Destination, grid);
+        List<GridCell> path = pathfinding.Pathfinding(myAgent.gridPos, Destination);
 
-        StartCoroutine(MoveAlongPath(grid, path));
+        StartCoroutine(MoveAlongPath(pathfinding.grid, path));
 
 
     }
@@ -78,8 +70,6 @@ public class AgentController : MonoBehaviour
         }
 
     }
-
-
 
 
     //Visual Stuff

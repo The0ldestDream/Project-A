@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void ClickMove(InputAction.CallbackContext context)
+    public void Click(InputAction.CallbackContext context)
     {
 
         if (mode != PlayerMode.Combat) return;
@@ -76,10 +76,9 @@ public class PlayerController : MonoBehaviour
         Vector2 clickLocation = Mouse.current.position.ReadValue();
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector2(clickLocation.x, clickLocation.y));
 
-        Debug.Log(worldPosition);
+        //Debug.Log(worldPosition);
         GridCell Destination = ConvertWorldToGridLocation(worldPosition);
 
-        agentController.ClickMoveTo(grid, Destination);
     }
 
     public void InteractDoor(InputAction.CallbackContext context) //Change this later into a interact with anything

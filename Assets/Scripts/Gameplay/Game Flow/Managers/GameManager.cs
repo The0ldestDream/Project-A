@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public CombatManager combatManager;
     public UIManager uiManager;
 
+    public AStarPathfinding pathfinding = new AStarPathfinding();
+
     private void OnEnable()
     {
         OnPlayerInteracted += HandleDoorInteraction;
@@ -28,6 +30,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         ChangeMode(PlayerMode.Exploration, playerCharacter);
+        
     }
 
     // Update is called once per frame
@@ -36,7 +39,8 @@ public class GameManager : MonoBehaviour
         if (playerCharacter == null && level.levelGenerated == true) 
         {
             playerCharacter = level.spawnedPlayer.GetComponent<PlayerController>();
-
+            pathfinding.grid = level.levelGenerator.ourGrid;
+            playerCharacter.agentController.pathfinding = pathfinding;
             playerCharacter.doors = level.levelGenerator.tGen.allDoors;
         }
     }
@@ -59,7 +63,7 @@ public class GameManager : MonoBehaviour
 
         int RandCell = UnityEngine.Random.Range(0, MoveToCells.Count);
 
-        playerCharacter.agentController.ClickMoveTo(level.levelGenerator.ourGrid, MoveToCells[RandCell]);
+        playerCharacter.agentController.MoveTo(MoveToCells[RandCell]);
 
         ChangeMode(PlayerMode.Combat, playerCharacter);
 

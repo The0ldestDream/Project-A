@@ -7,7 +7,7 @@ public class Stab : AgentAction
 
     }
 
-    public override void Action(Agent ActionOwner)
+    public override void Action(Agent ActionOwner, Target target)
     {
         Debug.Log("Stab has been Used");
         UseResource(ActionOwner, ResourceToUse, ResourceCost);

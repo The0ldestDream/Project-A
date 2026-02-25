@@ -4,17 +4,25 @@ using System.Linq;
 
 public class AStarPathfinding
 {
+    public GridSystem grid;
     private GridCell start;
     private GridCell end;
-
     
 
-    public List<GridCell> Pathfinding(GridCell startNode, GridCell endNode, GridSystem gridsystem)
+    public List<GridCell> Pathfinding(GridCell startNode, GridCell endNode, GridSystem gridsystem = null)
     {
         start = startNode;
         end = endNode;
+        GridCell[,] gridArray;
 
-        GridCell[,] gridArray = gridsystem.gridArray;
+        if (gridsystem == null)
+        {
+            gridArray = grid.gridArray;
+        }
+        else
+        {
+            gridArray = gridsystem.gridArray;
+        }
 
         List<GridCell> openSet = new List<GridCell>(); //Nodes that are going to be evaluated
         openSet.Add(start);

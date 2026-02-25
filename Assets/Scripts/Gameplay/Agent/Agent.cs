@@ -6,13 +6,13 @@ public class Agent
     public GridCell gridPos;
 
     //Agent Components
-    public List<AgentClass> agentClasses = new List<AgentClass>();
-    public AgentRace agentRace;
-    public AStarPathfinding pathfinding = new AStarPathfinding();
+    
+    public AgentController controller;
 
     //Agent Information
     public int AgentLevel = 1;
-
+    public List<AgentClass> agentClasses = new List<AgentClass>();
+    public AgentRace agentRace;
     public List<AgentAction> allActions = new List<AgentAction>();
     public List<AgentTrait> allTraits = new List<AgentTrait>();
     public StatSheet statSheet;
@@ -37,8 +37,8 @@ public class Agent
         agentRace = race;
         agentClasses.Add(agentClass);
 
+        allActions.Add(new Move(1,1));
         agentClass.GiveActions(this);
-
         agentRace.GiveActionsandTraits(this);
 
 
