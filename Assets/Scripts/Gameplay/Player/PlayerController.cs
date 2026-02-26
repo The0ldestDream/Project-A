@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
@@ -78,7 +79,7 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log(worldPosition);
         GridCell Destination = ConvertWorldToGridLocation(worldPosition);
-
+        OnGridCellClicked?.Invoke(Destination);
     }
 
     public void InteractDoor(InputAction.CallbackContext context) //Change this later into a interact with anything
@@ -157,5 +158,5 @@ public class PlayerController : MonoBehaviour
         
     }
 
-
+    public static event Action<GridCell> OnGridCellClicked;
 }

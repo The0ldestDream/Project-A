@@ -1,15 +1,14 @@
 using UnityEngine;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+
 
 public class CombatManager : MonoBehaviour
 {
     public Spawner AgentSpawner;
     public GameManager gameManager;
 
-    public TargetingSystem targeting;
+    public TargetingSystem targeting = new TargetingSystem();
 
     private bool combatFinished;
     private List<AgentController> AgentsInCombat = new List<AgentController>();

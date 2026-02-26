@@ -7,13 +7,14 @@ public class UIManager : MonoBehaviour
 {
     public GameManager gameManager;
 
+    private GridCellHighlighter highlighter;
+    public CombatUI combatUI;
 
-    public CombatUI combatUI = new CombatUI();
 
     public PlayerMode UImode;
 
     bool UICreated = false;
-
+    
 
     public GameObject buttonPrefab;
     public Transform panel;
@@ -24,7 +25,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-
+        InitHighlighter();
     }
 
     private void FixedUpdate()
@@ -57,16 +58,21 @@ public class UIManager : MonoBehaviour
                 
                 break;
         }
-
     }
 
     private void InitCombatUI()
     {
         GameObject combatUIObj = new GameObject("CombatUI");
         combatUI = combatUIObj.AddComponent<CombatUI>();
+
+        combatUI.combatManager = gameManager.combatManager;
+        combatUI.highlighter = highlighter;
+
         combatUI.agenttouse = agenttouse;
         combatUI.buttonPrefab = buttonPrefab;
         combatUI.panel = panel;
+
+        combatUI.InitUI();
     }
 
     private void InitExplorationUI()
@@ -74,6 +80,17 @@ public class UIManager : MonoBehaviour
 
     }
 
+    private void InitHighlighter()
+    {
+        GameObject CellHighlighter = new GameObject("GridCellHighlighter");
+        highlighter = CellHighlighter.AddComponent<GridCellHighlighter>();
+
+        highlighter.lGen = gameManager.level.levelGenerator;
+        highlighter.HightlightMap = gameManager.level.levelRenderer.HighlightMap;
+        highlighter.tileData = gameManager.level.levelRenderer.highlighttileData;
+
+        highlighter.InitHighlighter();
+    }
 
 
 
@@ -85,10 +102,6 @@ public class UIManager : MonoBehaviour
         }
         buttons.Clear();
     }
-
-
-
-
 
 
     //Events

@@ -22,9 +22,11 @@ public class TargetingSystem
            
                 foreach (Target target in TargetsWithinRange)
                 {
+                    
                     if (target.agent != null)
                     {
                         validTargets.Add(target);
+
                     }
                 }
                 break;
@@ -49,12 +51,19 @@ public class TargetingSystem
         //Creating a box around the Origin Position
         //Then we can loop through each cell and choose the ones we want
         //Probably should create some criteria for which cells that are not valid but I'll do that later
-        for (int x = OriginPosition.x - ActionRange; x > OriginPosition.x + ActionRange; x++)
+        for (int x = OriginPosition.x - ActionRange; x <= OriginPosition.x + ActionRange; x++)
         {
-            for (int y = OriginPosition.y - ActionRange; y > OriginPosition.y + ActionRange; y++)
+            for (int y = OriginPosition.y - ActionRange; y <= OriginPosition.y + ActionRange; y++)
             {
-                Target target = new Target(grid.gridArray[x, y]);
-                targets.Add(target);
+                if (x >= 0 && y >= 0 && x < grid.gridArray.GetLength(0) && y < grid.gridArray.GetLength(1)) //Bounds Check
+                {
+                    if (grid.gridArray[x, y].TypeOfTile == TileType.roomTile) // Need to only work within the current room. Currently uses any room tile even other rooms
+                    {
+                        Target target = new Target(grid.gridArray[x, y]);
+                        targets.Add(target);
+                    }
+                    
+                }
             }
         }
         return targets;

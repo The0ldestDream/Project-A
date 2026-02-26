@@ -7,6 +7,9 @@ public class LevelRenderer : MonoBehaviour
     public Tilemap tilemap;
     public TileSetData tileData;
 
+    public Tilemap HighlightMap;
+    public HighlightTilesetData highlighttileData;
+
     private bool renderLevel = false;
 
     public void RenderLevel()

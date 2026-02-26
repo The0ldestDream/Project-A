@@ -162,7 +162,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3177765998700838391}
         m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: ClickMove
+        m_MethodName: Click
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
