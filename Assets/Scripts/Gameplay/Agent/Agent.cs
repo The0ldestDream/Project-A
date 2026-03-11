@@ -44,7 +44,7 @@ public class Agent
 
         alignment = agentAlignment;
         statSheet = new StatSheet(10,10,10,10);
-        allResources.Add(new Health());
+        allResources.Add(new Health(statSheet));
         allResources.Add(new ActionPoint());
         isAlive = true;
     }
@@ -67,7 +67,7 @@ public class Agent
         //Debug.Log("The Player is at Grid Cell: (" + gridPos.x + ", " + gridPos.y + ")");
     }
 
-    //Setting Information
+    //Getting and Setting Information
     public int GetAgentLevel(List<AgentClass> classes)
     {
         int level = 0;
@@ -78,6 +78,14 @@ public class Agent
         }
 
         return level;
+    }
+
+    public void DealDamage(int DamageTaken)
+    {
+        AgentResource health = allResources.Find(x => x.ResourceName == "Health");
+        Debug.Log("Agent health is at: " + health.currentAmount);
+        health.AdjustValue(DamageTaken);
+        Debug.Log("Agent health has dropped to: " + health.currentAmount);
     }
 
     private void SetEntityOnTile(GridSystem grid, bool OnTile)

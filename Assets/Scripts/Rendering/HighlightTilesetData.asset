@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: HighlightTilesetData
   m_EditorClassIdentifier: Assembly-CSharp::HighlightTilesetData
   TargetTile: {fileID: 11400000, guid: ee3303410c442c9449d79ab0fa3222a0, type: 2}
+  ClearTile: {fileID: 11400000, guid: 68db202175a743f49b81209c9ea4af9e, type: 2}

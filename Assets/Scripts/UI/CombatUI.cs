@@ -73,10 +73,10 @@ public class CombatUI : MonoBehaviour
 
     private void SelectedAction(AgentAction action)
     {
-        if (selectedAction != action)
-        {
-            highlighter.ClearTiles(targetCells);
-        }
+
+        highlighter.ClearTiles(targetCells);
+        
+
 
         combatManager.StartTargeting(agenttouse.myAgent, action);
         selectedAction = action;
@@ -89,6 +89,7 @@ public class CombatUI : MonoBehaviour
         //I need to figure out to highlight given tiles
         //Was thinking to maybe make something that interacts with renderer
         //Or implementing another tilemap ontop of the current to highlight the borders of the tiles
+        highlighter.ClearTiles(targetCells);
         targetList.Clear();
         targetList = targets;
 

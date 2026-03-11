@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Intelligence : Stat
 {
-    public Intelligence(string name, int value, int minValue) : base(name, value, minValue)
+    public Intelligence(int value, int minValue) : base("Intelligence", value, minValue)
     {
 
     }

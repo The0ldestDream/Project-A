@@ -35,6 +35,8 @@ public abstract class AgentAction
 
     public abstract void Action(Agent ActionOwner, Target ActionTarget);
 
+    public abstract int CalculateModifier(Agent ActionOwner);
+
     public void GainExperience(float experienceGained)
     {
         ActionExperience += experienceGained;

@@ -34,7 +34,6 @@ public class GridCellHighlighter : MonoBehaviour
         {
             ClearTile(cell);
         }
-        HightlightMap.RefreshAllTiles();
     }
 
     public void ClearTile(GridCell cell)

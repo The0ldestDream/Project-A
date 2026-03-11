@@ -18,4 +18,9 @@ public class Move : AgentAction
     {
         throw new System.NotImplementedException();
     }
+
+    public override int CalculateModifier(Agent ActionOwner)
+    {
+        throw new System.NotImplementedException();
+    }
 }

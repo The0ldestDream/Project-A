@@ -10,13 +10,13 @@ public class StatSheet
     {
         
 
-        Strength strength = new Strength("", StrengthValue, minValue);
+        Strength strength = new Strength(StrengthValue, minValue);
         AgentStatSheet.Add(strength);
-        Consititution consititution = new Consititution("", ConsititutionValue, minValue);
+        Consititution consititution = new Consititution(ConsititutionValue, minValue);
         AgentStatSheet.Add(consititution);
-        Intelligence intelligence = new Intelligence("", IntelligenceValue, minValue);
+        Intelligence intelligence = new Intelligence(IntelligenceValue, minValue);
         AgentStatSheet.Add(intelligence);
-        Dexterity dexterity = new Dexterity("", DexterityValue, minValue);
+        Dexterity dexterity = new Dexterity(DexterityValue, minValue);
         AgentStatSheet.Add(dexterity);
 
 
@@ -40,5 +40,11 @@ public class StatSheet
     public void StatResetToMin(Stat stat)
     {
         stat.ResetToMin();
+    }
+
+
+    public Stat GetStat(string StatName)
+    {
+        return AgentStatSheet.Find(x=> x.StatName == StatName);
     }
 }
