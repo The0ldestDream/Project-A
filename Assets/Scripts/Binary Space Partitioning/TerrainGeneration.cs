@@ -348,7 +348,7 @@ public class TerrainGeneration
             }
 
             r.SetDoorsOwner();
-            r.roomState = RoomState.Uncleared;
+            r.ChangeRoomState(RoomState.Uncleared);
         }
 
 

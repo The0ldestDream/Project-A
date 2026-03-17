@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 public class Agent
 {
@@ -84,9 +85,25 @@ public class Agent
     {
         AgentResource health = allResources.Find(x => x.ResourceName == "Health");
         Debug.Log("Agent health is at: " + health.currentAmount);
-        health.AdjustValue(DamageTaken);
+
+        health.AdjustValue(-DamageTaken);
         Debug.Log("Agent health has dropped to: " + health.currentAmount);
+
+        //Could use a AgentDamage Event later on to tell listeners that this agent has been damaged
+
+
+        if (health.currentAmount <= 0)
+        {
+            AgentDeath();
+        }
     }
+
+    private void AgentDeath()
+    {
+        OnDeath?.Invoke(this);
+    }
+
+
 
     private void SetEntityOnTile(GridSystem grid, bool OnTile)
     {
@@ -102,5 +119,9 @@ public class Agent
         }
 
     }
+
+
+    //Events
+    public event Action<Agent> OnDeath;
 
 }

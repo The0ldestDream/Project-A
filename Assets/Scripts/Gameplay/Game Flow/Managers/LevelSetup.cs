@@ -32,7 +32,7 @@ public class LevelSetup : MonoBehaviour
     {
         if (levelGen == false)
         {
-            levelGenerator.GenerateLevel(200,4);
+            levelGenerator.GenerateLevel(100,4);
             levelRenderer.RenderLevel();
             
             SpawnPlayer(levelGenerator.spawnRoom);

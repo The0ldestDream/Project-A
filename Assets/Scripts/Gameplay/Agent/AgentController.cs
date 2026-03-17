@@ -16,6 +16,8 @@ public class AgentController : MonoBehaviour
     {
         myAgent = agent;
         myAgent.controller = this;
+
+        myAgent.OnDeath += OnAgentDeath;
     }
 
     void Update()
@@ -50,13 +52,20 @@ public class AgentController : MonoBehaviour
 
     }
 
-    //Movement
+    //Gameplay
     public void MoveTo(GridCell Destination)
     {
         List<GridCell> path = pathfinding.Pathfinding(myAgent.gridPos, Destination);
 
         StartCoroutine(MoveAlongPath(pathfinding.grid, path));
 
+
+    }
+    public void OnAgentDeath(Agent agent)
+    {
+        //Handle Agent Death
+        //Remove Gameobject, play death anim etc
+        Destroy(gameObject);
 
     }
 
@@ -87,4 +96,17 @@ public class AgentController : MonoBehaviour
     //Events
     public event Action<AgentController> OnTurnEnded;
 
+
+
+
+
+
+    private void OnEnable()
+    {
+        
+    }
+    private void OnDisable()
+    {
+        myAgent.OnDeath -= OnAgentDeath;
+    }
 }

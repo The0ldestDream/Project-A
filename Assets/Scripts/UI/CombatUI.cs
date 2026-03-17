@@ -120,7 +120,22 @@ public class CombatUI : MonoBehaviour
         }
     }
 
+    private void RemoveButtons()
+    {
+        foreach (Button button in ActionButtons)
+        {
+            Destroy(button.gameObject);
+        }
 
+        ActionButtons.Clear();
+
+    }
+
+    public void DestroySelf()
+    {
+        RemoveButtons();
+        Destroy(gameObject);
+    }
 
 
     //Events

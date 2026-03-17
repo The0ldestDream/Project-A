@@ -20,7 +20,9 @@ public class UIManager : MonoBehaviour
     public Transform panel;
     public AgentController agenttouse;
 
-    
+    GameObject combatUIObj;
+
+
     public List<Button> TargetButtons = new List<Button>();
 
     private void Start()
@@ -41,6 +43,7 @@ public class UIManager : MonoBehaviour
         switch (UImode)
         {
             case PlayerMode.Exploration:
+                RemoveCombatUI();
                 break;
 
             case PlayerMode.Combat:
@@ -62,7 +65,7 @@ public class UIManager : MonoBehaviour
 
     private void InitCombatUI()
     {
-        GameObject combatUIObj = new GameObject("CombatUI");
+        combatUIObj = new GameObject("CombatUI");
         combatUI = combatUIObj.AddComponent<CombatUI>();
 
         combatUI.combatManager = gameManager.combatManager;
@@ -78,6 +81,16 @@ public class UIManager : MonoBehaviour
     private void InitExplorationUI()
     {
 
+    }
+
+    private void RemoveCombatUI()
+    {
+        if (combatUIObj != null)
+        {
+            combatUI.DestroySelf();
+            UICreated = false;
+        }
+        
     }
 
     private void InitHighlighter()

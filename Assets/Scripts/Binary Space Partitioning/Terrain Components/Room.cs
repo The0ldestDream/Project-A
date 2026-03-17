@@ -29,6 +29,12 @@ public class Room
         }
     }
 
+    public void ChangeRoomState(RoomState NewState)
+    {
+        roomState = NewState;
+    }
+
+
     public List<GridCell> GetClosestCellsFrom(Door door, int GivenRange, GridSystem grid)
     {
         List<GridCell> cells = new List<GridCell>();

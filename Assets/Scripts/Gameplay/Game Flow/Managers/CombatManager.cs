@@ -16,6 +16,7 @@ public class CombatManager : MonoBehaviour
     Queue<AgentController> TurnOrder = new Queue<AgentController>();
 
     public AgentController currentAgent;
+    public Room currentRoom;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class CombatManager : MonoBehaviour
 
     public void CombatSetup(Room room)
     {
+        currentRoom = room;
         //Spawn Combat Grid over room
         //Spawn Enemy Agents
         AgentSpawner.SpawnAgent(room);
@@ -44,6 +46,18 @@ public class CombatManager : MonoBehaviour
         StartNextTurn();
     }
 
+    public void CombatCleanUp()
+    {
+        currentRoom = null;
+
+        foreach (AgentController controller in TurnOrder)
+        {
+            controller.state = CombatState.NotInCombat;
+        }
+        AgentsInCombat.Clear();
+        TurnOrder.Clear();
+        AgentSpawner.EnemyAgents.Clear();
+    }
 
 
     public void StartNextTurn()
@@ -74,6 +88,8 @@ public class CombatManager : MonoBehaviour
                 UnsubscribeAgent(ac);
             }
             RaiseOnCombatEnded();
+            CombatCleanUp();
+            
         }
         else
         {
@@ -156,6 +172,20 @@ public class CombatManager : MonoBehaviour
         return AgentsInSpace;
     }
 
+    public void RemoveAgentFromTurnOrder(Agent agent)
+    {
+        Queue<AgentController> temp = new Queue<AgentController>();
+
+        foreach (AgentController controller in TurnOrder)
+        {
+            if (controller.myAgent != agent)
+            {
+                temp.Enqueue(controller);
+            }
+        }
+
+        TurnOrder = temp;
+    }
 
     public void StartTargeting(Agent ActionOwner, AgentAction action)
     {
@@ -172,16 +202,20 @@ public class CombatManager : MonoBehaviour
     {
         ac.OnTurnEnded -= HandleTurnEnded;
         ac.OnTurnEnded += HandleTurnEnded;
+
+        ac.myAgent.OnDeath += RemoveAgentFromTurnOrder;
+
     }
     private void UnsubscribeAgent(AgentController ac)
     {
         ac.OnTurnEnded -= HandleTurnEnded;
+        ac.myAgent.OnDeath -= RemoveAgentFromTurnOrder;
     }
 
 
     //Events 
     public event Action<Room> OnCombatStarted;
-    public event Action OnCombatEnded;
+    public event Action<Room> OnCombatEnded;
     public event Action<List<Target>> OnTargetingStarted;
 
 
@@ -191,7 +225,7 @@ public class CombatManager : MonoBehaviour
     }
     public void RaiseOnCombatEnded()
     {
-        OnCombatEnded?.Invoke();
+        OnCombatEnded?.Invoke(currentRoom);
     }
 
 

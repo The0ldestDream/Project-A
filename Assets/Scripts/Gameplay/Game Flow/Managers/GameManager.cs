@@ -17,13 +17,13 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         OnPlayerInteracted += HandleDoorInteraction;
-        combatManager.OnCombatEnded += HandleTransitionToExploration;
+        combatManager.OnCombatEnded += HandleCombatWon;
     }
 
     private void OnDisable()
     {
         OnPlayerInteracted -= HandleDoorInteraction;
-        combatManager.OnCombatEnded -= HandleTransitionToExploration;
+        combatManager.OnCombatEnded -= HandleCombatWon;
     }
 
 
@@ -76,10 +76,23 @@ public class GameManager : MonoBehaviour
         combatManager.RaiseOnCombatStarted(door.DoorOwner);
     }
 
+    public void HandleCombatWon(Room clearedRoom)
+    {
+        clearedRoom.ChangeRoomState(RoomState.Cleared);
+
+        foreach (Door door in clearedRoom.roomDoors)
+        {
+            door.UnlockDoor();
+        }
+
+        HandleTransitionToExploration();
+    }
+
+
+
     public void HandleTransitionToExploration()
     {
-        ChangeMode(PlayerMode.Combat, playerCharacter);
-
+        ChangeMode(PlayerMode.Exploration, playerCharacter);
     }
 
 

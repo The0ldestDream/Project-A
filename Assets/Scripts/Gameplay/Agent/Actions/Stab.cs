@@ -5,7 +5,7 @@ public class Stab : AgentAction
     public Stab(int startingLevel, float expLevelUp) : base("Stab", startingLevel, 99, expLevelUp)
     {
         Range = 20;
-        target = TargetCategory.Tile;
+        target = TargetCategory.Agent;
     }
 
     public override void Action(Agent ActionOwner, Target target)
