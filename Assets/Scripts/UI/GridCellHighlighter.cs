@@ -15,6 +15,7 @@ public class GridCellHighlighter : MonoBehaviour
 
     public void HighlightTiles(List<GridCell> cells)
     {
+        HightlightMap.ClearAllTiles();
         foreach (GridCell cell in cells)
         {
             HighlightTile(cell);
@@ -23,9 +24,10 @@ public class GridCellHighlighter : MonoBehaviour
 
     public void HighlightTile(GridCell cell)
     {
-        Vector3Int cellPos = new Vector3Int(grid.gridArray[cell.x, cell.y].x, grid.gridArray[cell.x, cell.y].y, 0);
-
+        
+        Vector3Int cellPos = new Vector3Int(cell.x, cell.y, 0);
         HightlightMap.SetTile(cellPos, tileData.TargetTile);
+        
     }
 
     public void ClearTiles(List<GridCell> cells)
@@ -34,12 +36,14 @@ public class GridCellHighlighter : MonoBehaviour
         {
             ClearTile(cell);
         }
+
     }
 
     public void ClearTile(GridCell cell)
     {
-        Vector3Int cellPos = new Vector3Int(grid.gridArray[cell.x, cell.y].x, grid.gridArray[cell.x, cell.y].y, 0);
+        Vector3Int cellPos = new Vector3Int(cell.x, cell.y, 0);
 
-        HightlightMap.SetTile(cellPos, tileData.ClearTile);
+        HightlightMap.SetTile(cellPos, null);
+        
     }
 }

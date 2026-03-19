@@ -31,6 +31,7 @@ public class CombatUI : MonoBehaviour
 
     public void CreateActionButtons()
     {
+        RemoveButtons();
         //Essientally getting all the actions that the agent has and creating buttons for each one
         foreach (AgentAction action in agenttouse.myAgent.allActions)
         {
@@ -49,7 +50,8 @@ public class CombatUI : MonoBehaviour
 
             //Getting the actual button and assigning it to the Action's execute function
             Button buttonParent = button.GetComponent<Button>();
-            buttonParent.onClick.AddListener(() => SelectedAction(action));
+            AgentAction capturedAction = action;
+            buttonParent.onClick.AddListener(() => SelectedAction(capturedAction));
 
             ActionButtons.Add(buttonParent);
         }
@@ -92,11 +94,11 @@ public class CombatUI : MonoBehaviour
         highlighter.ClearTiles(targetCells);
         targetList.Clear();
         targetList = targets;
-
+        targetCells.Clear();
         Debug.Log("RECIEVED TARGETS");
         foreach (Target target in targets)
         {
-            Debug.Log(target);
+            //Debug.Log(target);
             targetCells.Add(target.tile);
         }
 
@@ -117,6 +119,9 @@ public class CombatUI : MonoBehaviour
         if (TargetInList != null)
         {
             UseAgentAction(selectedAction, TargetInList);
+            highlighter.ClearTiles(targetCells);
+            targetCells.Clear();
+            targetList.Clear();
         }
     }
 
