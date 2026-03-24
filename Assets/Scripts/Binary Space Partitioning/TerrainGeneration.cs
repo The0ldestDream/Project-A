@@ -9,6 +9,7 @@ public class TerrainGeneration
     public List<Room> allRooms = new List<Room>();
     public List<Corridor> allCorridors = new List<Corridor>();
     public List<Door> allDoors = new List<Door>();
+    public GridCell stairTile;
 
     private AStarPathfinding AStarPathfinder = new AStarPathfinding();
     private GridSystem gridSystem;
@@ -82,10 +83,10 @@ public class TerrainGeneration
         List<GridCell> CorridorCells = AStarPathfinder.Pathfinding(gridSystem.gridArray[pointA.x, pointA.y], gridSystem.gridArray[pointB.x,pointB.y], gridSystem);
 
 
-        Door doorA = new Door();
-        doorA.doorLocation = gridSystem.gridArray[pointA.x, pointA.y];
-        Door doorB = new Door();
-        doorB.doorLocation = gridSystem.gridArray[pointB.x, pointB.y];
+        Door doorA = new Door(gridSystem.gridArray[pointA.x, pointA.y]);
+
+        Door doorB = new Door(gridSystem.gridArray[pointB.x, pointB.y]);
+        
 
         allDoors.Add(doorA);
         allDoors.Add(doorB);
@@ -393,4 +394,15 @@ public class TerrainGeneration
 
     }
 
+
+    public void SetStairTile(Room room)
+    {
+        int x = Random.Range(room.roomBounds.xMin + 2, room.roomBounds.xMax - 2);
+        int y = Random.Range(room.roomBounds.yMin + 2, room.roomBounds.yMax - 2);
+
+        gridSystem.gridArray[x, y].ObjectOnTile = ObjectType.Stairs;
+
+        stairTile = gridSystem.gridArray[x, y];
+        Stairs stairs = new Stairs(stairTile);
+    }
 }

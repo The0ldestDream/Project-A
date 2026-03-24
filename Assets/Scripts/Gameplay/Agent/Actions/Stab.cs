@@ -10,14 +10,18 @@ public class Stab : AgentAction
 
     public override void Action(Agent ActionOwner, Target target)
     {
-        Debug.Log("Stab has been Used");
-        UseResource(ActionOwner, ResourceToUse, ResourceCost);
-
+        
         int modifier = CalculateModifier(ActionOwner);
+        if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
+        {
+            Debug.Log("Stab has been Used");
+            target.agent.DealDamage(1 + modifier);
+        }
 
 
-        target.agent.DealDamage(1 + modifier);
 
+
+        
     }
 
     public override void ActionUniqueLevelUp()

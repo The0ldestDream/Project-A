@@ -10,14 +10,13 @@ public class Punch : AgentAction
 
     public override void Action(Agent ActionOwner, Target target)
     {
-        Debug.Log("Punch has been Used");
-        UseResource(ActionOwner, ResourceToUse, ResourceCost);
-
-
+        
         int modifier = CalculateModifier(ActionOwner);
-
-
-        target.agent.DealDamage(1 + modifier);
+        if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
+        {
+            Debug.Log("Punch has been Used");
+            target.agent.DealDamage(1 + modifier);
+        }
 
     }
 

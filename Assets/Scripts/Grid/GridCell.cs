@@ -15,7 +15,9 @@ public class GridCell
     //Grid Information
     public TileType TypeOfTile = TileType.emptyTile;
     public EntityType EntityOnTile = EntityType.None;
+    public ObjectType ObjectOnTile = ObjectType.None;
     public Agent AgentOnTile;
+    public IInteractable interactable = null;
 
     public int cost;
     public bool walkable = true;

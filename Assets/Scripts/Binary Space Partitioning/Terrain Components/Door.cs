@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 
-public class Door
+public class Door : IInteractable
 {
     //Class Information
     public GridCell doorLocation;
@@ -10,18 +10,27 @@ public class Door
 
     public Room DoorOwner;
 
-    public Door()
+    public Door(GridCell location)
     {
+        doorLocation = location;
+
+        doorLocation.interactable = this;
+
         GameManager.OnPlayerInteracted += InteractedDoor;
     }
 
-    //Events
-
-
     public void DeleteDoor()
     {
+        doorLocation.interactable = null;
+
         GameManager.OnPlayerInteracted -= InteractedDoor;
     }
+
+    public void Interact(Agent agent)
+    {
+        //InteractedDoor(this);
+    }
+
 
     public void InteractedDoor(Door door)
     {

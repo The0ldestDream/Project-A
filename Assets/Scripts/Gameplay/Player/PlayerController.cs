@@ -72,7 +72,7 @@ public class PlayerController : MonoBehaviour
     public void Click(InputAction.CallbackContext context)
     {
 
-        if (mode != PlayerMode.Combat) return;
+        //if (mode != PlayerMode.Combat) return;
 
         Vector2 clickLocation = Mouse.current.position.ReadValue();
         Vector2 worldPosition = Camera.main.ScreenToWorldPoint(new Vector2(clickLocation.x, clickLocation.y));

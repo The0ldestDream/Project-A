@@ -58,7 +58,7 @@ public abstract class AgentAction
 
     public abstract void ActionUniqueLevelUp();
 
-    public void UseResource(Agent ActionOwner, AgentResource resource, int actioncost)
+    public bool UseResource(Agent ActionOwner, AgentResource resource, int actioncost)
     {
         AgentResource usedresource = null;
 
@@ -81,15 +81,18 @@ public abstract class AgentAction
             if (newAmount >= 0)
             {
                 usedresource.currentAmount = newAmount;
+                return true;
             }
             else
             {
                 Debug.Log("Agent does not have enough resource");
+                return false;
             }
         }
         else
         {
             Debug.Log("Agent does not have enough resource");
+            return false;
         }
 
     }

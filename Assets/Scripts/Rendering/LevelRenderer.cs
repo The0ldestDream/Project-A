@@ -50,10 +50,7 @@ public class LevelRenderer : MonoBehaviour
             }
             if (room.TypeOfRoom == RoomType.StairRoom)
             {
-                int x = Random.Range(room.roomBounds.xMin + 2, room.roomBounds.xMax - 2);
-                int y = Random.Range(room.roomBounds.yMin + 2, room.roomBounds.yMax - 2);
-                Vector3Int cellPos = new Vector3Int(x, y, 0);
-
+                Vector3Int cellPos = new Vector3Int(lGen.tGen.stairTile.x, lGen.tGen.stairTile.y, 0);
                 tilemap.SetTile(cellPos, tileData.stairs);
             }
         }

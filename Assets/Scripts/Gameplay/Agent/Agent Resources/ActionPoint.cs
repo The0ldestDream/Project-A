@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ActionPoint : AgentResource
 {
-    public ActionPoint() : base("Action Point",1,1)
+    public ActionPoint() : base("Action Point",1,10)
     {
 
     }

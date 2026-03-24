@@ -30,6 +30,9 @@ public class DefineRooms
         {
             tGen.allRooms[RanRoom].TypeOfRoom = RoomType.StairRoom;
             randomRoom = tGen.allRooms[RanRoom];
+
+            tGen.SetStairTile(randomRoom);
+
         }
 
         return randomRoom;

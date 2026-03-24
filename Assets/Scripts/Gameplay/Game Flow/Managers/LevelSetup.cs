@@ -61,4 +61,10 @@ public class LevelSetup : MonoBehaviour
         FollowPlayer followPlayer = camera.GetComponent<FollowPlayer>();
         followPlayer.Init(player.transform);
     }
+
+
+    private void SpawnStairs()
+    {
+
+    }
 }
