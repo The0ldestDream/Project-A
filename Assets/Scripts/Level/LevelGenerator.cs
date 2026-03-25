@@ -12,20 +12,17 @@ public class LevelGenerator : MonoBehaviour
 
     public List<BNode> leafNodes = new List<BNode>();
 
-    public int gridSize = 200;
-    public int treeDepth = 2;
-
     public Room spawnRoom;
     public Room stairRoom;
 
-    public void GenerateLevel(int gridSize, int treeDepth)
+    public void GenerateLevel(LevelData levelData)
     {
         //Generate the Grid
-        ourGrid.GenerateGrid(gridSize, gridSize);
+        ourGrid.GenerateGrid(levelData.GridWidth, levelData.GridHeight);
 
         //Generate BSP
-        tree.maxDepth = treeDepth;
-        tree.GenerateTree(new RectInt(0, 0, ourGrid.width, ourGrid.height));
+        tree.maxDepth = levelData.maxTreeDepth;
+        tree.GenerateTree(new RectInt(0, 0, levelData.GridWidth, levelData.GridHeight));
         leafNodes = tree.getLeafList();
 
         //Generate Terrain
@@ -35,6 +32,15 @@ public class LevelGenerator : MonoBehaviour
         spawnRoom = defineRooms.ChooseSpawnRoom(tGen);
         stairRoom = defineRooms.ChooseStairRoom(tGen);
 
+    }
+
+    public void ClearLevel()
+    {
+        ourGrid = new GridSystem();
+        leafNodes = null;
+        spawnRoom = null;
+        stairRoom = null;
+        tGen.ClearLevel();
     }
 
 

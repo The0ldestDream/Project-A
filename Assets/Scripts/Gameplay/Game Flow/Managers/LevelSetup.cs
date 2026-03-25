@@ -16,7 +16,7 @@ public class LevelSetup : MonoBehaviour
     //Events
 
 
-    void Init()
+    public void Init()
     {
 
     }
@@ -24,21 +24,20 @@ public class LevelSetup : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GenerateEntireLevel(levelGenerated);
 
     }
 
-    private void GenerateEntireLevel(bool levelGen)
+    public void GenerateEntireLevel(LevelData data)
     {
-        if (levelGen == false)
-        {
-            levelGenerator.GenerateLevel(100,4);
-            levelRenderer.RenderLevel();
-            
-            SpawnPlayer(levelGenerator.spawnRoom);
-            levelGenerated = true;
-        }
+        levelGenerator.GenerateLevel(data);
+        levelRenderer.RenderLevel();
+
+        SpawnPlayer(levelGenerator.spawnRoom);
+        levelGenerated = true;
     }
+
+
+
 
     private void SpawnPlayer(Room SpawnRoom)
     {
@@ -63,8 +62,5 @@ public class LevelSetup : MonoBehaviour
     }
 
 
-    private void SpawnStairs()
-    {
 
-    }
 }

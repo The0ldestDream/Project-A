@@ -16,14 +16,12 @@ public class Door : IInteractable
 
         doorLocation.interactable = this;
 
-        //GameManager.OnPlayerInteracted += InteractedDoor;
     }
 
     public void DeleteDoor()
     {
         doorLocation.interactable = null;
 
-        //GameManager.OnPlayerInteracted -= InteractedDoor;
     }
 
     public void Interact(Agent agent)

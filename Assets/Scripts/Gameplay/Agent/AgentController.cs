@@ -69,6 +69,11 @@ public class AgentController : MonoBehaviour
 
     }
 
+    public void DestroyAgent()
+    {
+        Destroy(gameObject); // This for moving onto next level so it will have different functionality later on
+    }
+
     IEnumerator MoveAlongPath(GridSystem grid, List<GridCell> path)
     {
         foreach (GridCell cell in path)

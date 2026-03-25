@@ -25,7 +25,7 @@ public class Spawner : MonoBehaviour
         int y = Random.Range(CombatRoom.roomBounds.yMin, CombatRoom.roomBounds.yMax - 1);
         Vector3 randomPos = new Vector3(x, y, 0);
 
-        LevelSetup LS = combatManager.gameManager.level;
+        LevelSetup LS = combatManager.gameManager.levelManager.level;
 
         //Workflow for spawning an agent
         GameObject agent = Instantiate(EnemyAgent, randomPos, Quaternion.identity);

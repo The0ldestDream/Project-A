@@ -986,6 +986,7 @@ GameObject:
   - component: {fileID: 2047137656}
   - component: {fileID: 2047137652}
   - component: {fileID: 2047137657}
+  - component: {fileID: 2047137658}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1076,8 +1077,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e16e72b3ad08b0646b317b6ac01b2995, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: 200
-  treeDepth: 2
 --- !u!114 &2047137656
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1092,7 +1091,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mode: 0
   playerCharacter: {fileID: 0}
-  level: {fileID: 2047137654}
+  levelManager: {fileID: 2047137658}
   combatManager: {fileID: 540951089}
   uiManager: {fileID: 2047137657}
 --- !u!114 &2047137657
@@ -1108,13 +1107,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   gameManager: {fileID: 2047137656}
-  highlighter: {fileID: 0}
   combatUI: {fileID: 0}
+  explorationUI: {fileID: 0}
   UImode: 0
   buttonPrefab: {fileID: 1094081758321851451, guid: 5a40baff3314572498d9c2b13b49ddbe, type: 3}
   panel: {fileID: 545446867}
   agenttouse: {fileID: 0}
   TargetButtons: []
+--- !u!114 &2047137658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047137646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29f13e9fb6aa2784e881b00067b4762e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LevelManager
+  level: {fileID: 2047137654}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

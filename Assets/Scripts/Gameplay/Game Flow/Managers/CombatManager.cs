@@ -189,7 +189,7 @@ public class CombatManager : MonoBehaviour
 
     public void StartTargeting(Agent ActionOwner, AgentAction action)
     {
-        List<Target> targets = targeting.ReturnValidTargets(gameManager.level.levelGenerator.ourGrid, ActionOwner, action);
+        List<Target> targets = targeting.ReturnValidTargets(gameManager.levelManager.level.levelGenerator.ourGrid, ActionOwner, action);
 
         OnTargetingStarted?.Invoke(targets);
     }

@@ -123,9 +123,9 @@ public class UIManager : MonoBehaviour
         GameObject CellHighlighter = new GameObject("GridCellHighlighter");
         highlighter = CellHighlighter.AddComponent<GridCellHighlighter>();
 
-        highlighter.lGen = gameManager.level.levelGenerator;
-        highlighter.HightlightMap = gameManager.level.levelRenderer.HighlightMap;
-        highlighter.tileData = gameManager.level.levelRenderer.highlighttileData;
+        highlighter.lGen = gameManager.levelManager.level.levelGenerator;
+        highlighter.HightlightMap = gameManager.levelManager.level.levelRenderer.HighlightMap;
+        highlighter.tileData = gameManager.levelManager.level.levelRenderer.highlighttileData;
 
         highlighter.InitHighlighter();
     }

@@ -9,7 +9,7 @@ public class TerrainGeneration
     public List<Room> allRooms = new List<Room>();
     public List<Corridor> allCorridors = new List<Corridor>();
     public List<Door> allDoors = new List<Door>();
-    public GridCell stairTile;
+    public Stairs stairTile;
 
     private AStarPathfinding AStarPathfinder = new AStarPathfinding();
     private GridSystem gridSystem;
@@ -402,7 +402,23 @@ public class TerrainGeneration
 
         gridSystem.gridArray[x, y].ObjectOnTile = ObjectType.Stairs;
 
-        stairTile = gridSystem.gridArray[x, y];
-        Stairs stairs = new Stairs(stairTile);
+        stairTile = new Stairs(gridSystem.gridArray[x, y]);
+    }
+
+
+    public void ClearLevel()
+    {
+        allCorridors.Clear();
+        allRooms.Clear();
+
+        foreach (Door door in allDoors)
+        {
+            door.DeleteDoor();
+        }
+        allDoors.Clear();
+
+
+        stairTile.DeleteStairs();
+        stairTile = null;
     }
 }

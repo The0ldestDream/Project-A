@@ -10,8 +10,6 @@ public class LevelRenderer : MonoBehaviour
     public Tilemap HighlightMap;
     public HighlightTilesetData highlighttileData;
 
-    private bool renderLevel = false;
-
     public void RenderLevel()
     {
         for (int x =0; x < lGen.ourGrid.width; x++)
@@ -50,7 +48,7 @@ public class LevelRenderer : MonoBehaviour
             }
             if (room.TypeOfRoom == RoomType.StairRoom)
             {
-                Vector3Int cellPos = new Vector3Int(lGen.tGen.stairTile.x, lGen.tGen.stairTile.y, 0);
+                Vector3Int cellPos = new Vector3Int(lGen.tGen.stairTile.gridPosition.x, lGen.tGen.stairTile.gridPosition.y, 0);
                 tilemap.SetTile(cellPos, tileData.stairs);
             }
         }
@@ -60,9 +58,6 @@ public class LevelRenderer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (renderLevel)
-        {
 
-        }
     }
 }

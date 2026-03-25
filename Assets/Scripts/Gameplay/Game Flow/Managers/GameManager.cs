@@ -8,7 +8,8 @@ public class GameManager : MonoBehaviour
     public PlayerMode mode;
     public PlayerController playerCharacter = null;
 
-    public LevelSetup level;
+    
+    public LevelManager levelManager;
     public CombatManager combatManager;
     public UIManager uiManager;
 
@@ -29,6 +30,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        levelManager.InitLevel();
         ChangeMode(PlayerMode.Exploration, playerCharacter);
         
     }
@@ -36,12 +38,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (playerCharacter == null && level.levelGenerated == true) 
+        if (playerCharacter == null && levelManager.level.levelGenerated == true) 
         {
-            playerCharacter = level.spawnedPlayer.GetComponent<PlayerController>();
-            pathfinding.grid = level.levelGenerator.ourGrid;
+            playerCharacter = levelManager.level.spawnedPlayer.GetComponent<PlayerController>();
+            pathfinding.grid = levelManager.level.levelGenerator.ourGrid;
             playerCharacter.agentController.pathfinding = pathfinding;
-            playerCharacter.doors = level.levelGenerator.tGen.allDoors;
+            playerCharacter.doors = levelManager.level.levelGenerator.tGen.allDoors;
         }
     }
 
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour
     {
         ChangeMode(PlayerMode.Transition, playerCharacter);
 
-        List<GridCell> MoveToCells = door.DoorOwner.GetClosestCellsFrom(door, 6, level.levelGenerator.ourGrid);
+        List<GridCell> MoveToCells = door.DoorOwner.GetClosestCellsFrom(door, 6, levelManager.level.levelGenerator.ourGrid);
         List<Door> RoomDoors = door.DoorOwner.roomDoors;
 
         int RandCell = UnityEngine.Random.Range(0, MoveToCells.Count);

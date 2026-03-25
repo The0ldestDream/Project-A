@@ -1,8 +1,8 @@
 using UnityEngine;
-
+using System;
 public class Stairs : IInteractable
 {
-    GridCell gridPosition;
+    public GridCell gridPosition;
     ObjectType objectType = ObjectType.Stairs;
 
     public Stairs(GridCell location)
@@ -21,5 +21,9 @@ public class Stairs : IInteractable
     public void Interact(Agent agent)
     {
         //Trigger Next Level Generation
+        OnStairsReached?.Invoke();
     }
+
+
+    public static Action OnStairsReached;
 }
