@@ -71,6 +71,7 @@ public class PlayerController : MonoBehaviour
 
     public void Click(InputAction.CallbackContext context)
     {
+        if (!context.started) return;
 
         //if (mode != PlayerMode.Combat) return;
 
@@ -86,19 +87,26 @@ public class PlayerController : MonoBehaviour
     {
         if (!context.started) return;
 
-        foreach (GridCell neighbour in grid.gridArray[agent.gridPos.x, agent.gridPos.y].neighbours)
-        {
-            if (neighbour.TypeOfTile == TileType.doorTile)
-            {
+        //foreach (GridCell neighbour in grid.gridArray[agent.gridPos.x, agent.gridPos.y].neighbours)
+        //{
+        //    if (neighbour.TypeOfTile == TileType.doorTile)
+        //    {
                 
-                Door interactedDoor = doors.Find(x => x.doorLocation == neighbour);
+        //        Door interactedDoor = doors.Find(x => x.doorLocation == neighbour);
 
-                GameManager.RaisePlayerInteracted(interactedDoor);
-            }
-        }
+        //        GameManager.RaisePlayerInteracted(interactedDoor);
+        //    }
+        //}
 
+        AgentAction interactAction = agent.allActions.Find(x => x.ActionName == "Interact");
+        OnInteractPressed?.Invoke(agent, interactAction);
     }
 
+    private void UseInteract(Target target)
+    {
+        AgentAction InteractAction = agent.allActions.Find(x => x.ActionName == "Interact");
+        InteractAction.Action(agent, target);
+    }
 
     public void EndTurn(InputAction.CallbackContext context)
     {
@@ -129,12 +137,12 @@ public class PlayerController : MonoBehaviour
 
     private bool IsValidMove(GridCell DestinationCell)
     {
-        if (DestinationCell.x < 0 || DestinationCell.x >= grid.width || DestinationCell.y < 0 || DestinationCell.y >= grid.height || !grid.gridArray[DestinationCell.x, DestinationCell.y].walkable)
+        if (DestinationCell.x < 0 || DestinationCell.x >= grid.width || DestinationCell.y < 0 || DestinationCell.y >= grid.height)
         {
             return false;
         }
 
-        return DestinationCell.walkable;
+        return true;
     }
 
     private GridCell ConvertWorldToGridLocation(Vector2 Location)
@@ -159,4 +167,15 @@ public class PlayerController : MonoBehaviour
     }
 
     public static event Action<GridCell> OnGridCellClicked;
+    public static event Action<Agent, AgentAction> OnInteractPressed;
+
+
+    private void OnEnable()
+    {
+        ExplorationUI.OnInteractTargetChosen += UseInteract;
+    }
+    private void OnDisable()
+    {
+        ExplorationUI.OnInteractTargetChosen -= UseInteract;
+    }
 }

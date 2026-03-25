@@ -16,13 +16,13 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        OnPlayerInteracted += HandleDoorInteraction;
+        Door.OnPlayerInteracted += HandleDoorInteraction;
         combatManager.OnCombatEnded += HandleCombatWon;
     }
 
     private void OnDisable()
     {
-        OnPlayerInteracted -= HandleDoorInteraction;
+        Door.OnPlayerInteracted -= HandleDoorInteraction;
         combatManager.OnCombatEnded -= HandleCombatWon;
     }
 
@@ -109,13 +109,11 @@ public class GameManager : MonoBehaviour
         if (door.DoorOwner.roomState == RoomState.Uncleared)
         {
             StartCoroutine(TriggerTheStateChange(door));
-
-            
         }
     }
 
     //Events
-    public static event Action<Door> OnPlayerInteracted;
+    //public static event Action<Door> OnPlayerInteracted;
     public static event Action OnCombatEnded;
 
     public static void RaiseCombatEnded()
@@ -123,10 +121,10 @@ public class GameManager : MonoBehaviour
         OnCombatEnded?.Invoke();
     }
 
-    public static void RaisePlayerInteracted(Door door)
-    {
-        OnPlayerInteracted?.Invoke(door);
-    }
+    //public static void RaisePlayerInteracted(Door door)
+    //{
+    //    OnPlayerInteracted?.Invoke(door);
+    //}
 
 
 }

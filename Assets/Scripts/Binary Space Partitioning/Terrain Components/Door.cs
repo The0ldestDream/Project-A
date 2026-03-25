@@ -16,19 +16,20 @@ public class Door : IInteractable
 
         doorLocation.interactable = this;
 
-        GameManager.OnPlayerInteracted += InteractedDoor;
+        //GameManager.OnPlayerInteracted += InteractedDoor;
     }
 
     public void DeleteDoor()
     {
         doorLocation.interactable = null;
 
-        GameManager.OnPlayerInteracted -= InteractedDoor;
+        //GameManager.OnPlayerInteracted -= InteractedDoor;
     }
 
     public void Interact(Agent agent)
     {
-        //InteractedDoor(this);
+        Debug.Log("Interacted with Door!");
+        InteractedDoor(this);
     }
 
 
@@ -41,6 +42,8 @@ public class Door : IInteractable
                 doorOpen = true;
                 doorLocation.walkable = true;
                 Debug.Log("Door Opened");
+
+                OnPlayerInteracted?.Invoke(this);
             }
             else
             {
@@ -62,6 +65,8 @@ public class Door : IInteractable
     {
         doorLocked = false;
     }
+
+    public static event Action<Door> OnPlayerInteracted;
 
 
 }

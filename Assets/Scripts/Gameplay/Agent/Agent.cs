@@ -39,6 +39,7 @@ public class Agent
         agentClasses.Add(agentClass);
 
         allActions.Add(new Move(1,1));
+        allActions.Add(new Interact(1,1));
         agentClass.GiveActions(this);
         agentRace.GiveActionsandTraits(this);
 

@@ -18,8 +18,8 @@ public class CombatUI : MonoBehaviour
     public GridCellHighlighter highlighter;
 
     public AgentAction selectedAction;
-    List<GridCell> targetCells = new List<GridCell>();
-    List<Target> targetList = new List<Target>();
+    private List<GridCell> targetCells = new List<GridCell>();
+    private List<Target> targetList = new List<Target>();
 
     public bool buttonscreated = false;
 
@@ -102,7 +102,7 @@ public class CombatUI : MonoBehaviour
             targetCells.Add(target.tile);
         }
 
-        highlighter.HighlightTiles(targetCells);
+        highlighter.HighlightTiles(targetCells); 
 
     }
 

@@ -30,7 +30,6 @@ public class TargetingSystem
                     }
                 }
                 break;
-
             case TargetCategory.Tile:
               
                 foreach (Target target in TargetsWithinRange)
@@ -38,6 +37,17 @@ public class TargetingSystem
                     validTargets.Add(target);
                 }
                 break;
+            case TargetCategory.Object:
+                foreach (Target target in TargetsWithinRange)
+                {
+                    if (target.tile.interactable != null)
+                    {
+                        validTargets.Add(target);
+                    }
+                }
+
+                break;
+
         }
         return validTargets;
     }
@@ -57,7 +67,7 @@ public class TargetingSystem
             {
                 if (x >= 0 && y >= 0 && x < grid.gridArray.GetLength(0) && y < grid.gridArray.GetLength(1)) //Bounds Check
                 {
-                    if (grid.gridArray[x, y].TypeOfTile == TileType.roomTile) // Need to only work within the current room. Currently uses any room tile even other rooms
+                    if (grid.gridArray[x, y].TypeOfTile == TileType.roomTile || grid.gridArray[x, y].TypeOfTile == TileType.doorTile) // Need to only work within the current room. Currently uses any room tile even other rooms
                     {
                         Target target = new Target(grid.gridArray[x, y]);
                         targets.Add(target);

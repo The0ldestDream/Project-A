@@ -9,17 +9,19 @@ public class UIManager : MonoBehaviour
 
     private GridCellHighlighter highlighter;
     public CombatUI combatUI;
-
+    public ExplorationUI explorationUI;
 
     public PlayerMode UImode;
 
-    bool UICreated = false;
+    bool ExplorationUICreated = false;
+    bool CombatUICreated = false;
     
 
     public GameObject buttonPrefab;
     public Transform panel;
     public AgentController agenttouse;
 
+    GameObject explorationUIObj;
     GameObject combatUIObj;
 
 
@@ -44,14 +46,23 @@ public class UIManager : MonoBehaviour
         {
             case PlayerMode.Exploration:
                 RemoveCombatUI();
+
+                if (!ExplorationUICreated)
+                {
+                    InitExplorationUI();
+                    ExplorationUICreated = true;
+                }
+
                 break;
 
             case PlayerMode.Combat:
-                
-                if (!UICreated)
+                RemoveExplorationUI();
+
+                if (!CombatUICreated)
                 {
                     InitCombatUI();
-                    UICreated = true;
+                    CombatUICreated = true;
+
                     if (!combatUI.buttonscreated)
                     {
                         combatUI.CreateActionButtons();
@@ -80,7 +91,21 @@ public class UIManager : MonoBehaviour
 
     private void InitExplorationUI()
     {
+        explorationUIObj = new GameObject("CombatUI");
+        explorationUI = explorationUIObj.AddComponent<ExplorationUI>();
 
+        explorationUI.combatManager = gameManager.combatManager;
+        explorationUI.highlighter = highlighter;
+
+        explorationUI.InitUI();
+    }
+    private void RemoveExplorationUI()
+    {
+        if (explorationUIObj != null)
+        {
+            explorationUI.DestroySelf();
+            ExplorationUICreated = false;
+        }
     }
 
     private void RemoveCombatUI()
@@ -88,7 +113,7 @@ public class UIManager : MonoBehaviour
         if (combatUIObj != null)
         {
             combatUI.DestroySelf();
-            UICreated = false;
+            CombatUICreated = false;
         }
         
     }
@@ -107,24 +132,14 @@ public class UIManager : MonoBehaviour
 
 
 
-    private void RemoveButtons(List<Button> buttons)
-    {
-        foreach (Button button in buttons)
-        {
-            Destroy(button.gameObject);
-        }
-        buttons.Clear();
-    }
-
-
     //Events
     private void OnEnable()
     {
-        //gameManager.combatManager.OnTargetingStarted += ShowTargetsOnGrid;
+
     }
     private void OnDisable()
     {
-        //gameManager.combatManager.OnTargetingStarted -= ShowTargetsOnGrid;
+
     }
 
 

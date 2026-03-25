@@ -232,11 +232,13 @@ public class CombatManager : MonoBehaviour
     public void OnEnable()
     {
         OnCombatStarted += CombatSetup;
+        PlayerController.OnInteractPressed += StartTargeting;
     }
 
     public void OnDisable()
     {
         OnCombatStarted -= CombatSetup;
+        PlayerController.OnInteractPressed -= StartTargeting;
     }
 
 }
