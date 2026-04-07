@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
     private void UseInteract(Target target)
     {
         AgentAction InteractAction = agent.allActions.Find(x => x.ActionName == "Interact");
-        InteractAction.Action(agent, target);
+        InteractAction.Action(agent, target, grid);
     }
 
     public void EndTurn(InputAction.CallbackContext context)

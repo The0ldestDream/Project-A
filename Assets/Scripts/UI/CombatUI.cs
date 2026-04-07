@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 using System.Collections.Generic;
 
 public class CombatUI : MonoBehaviour
@@ -109,7 +110,7 @@ public class CombatUI : MonoBehaviour
 
     private void UseAgentAction(AgentAction action, Target target)
     {
-        action.Action(agenttouse.myAgent, target);
+        combatManager.UseAgentAction(agenttouse.myAgent, action, target);
     }
 
     public void CheckIfClickedTileIsValid(GridCell clickedcell)

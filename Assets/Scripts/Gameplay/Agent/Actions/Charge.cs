@@ -1,22 +1,26 @@
 using UnityEngine;
 
-public class Punch : AgentAction
+public class Charge : AgentAction
 {
-    public Punch(int startingLevel, float expLevelUp) : base("Punch", startingLevel, 99, expLevelUp)
+    public Charge(int startingLevel, float expLevelUp) : base("Charge", startingLevel, 99, expLevelUp)
     {
-        Range = 20;
-        shape = TargetShape.Single;
-        target = TargetCategory.Agent;
+        Range = 5;
+        shape = TargetShape.Line;
+        target = TargetCategory.Tile;
     }
 
-    public override void Action(Agent ActionOwner, Target target, GridSystem grid)
+    public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
-        
         int modifier = CalculateModifier(ActionOwner);
+
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
-            Debug.Log("Punch has been Used");
-            target.agent.DealDamage(1 + modifier);
+            Debug.Log("Charge has been Used");
+            ActionOwner.controller.MoveTo(ActionTarget.tile);
+            if (ActionTarget.agent != null)
+            {
+                ActionTarget.agent.DealDamage(1 + modifier);
+            }
         }
 
     }

@@ -1,18 +1,17 @@
 using UnityEngine;
-using System.Collections;
-public class Move : AgentAction
-{
 
-    public Move(int startingLevel, float expLevelUp) : base("Move", startingLevel, 99, expLevelUp)
+public class Cleave : AgentAction
+{
+    public Cleave(int startingLevel, float expLevelUp) : base("Cleave", startingLevel, 99, expLevelUp)
     {
-        Range = 20;
-        shape = TargetShape.Radius;
-        target = TargetCategory.Tile;
+        Range = 2;
+        shape = TargetShape.Cone;
+        target = TargetCategory.Agent;
     }
 
     public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
-        ActionOwner.controller.MoveTo(ActionTarget.tile);
+        throw new System.NotImplementedException();
     }
 
     public override void ActionUniqueLevelUp()

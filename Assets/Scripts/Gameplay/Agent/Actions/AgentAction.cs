@@ -15,10 +15,13 @@ public abstract class AgentAction
 
 
     //Targeting Variables
+    public TargetShape shape;
     public TargetCategory target;
     public int Range; //Anything for melee would be 1
     public int TargetCount;
 
+    //Helper
+    private ShapeHelper shapeHelper = new ShapeHelper();
 
     protected AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
     {
@@ -33,7 +36,7 @@ public abstract class AgentAction
         ResourceCost = 1;
     }
 
-    public abstract void Action(Agent ActionOwner, Target ActionTarget);
+    public abstract void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid);
 
     public abstract int CalculateModifier(Agent ActionOwner);
 
