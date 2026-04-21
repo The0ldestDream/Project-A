@@ -9,5 +9,6 @@ public enum Direction
     Down,
     DownLeft,
     Left,
-    UpLeft
+    UpLeft,
+    None
 }

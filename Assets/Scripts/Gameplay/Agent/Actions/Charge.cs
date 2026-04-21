@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class Charge : AgentAction
 {
     public Charge(int startingLevel, float expLevelUp) : base("Charge", startingLevel, 99, expLevelUp)
@@ -16,11 +16,27 @@ public class Charge : AgentAction
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Charge has been Used");
-            ActionOwner.controller.MoveTo(ActionTarget.tile);
+            List<GridCell> affectedCells = shapeHelper.FindCellsWithinLine(grid, ActionOwner.gridPos, ActionTarget.tile);
+
             if (ActionTarget.agent != null)
             {
+                GridCell closestCellToTarget = shapeHelper.FindFurthestCellInList(affectedCells, ActionOwner.gridPos);
+                ActionOwner.controller.MoveTo(closestCellToTarget);
                 ActionTarget.agent.DealDamage(1 + modifier);
             }
+            else
+            {
+                ActionOwner.controller.MoveTo(ActionTarget.tile);
+
+            }
+
+
+
+            foreach (GridCell cell in affectedCells)
+            {
+                Debug.Log("Cell at (" + cell.x + ", " + cell.y + ")");
+            }
+        
         }
 
     }

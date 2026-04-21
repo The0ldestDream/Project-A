@@ -60,7 +60,7 @@ public class ShapeHelper
         int directionX = Direction.x;
         int directionY = Direction.y;
 
-
+        //Bresenham's Line Algorithm
         // X Dominant 
         if (Mathf.Abs(dx) >= Mathf.Abs(dy))
         {
@@ -101,20 +101,77 @@ public class ShapeHelper
 
     }
 
-    public List<GridCell> FindCellsWithinCone(GridSystem grid, GridCell Start, GridCell End)
+    public List<GridCell> FindCellsWithinCone(GridSystem grid, GridCell Start, GridCell End, int distance, int width)
     {
         List<GridCell> CellsInCone = new List<GridCell>();
 
-        int dx = End.x - Start.x;
-        int dy = End.y - Start.y;
-        // Direction = (x,y)
+        var Direction = DetermineDirection(Start, End);
+        int directionX = Direction.x;
+        int directionY = Direction.y;
+        
+        int pX = -directionY;
+        int pY = directionX;
+
+
+        //Start Loop
+
+        for (int i = 1; i <= distance; i++)
+        {
+            //Find the next Cell Values by adding on direction values that are multiplied by the current distance  
+            //to the starting cells.
+            int PointX = Start.x + directionX * i;
+            int PointY = Start.y + directionY * i;
+
+            //Calculate the width based on how far the cone has moved
+            float progress = (float)i / distance;
+            int currentWidth = Mathf.FloorToInt(progress * width);
+
+            //Find the perpendicular cells using an offset
+            for (int offset = -currentWidth; offset <= currentWidth; offset++)
+            {
+                int x = PointX + pX * offset;
+                int y = PointY + pY * offset;
+
+                CellsInCone.Add(grid.gridArray[x,y]);
+            }
+        }
+
+        return CellsInCone;
+    }
+
+    public List<GridCell> FindCellsInfront(GridSystem grid, GridCell Start, GridCell End, int distance, int width)
+    {
+        List<GridCell> CellsInSpace = new List<GridCell>();
 
         var Direction = DetermineDirection(Start, End);
         int directionX = Direction.x;
         int directionY = Direction.y;
 
+        int pX = -directionY;
+        int pY = directionX;
 
-        return CellsInCone;
+        int halfwidth = width / 2;
+
+        //Start Loop
+
+        for (int i = 1; i <= distance; i++)
+        {
+            //Find the next Cell Values by adding on direction values that are multiplied by the current distance  
+            //to the starting cells.
+            int PointX = Start.x + directionX * i;
+            int PointY = Start.y + directionY * i;
+
+            //Find the perpendicular cells using an offset
+            for (int offset = -halfwidth; offset <= halfwidth; offset++)
+            {
+                int x = PointX + pX * offset;
+                int y = PointY + pY * offset;
+
+                CellsInSpace.Add(grid.gridArray[x, y]);
+            }
+        }
+
+        return CellsInSpace;
     }
 
     public GridCell NearestUnoccupiedCell(GridSystem grid, GridCell Start, GridCell End)
@@ -150,11 +207,35 @@ public class ShapeHelper
         return closestCell;
     }
 
+    public GridCell FindFurthestCellInList(List<GridCell> cells, GridCell Start)
+    {
+        GridCell FurthestCell = null;
+        int FurthestManhatten = 0;
+
+        foreach (GridCell cell in cells)
+        {
+            int dx = Mathf.Abs(Start.x - cell.x);
+            int dy = Mathf.Abs(Start.y - cell.y);
+
+            int manhattan = dx + dy;
+
+            if (manhattan > FurthestManhatten)
+            {
+                FurthestManhatten = manhattan;
+                FurthestCell = cell;
+            }
+
+        }
+
+        return FurthestCell;
+    }
 
     private (int x, int y) DetermineDirection(GridCell Start, GridCell End)
     {
         int directionX = 0;
         int directionY = 0;
+
+
         int dx = End.x - Start.x;
         int dy = End.y - Start.y;
 
@@ -184,7 +265,48 @@ public class ShapeHelper
             directionY = 0;
         }
 
+
         return (directionX, directionY);
     }
 
+    private Direction FindDirection(int x, int y)
+    {
+        Direction dir = Direction.None;
+
+        if (x == 0 && y == 1)
+        {
+            dir = Direction.Up;
+        }
+        else if (x == 1 && y == 1)
+        {
+            dir = Direction.UpRight;
+        }
+        else if (x == 1 && y == 0)
+        {
+            dir = Direction.Right;
+        }
+        else if (x == 1 && y == -1)
+        {
+            dir = Direction.RightDown;
+        }
+        else if (x == 0 && y == -1)
+        {
+            dir = Direction.Down;
+        }
+        else if (x == -1 && y == -1)
+        {
+            dir = Direction.DownLeft;
+        }
+        else if (x == -1 && y == 0)
+        {
+            dir = Direction.Left;
+        }
+        else if (x == -1 && y == 1)
+        {
+            dir = Direction.UpLeft;
+        }
+
+
+        return dir;
+    }
 }

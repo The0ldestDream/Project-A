@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public abstract class AgentAction
 {
     public string ActionName;
@@ -18,10 +17,12 @@ public abstract class AgentAction
     public TargetShape shape;
     public TargetCategory target;
     public int Range; //Anything for melee would be 1
+    public int Width; //Anything that uses a cone or thicker line
+    public int Radius; //For Circular shapes
     public int TargetCount;
 
     //Helper
-    private ShapeHelper shapeHelper = new ShapeHelper();
+    public ShapeHelper shapeHelper = new ShapeHelper();
 
     protected AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
     {

@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class Fighter : AgentClass
+public class Sorcerer : AgentClass
 {
-    
-    public Fighter(int startingLevel, float expLevelUp) : base("Fighter", startingLevel, expLevelUp)
+    public Sorcerer(int startingLevel, float expLevelUp) : base("Sorcerer", startingLevel, expLevelUp)
     {
         //Add starting actions
         ClassActions.Add(new Stab(1, 0));
@@ -12,10 +11,8 @@ public class Fighter : AgentClass
 
     }
 
-
     public override void OnLevelUp()
     {
         throw new System.NotImplementedException();
     }
-
 }
