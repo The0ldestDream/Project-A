@@ -1,32 +1,29 @@
 using UnityEngine;
 using System.Collections.Generic;
-
-public class Fireball : AgentAction
+public class LightningBolt : AgentAction
 {
-    public Fireball(int startingLevel, float expLevelUp) : base("Fireball", startingLevel, 1, expLevelUp)
+    public LightningBolt(int startingLevel, float expLevelUp) : base("Lightning Bolt", startingLevel, 99, expLevelUp)
     {
-        Range = 8;
-        Radius = 2;
+        Range = 15;
         shape = TargetShape.Single;
         target = TargetCategory.Tile;
     }
-
-    public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
+    public override void Action(Agent ActionOwner, Target target, GridSystem grid)
     {
-        
 
         int modifier = CalculateModifier(ActionOwner);
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
-            Debug.Log("Fireball has been Used");
+            Debug.Log("Lightning Bolt has been Used");
 
-            List<GridCell> affectedCells = shapeHelper.FindCellsWithinRadius(grid, ActionTarget.tile, Radius);
+            List<GridCell> affectedCells = shapeHelper.FindCellsWithinLine(grid, ActionOwner.gridPos, target.tile);
 
             foreach (GridCell cell in affectedCells)
             {
                 cell.AgentOnTile.DealDamage(1 + modifier);
             }
         }
+
     }
 
     public override void ActionUniqueLevelUp()
@@ -36,6 +33,7 @@ public class Fireball : AgentAction
 
     public override int CalculateModifier(Agent ActionOwner)
     {
+        // Calculate the Modifier I want the Move to benefit the most from
         Stat intelligence = ActionOwner.statSheet.GetStat("Intelligence");
         int modifier = Mathf.RoundToInt((float)(intelligence.currentValue * 0.5));
 

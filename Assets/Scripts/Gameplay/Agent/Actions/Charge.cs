@@ -31,11 +31,6 @@ public class Charge : AgentAction
             }
 
 
-
-            foreach (GridCell cell in affectedCells)
-            {
-                Debug.Log("Cell at (" + cell.x + ", " + cell.y + ")");
-            }
         
         }
 
