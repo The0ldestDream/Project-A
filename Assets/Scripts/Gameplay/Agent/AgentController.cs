@@ -10,7 +10,7 @@ public class AgentController : MonoBehaviour
     public AStarPathfinding pathfinding;
     public CombatState state;
 
-
+    public AIController AIC = null;
 
     public void Init(Agent agent)
     {

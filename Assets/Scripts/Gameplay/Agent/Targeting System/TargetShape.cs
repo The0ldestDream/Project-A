@@ -6,6 +6,7 @@ public enum TargetShape
     Line,
     Radius,
     Cone,
+    Sweep,
     Cross, 
     Star // No Implemenation yet.
 }

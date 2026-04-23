@@ -6,7 +6,7 @@ public class Cleave : AgentAction
     {
         Range = 2;
         Width = 3;
-        shape = TargetShape.Cone;
+        shape = TargetShape.Sweep;
         target = TargetCategory.Tile;
     }
 

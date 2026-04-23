@@ -6,8 +6,8 @@ public class Sorcerer : AgentClass
     {
         //Add starting actions
         ClassActions.Add(new Fireball(1, 0));
-        ClassActions.Add(new Charge(1, 0));
-        ClassActions.Add(new Cleave(1, 0));
+        ClassActions.Add(new LightningBolt(1, 0));
+        ClassActions.Add(new FireSpray(1, 0));
 
     }
 

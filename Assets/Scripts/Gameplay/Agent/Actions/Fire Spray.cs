@@ -6,7 +6,7 @@ public class FireSpray : AgentAction
     {
         Range = 15;
         Width = 2;
-        shape = TargetShape.Single;
+        shape = TargetShape.Cone;
         target = TargetCategory.Tile;
     }
 

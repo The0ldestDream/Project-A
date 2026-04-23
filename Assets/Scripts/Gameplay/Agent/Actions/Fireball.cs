@@ -7,7 +7,7 @@ public class Fireball : AgentAction
     {
         Range = 8;
         Radius = 2;
-        shape = TargetShape.Single;
+        shape = TargetShape.Radius;
         target = TargetCategory.Tile;
     }
 

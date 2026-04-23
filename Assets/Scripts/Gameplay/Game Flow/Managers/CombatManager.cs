@@ -193,6 +193,7 @@ public class CombatManager : MonoBehaviour
         OnTargetingStarted?.Invoke(targets);
     }
 
+
     public void UseAgentAction(Agent agent, AgentAction action, Target target)
     {
         action.Action(agent, target, gameManager.levelManager.level.levelGenerator.ourGrid);

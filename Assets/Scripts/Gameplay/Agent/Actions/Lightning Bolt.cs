@@ -5,7 +5,7 @@ public class LightningBolt : AgentAction
     public LightningBolt(int startingLevel, float expLevelUp) : base("Lightning Bolt", startingLevel, 99, expLevelUp)
     {
         Range = 15;
-        shape = TargetShape.Single;
+        shape = TargetShape.Line;
         target = TargetCategory.Tile;
     }
     public override void Action(Agent ActionOwner, Target target, GridSystem grid)
