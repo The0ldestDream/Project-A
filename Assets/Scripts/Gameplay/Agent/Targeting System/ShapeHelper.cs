@@ -230,6 +230,38 @@ public class ShapeHelper
         return FurthestCell;
     }
 
+    public List<GridCell> GetShape(GridSystem grid, Agent agent, AgentAction action, Target target)
+    {
+        List<GridCell> Cells = new List<GridCell>();
+
+        switch (action.shape)
+        {
+            case TargetShape.Single:
+                Cells.Add(target.tile);
+                break;
+            case TargetShape.Radius:
+                Cells = FindCellsWithinRadius(grid, target.tile, action.Radius);
+                break;
+
+            case TargetShape.Line:
+                Cells = FindCellsWithinLine(grid, agent.gridPos, target.tile);
+                break;
+
+            case TargetShape.Sweep:
+                Cells = FindCellsInfront(grid, agent.gridPos, target.tile, action.Range, action.Width);
+                break;
+
+            case TargetShape.Cone:
+                Cells = FindCellsWithinCone(grid, agent.gridPos, target.tile, action.Range, action.Width);
+                break;
+        }
+
+
+
+        return Cells;
+    }
+
+
     private (int x, int y) DetermineDirection(GridCell Start, GridCell End)
     {
         int directionX = 0;

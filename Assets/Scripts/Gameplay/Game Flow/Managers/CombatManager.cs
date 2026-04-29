@@ -63,7 +63,7 @@ public class CombatManager : MonoBehaviour
     {
         
         //Tell them to do their turn
-        currentAgent.StartTurn();
+        currentAgent.StartTurn(gameManager.levelManager.level.levelGenerator.ourGrid, AgentsInCombat);
 
     }
 
@@ -182,7 +182,7 @@ public class CombatManager : MonoBehaviour
                 temp.Enqueue(controller);
             }
         }
-
+        AgentsInCombat.Remove(agent.controller);
         TurnOrder = temp;
     }
 
@@ -199,7 +199,15 @@ public class CombatManager : MonoBehaviour
         action.Action(agent, target, gameManager.levelManager.level.levelGenerator.ourGrid);
     }
 
-
+    public List<AgentController> GetAllAgents()
+    {
+        List<AgentController> agents = new List<AgentController>();
+        foreach (AgentController agent in TurnOrder)
+        {
+            agents.Add(agent);
+        }
+        return agents;
+    }
 
     private void SubscribeAgent(AgentController ac)
     {

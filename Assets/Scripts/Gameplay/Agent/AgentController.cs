@@ -27,7 +27,7 @@ public class AgentController : MonoBehaviour
 
     //Things to use in turns
 
-    public void StartTurn()
+    public void StartTurn(GridSystem grid, List<AgentController> agents)
     {
         state = CombatState.TurnInProgress;
 
@@ -38,6 +38,9 @@ public class AgentController : MonoBehaviour
         if (myAgent.alignment == AgentAlignment.Enemy)
         {
             Debug.Log("Enemy Agent Turn!");
+
+            AIC.DetermineAction(grid, agents);
+
             EndTurn();
         }
 

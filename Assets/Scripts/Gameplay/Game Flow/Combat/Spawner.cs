@@ -33,6 +33,8 @@ public class Spawner : MonoBehaviour
         Agent EAgent = new Agent(LS.levelGenerator.ourGrid, LS.levelGenerator.ourGrid.gridArray[x, y], new Human(), new Fighter(1, 1), AgentAlignment.Enemy);
         AC.Init(EAgent);
         AC.pathfinding = combatManager.gameManager.pathfinding;
+        AIController AIC = new AIController(EAgent);
+        AC.AIC = AIC;
 
         EnemyAgents.Add(agent);
 

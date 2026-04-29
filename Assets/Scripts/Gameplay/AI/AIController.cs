@@ -7,45 +7,84 @@ public class AIController
     private TargetingSystem targeting = new TargetingSystem();
     private ShapeHelper helper = new ShapeHelper();
 
-    public void Init(Agent agent)
+    public AIController(Agent agent)
     {
         myAgent = agent;
     }
 
-    public void DetermineAction()
+    public void DetermineAction(GridSystem grid, List<AgentController> agents)
     {
-        List<AgentAction> usableableActions = new List<AgentAction>();
+        int bestscore = 0;
+        AgentAction bestAction = null;
+        Target bestTarget = null;
 
-
-
+        // Go through each action the agent has 
+        // Add the actions that can affect the player's team
         foreach (AgentAction action in myAgent.allActions)
         {
-            FindBestAction(action);
+            List<Target> targets = targeting.ReturnValidTargets(grid, myAgent, action);
+            
+
+            foreach (Target target in targets)
+            {
+                List<GridCell> cells = helper.GetShape(grid, myAgent, action, target);
+                int score = 0;
+
+                foreach (GridCell cell in cells)
+                {
+                    if (cell.AgentOnTile != null && cell.AgentOnTile.controller.AIC != this)
+                    {
+                        score++;
+                    }
+
+                }
+
+                if (score > bestscore)
+                {
+                    bestscore = score;
+                    bestAction = action;
+                    bestTarget = target;
+                }
+
+            }
         }
-    }
 
-    private void FindBestTile()
-    {
-
-    }
-
-    private void FindBestAction(AgentAction action)
-    {
-        switch (action.target)
+        // Choose the action that hits the most targets
+        if (bestAction != null)
         {
-            case TargetCategory.Self:
-                break;
+            bestAction.Action(myAgent, bestTarget, grid);
+        }
+        else
+        {
+            AgentAction move = myAgent.allActions.Find(x => x.ActionName == "Move");
+            move.Action(myAgent, MoveTowardEnemy(grid, move, agents), grid);
+        }
+    }
 
-            case TargetCategory.Agent:
-                //targeting.ReturnValidTargets(grid, myAgent, action);
-                break;
+ 
 
-            case TargetCategory.Tile:
-                break;
-        
+    private Target MoveTowardEnemy(GridSystem grid, AgentAction action, List<AgentController> agents)
+    {
+        List<Target> targets = targeting.ReturnValidTargets(grid, myAgent, action);
+
+        int closestManhattenDistance = Mathf.FloorToInt(Mathf.Infinity);
+        Target closestTarget = null;
+
+        foreach (Target target in targets)
+        {
+            int dx = Mathf.Abs(myAgent.gridPos.x - target.tile.x);
+            int dy = Mathf.Abs(myAgent.gridPos.y - target.tile.y);
+
+            int manhatten = dx + dy;
+
+            if (manhatten < closestManhattenDistance)
+            {
+                closestManhattenDistance = manhatten;
+                closestTarget = target;
+            }
         }
 
-
+        return closestTarget;
     }
 
 
