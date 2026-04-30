@@ -36,7 +36,7 @@ public abstract class AgentRace
 
         foreach (AgentTrait trait in RaceTraits)
         {
-            OwnerAgent.allTraits.Add(trait);
+            OwnerAgent.statSheet.allTraits.Add(trait);
         }
     }
 }

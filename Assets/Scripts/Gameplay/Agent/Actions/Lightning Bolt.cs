@@ -4,14 +4,15 @@ public class LightningBolt : AgentAction
 {
     public LightningBolt(int startingLevel, float expLevelUp) : base("Lightning Bolt", startingLevel, 99, expLevelUp)
     {
-        Range = 15;
+        Range = 10;
         shape = TargetShape.Line;
         target = TargetCategory.Tile;
     }
     public override void Action(Agent ActionOwner, Target target, GridSystem grid)
     {
+        ActionOwner.FindDirection(ActionOwner.gridPos, target.tile);
 
-        int modifier = CalculateModifier(ActionOwner);
+
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Lightning Bolt has been Used");
@@ -20,7 +21,8 @@ public class LightningBolt : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-                cell.AgentOnTile.DealDamage(1 + modifier);
+                int modifier = CalculateModifier(ActionOwner);
+                cell.damageable.DealDamage(1 + modifier);
             }
         }
 
@@ -34,8 +36,8 @@ public class LightningBolt : AgentAction
     public override int CalculateModifier(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
-        Stat intelligence = ActionOwner.statSheet.GetStat("Intelligence");
-        int modifier = Mathf.RoundToInt((float)(intelligence.currentValue * 0.5));
+        int intelligenceValue = ActionOwner.statSheet.GetStatValue("Intelligence");
+        int modifier = Mathf.RoundToInt((float)(intelligenceValue * 0.5));
 
         return modifier;
     }

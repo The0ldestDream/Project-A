@@ -6,19 +6,19 @@ public abstract class Stat
     public string StatName;
 
     //Max Value is the actual value of this agent's stat (isn't affected by buffs or debuffs)
-    public int maxValue;
+    public int baseValue;
     //Current Value is the current value which is affected by conditions
-    public int currentValue;
+    public int finalValue;
     //The lowest value that the stat will allow 
     public int minValue;
 
     public Stat(string _StatName, int _value, int _minValue)
     {
         StatName = _StatName;
-        maxValue = _value;
+        baseValue = _value;
         minValue = _minValue;
 
-        currentValue = maxValue;
+        finalValue = baseValue;
 
 
     }
@@ -31,11 +31,11 @@ public abstract class Stat
         
         if (newValue > minValue)
         {
-            maxValue = newValue;
+            baseValue = newValue;
 
-            if (currentValue == maxValue)
+            if (finalValue == baseValue)
             {
-                currentValue = maxValue;
+                finalValue = baseValue;
             }
         }
     }
@@ -43,21 +43,21 @@ public abstract class Stat
     //Used when stat is affected temporarily
     public void AdjustValue(int amount)
     {
-        int valueCheck = currentValue + amount;
+        int valueCheck = finalValue + amount;
         if (valueCheck >= minValue)
         {
-            currentValue = valueCheck;
+            finalValue = valueCheck;
         }
     }
 
 
     public void ResetToMax()
     {
-        currentValue = maxValue;
+        finalValue = baseValue;
     }
     public void ResetToMin()
     {
-        currentValue = minValue;
+        finalValue = minValue;
     }
 
 }

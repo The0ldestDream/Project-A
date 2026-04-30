@@ -104,11 +104,6 @@ public class AgentController : MonoBehaviour
     //Events
     public event Action<AgentController> OnTurnEnded;
 
-
-
-
-
-
     private void OnEnable()
     {
         

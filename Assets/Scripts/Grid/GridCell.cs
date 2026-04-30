@@ -17,7 +17,9 @@ public class GridCell
     public EntityType EntityOnTile = EntityType.None;
     public ObjectType ObjectOnTile = ObjectType.None;
     public Agent AgentOnTile;
+
     public IInteractable interactable = null;
+    public IDamageable damageable = null;
 
     public int cost;
     public bool walkable = true;

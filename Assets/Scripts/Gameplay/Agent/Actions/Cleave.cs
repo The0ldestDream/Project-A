@@ -4,7 +4,7 @@ public class Cleave : AgentAction
 {
     public Cleave(int startingLevel, float expLevelUp) : base("Cleave", startingLevel, 99, expLevelUp)
     {
-        Range = 2;
+        Range = 1;
         Width = 3;
         shape = TargetShape.Sweep;
         target = TargetCategory.Tile;
@@ -12,6 +12,7 @@ public class Cleave : AgentAction
 
     public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
+        ActionOwner.FindDirection(ActionOwner.gridPos, ActionTarget.tile);
 
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
@@ -21,7 +22,7 @@ public class Cleave : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-                cell.AgentOnTile.DealDamage(1 + modifier);
+                cell.damageable.DealDamage(1 + modifier);
 
             }
         }
@@ -36,8 +37,8 @@ public class Cleave : AgentAction
     public override int CalculateModifier(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
-        Stat strength = ActionOwner.statSheet.GetStat("Strength");
-        int modifier = Mathf.RoundToInt((float)(strength.currentValue * 0.5));
+        int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");
+        int modifier = Mathf.RoundToInt((float)(strengthValue * 0.5));
 
         return modifier;
     }

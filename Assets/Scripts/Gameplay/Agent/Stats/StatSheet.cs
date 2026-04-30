@@ -4,6 +4,7 @@ public class StatSheet
 {
 
     public List<Stat> AgentStatSheet = new List<Stat>();
+    public List<AgentTrait> allTraits = new List<AgentTrait>();
     int minValue = 7;
 
     public StatSheet(int StrengthValue, int ConsititutionValue, int IntelligenceValue, int DexterityValue)
@@ -43,8 +44,27 @@ public class StatSheet
     }
 
 
+    public int GetStatValue(string StatName)
+    {
+        Stat stat = AgentStatSheet.Find(x => x.StatName == StatName);
+        int value = stat.baseValue;
+
+        foreach (AgentTrait trait in allTraits)
+        {
+            value += trait.StatModifier(stat);
+        }
+
+        //Add Buff/Debuffs in here in the same way
+
+
+
+        return value;
+    }
+
     public Stat GetStat(string StatName)
     {
-        return AgentStatSheet.Find(x=> x.StatName == StatName);
+        Stat stat = AgentStatSheet.Find(x => x.StatName == StatName);
+
+        return stat;
     }
 }

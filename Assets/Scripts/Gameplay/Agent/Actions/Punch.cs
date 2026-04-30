@@ -4,19 +4,20 @@ public class Punch : AgentAction
 {
     public Punch(int startingLevel, float expLevelUp) : base("Punch", startingLevel, 99, expLevelUp)
     {
-        Range = 20;
+        Range = 1;
         shape = TargetShape.Single;
         target = TargetCategory.Agent;
     }
 
     public override void Action(Agent ActionOwner, Target target, GridSystem grid)
     {
-        
+        ActionOwner.FindDirection(ActionOwner.gridPos, target.tile);
+
         int modifier = CalculateModifier(ActionOwner);
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Punch has been Used");
-            target.agent.DealDamage(1 + modifier);
+            target.tile.damageable.DealDamage(1 + modifier);
         }
 
     }
@@ -29,8 +30,8 @@ public class Punch : AgentAction
     public override int CalculateModifier(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
-        Stat strength = ActionOwner.statSheet.GetStat("Strength");
-        int modifier = Mathf.RoundToInt((float)(strength.currentValue * 0.5));
+        int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");
+        int modifier = Mathf.RoundToInt((float)(strengthValue * 0.5));
 
         return modifier;
     }

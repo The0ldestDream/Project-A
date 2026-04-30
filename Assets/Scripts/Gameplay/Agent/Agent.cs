@@ -1,7 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
-public class Agent
+public class Agent : IDamageable
 {
     //Grid Information
     public GridCell gridPos;
@@ -15,10 +15,10 @@ public class Agent
     public List<AgentClass> agentClasses = new List<AgentClass>();
     public AgentRace agentRace;
     public List<AgentAction> allActions = new List<AgentAction>();
-    public List<AgentTrait> allTraits = new List<AgentTrait>();
     public StatSheet statSheet;
-
     public List<AgentResource> allResources = new List<AgentResource>();
+
+    public Direction agentFacingDirection = Direction.None;
 
     public bool isAlive;
 
@@ -30,25 +30,22 @@ public class Agent
     public Agent(GridSystem grid, GridCell spawnPoint, AgentRace race, AgentClass agentClass, AgentAlignment agentAlignment) 
     {
         gridPos = spawnPoint;
-        grid.gridArray[spawnPoint.x, spawnPoint.y].EntityOnTile = EntityType.Agent;
-        grid.gridArray[spawnPoint.x, spawnPoint.y].AgentOnTile = this;
-
+        SetEntityOnTile(grid, true);
 
         //Agent Information
         agentRace = race;
         agentClasses.Add(agentClass);
-
-        allActions.Add(new Move(1,1));
-        allActions.Add(new Interact(1,1));
-        agentClass.GiveActions(this);
-        agentRace.GiveActionsandTraits(this);
-
 
         alignment = agentAlignment;
         statSheet = new StatSheet(10,10,10,10);
         allResources.Add(new Health(statSheet));
         allResources.Add(new ActionPoint());
         isAlive = true;
+
+        allActions.Add(new Move(1, 1));
+        allActions.Add(new Interact(1, 1));
+        agentClass.GiveActions(this);
+        agentRace.GiveActionsandTraits(this);
     }
 
 
@@ -57,10 +54,10 @@ public class Agent
     //Movement
     public void MoveTo(GridSystem grid, GridCell Destination)
     {
-        
 
         if (grid.gridArray[Destination.x, Destination.y].walkable && Destination != null)
         {
+            FindDirection(gridPos, Destination);
             SetEntityOnTile(grid, false);
             gridPos = Destination;
             SetEntityOnTile(grid, true);
@@ -112,15 +109,46 @@ public class Agent
         {
             grid.gridArray[gridPos.x, gridPos.y].EntityOnTile = EntityType.Agent;
             grid.gridArray[gridPos.x, gridPos.y].AgentOnTile = this;
+            grid.gridArray[gridPos.x, gridPos.y].damageable = this;
         }
         else if (!OnTile)
         {
             grid.gridArray[gridPos.x, gridPos.y].EntityOnTile = EntityType.None;
             grid.gridArray[gridPos.x, gridPos.y].AgentOnTile = null;
+            grid.gridArray[gridPos.x, gridPos.y].damageable = null;
         }
 
     }
 
+
+    public void FindDirection(GridCell A, GridCell B)
+    {
+        int dx = B.x - A.x;
+        int dy = B.y - A.y;
+
+        if (Mathf.Abs(dx) > Mathf.Abs(dy))
+        {
+            if (dx > 0)
+            {
+                agentFacingDirection = Direction.Right;
+            }
+            else
+            {
+                agentFacingDirection = Direction.Left;
+            }
+        }
+        else if (Mathf.Abs(dy) > Mathf.Abs(dx))
+        {
+            if (dy > 0)
+            {
+                agentFacingDirection = Direction.Up;
+            }
+            else
+            {
+                agentFacingDirection = Direction.Down;
+            }
+        }
+    }
 
     //Events
     public event Action<Agent> OnDeath;

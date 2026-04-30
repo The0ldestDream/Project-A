@@ -15,8 +15,9 @@ public abstract class AgentTrait
         TraitLevel = startingLevel;
     }
 
-    public abstract void Trait();
+    public abstract int StatModifier(Stat stat);
 
+    public abstract int DamageModifier(DamageContext damageContext);
 
     public void GainExperience(float experienceGained)
     {

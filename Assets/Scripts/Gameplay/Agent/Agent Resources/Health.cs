@@ -10,8 +10,8 @@ public class Health : AgentResource
 
     public void DetermineAgentHealth(StatSheet AgentStats)
     {
-        Stat cons = AgentStats.GetStat("Consititution");
-        int modifier = Mathf.RoundToInt((float)(cons.currentValue * 0.2));
+        int consValue = AgentStats.GetStatValue("Consititution");
+        int modifier = Mathf.RoundToInt((float)(consValue * 0.2));
         maxAmount = 10 + modifier;
     }
 

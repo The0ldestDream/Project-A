@@ -67,20 +67,28 @@ public class AIController
     {
         List<Target> targets = targeting.ReturnValidTargets(grid, myAgent, action);
 
-        int closestManhattenDistance = Mathf.FloorToInt(Mathf.Infinity);
+        int closestManhattenDistance = 10000;
         Target closestTarget = null;
 
         foreach (Target target in targets)
         {
-            int dx = Mathf.Abs(myAgent.gridPos.x - target.tile.x);
-            int dy = Mathf.Abs(myAgent.gridPos.y - target.tile.y);
-
-            int manhatten = dx + dy;
-
-            if (manhatten < closestManhattenDistance)
+            foreach (AgentController agent in agents)
             {
-                closestManhattenDistance = manhatten;
-                closestTarget = target;
+                if (agent.AIC == this || agent.myAgent.alignment == AgentAlignment.Enemy)
+                {
+                    continue;
+                }
+
+                int dx = Mathf.Abs(target.tile.x - agent.myAgent.gridPos.x);
+                int dy = Mathf.Abs(target.tile.y - agent.myAgent.gridPos.y);
+
+                int manhatten = dx + dy;
+
+                if (manhatten < closestManhattenDistance)
+                {
+                    closestManhattenDistance = manhatten;
+                    closestTarget = target;
+                }
             }
         }
 

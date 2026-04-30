@@ -22,12 +22,21 @@ public class Charge : AgentAction
             {
                 GridCell closestCellToTarget = shapeHelper.FindFurthestCellInList(affectedCells, ActionOwner.gridPos);
                 ActionOwner.controller.MoveTo(closestCellToTarget);
-                ActionTarget.agent.DealDamage(1 + modifier);
+
+                foreach (GridCell cell in affectedCells)
+                {
+                    cell.damageable.DealDamage(1 + modifier);
+                }
+
+                ActionTarget.tile.damageable.DealDamage(1 + modifier);
             }
             else
             {
                 ActionOwner.controller.MoveTo(ActionTarget.tile);
-
+                foreach (GridCell cell in affectedCells)
+                {
+                    cell.damageable.DealDamage(1 + modifier);
+                }
             }
 
 
@@ -44,8 +53,8 @@ public class Charge : AgentAction
     public override int CalculateModifier(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
-        Stat strength = ActionOwner.statSheet.GetStat("Strength");
-        int modifier = Mathf.RoundToInt((float)(strength.currentValue * 0.5));
+        int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");
+        int modifier = Mathf.RoundToInt((float)(strengthValue * 0.5));
 
         return modifier;
     }

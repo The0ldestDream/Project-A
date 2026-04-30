@@ -5,7 +5,7 @@ public class Move : AgentAction
 
     public Move(int startingLevel, float expLevelUp) : base("Move", startingLevel, 99, expLevelUp)
     {
-        Range = 20;
+        Range = 5;
         shape = TargetShape.Radius;
         target = TargetCategory.Tile;
     }

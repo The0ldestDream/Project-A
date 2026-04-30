@@ -11,6 +11,7 @@ public class Interact : AgentAction
 
     public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
+        ActionOwner.FindDirection(ActionOwner.gridPos, ActionTarget.tile);
         ActionTarget.tile.interactable.Interact(ActionOwner);
     }
 

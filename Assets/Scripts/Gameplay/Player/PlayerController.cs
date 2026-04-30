@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
         Vector2 readInput = context.ReadValue<Vector2>();
         moveDirection = Vector2Int.RoundToInt(readInput);
         
+
+
         Vector2Int DestinationCell = new Vector2Int(agent.gridPos.x, agent.gridPos.y);
         DestinationCell += moveDirection;
 
@@ -65,8 +67,6 @@ public class PlayerController : MonoBehaviour
 
         //Debug.Log("The Player has moved to Grid Cell: (" + agent.gridPos.x + ", " + agent.gridPos.y + ")");
 
-
-
     }
 
     public void Click(InputAction.CallbackContext context)
@@ -83,20 +83,9 @@ public class PlayerController : MonoBehaviour
         OnGridCellClicked?.Invoke(Destination);
     }
 
-    public void InteractDoor(InputAction.CallbackContext context) //Change this later into a interact with anything
+    public void Interact(InputAction.CallbackContext context) //Change this later into a interact with anything
     {
         if (!context.started) return;
-
-        //foreach (GridCell neighbour in grid.gridArray[agent.gridPos.x, agent.gridPos.y].neighbours)
-        //{
-        //    if (neighbour.TypeOfTile == TileType.doorTile)
-        //    {
-                
-        //        Door interactedDoor = doors.Find(x => x.doorLocation == neighbour);
-
-        //        GameManager.RaisePlayerInteracted(interactedDoor);
-        //    }
-        //}
 
         AgentAction interactAction = agent.allActions.Find(x => x.ActionName == "Interact");
         OnInteractPressed?.Invoke(agent, interactAction);

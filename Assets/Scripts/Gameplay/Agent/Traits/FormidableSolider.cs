@@ -7,11 +7,27 @@ public class FormidableSolider : AgentTrait
 
     }
 
-
-
-    public override void Trait()
+    public override int DamageModifier(DamageContext damageContext)
     {
-        Debug.Log("Giving Agent Extra Strength and Consitition");
+        return 0;
+    }
+
+    public override int StatModifier(Stat stat)
+    {
+        Debug.Log("Giving Agent Extra Strength and Consititution");
+
+        if (stat.StatName == "Strength")
+        {
+            return 5;
+        }
+        else if (stat.StatName == "Consititution")
+        {
+            return 5;
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     public override void TraitLevelUp()

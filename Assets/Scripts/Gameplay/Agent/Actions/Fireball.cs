@@ -13,7 +13,8 @@ public class Fireball : AgentAction
 
     public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
-        
+        ActionOwner.FindDirection(ActionOwner.gridPos, ActionTarget.tile);
+
 
         int modifier = CalculateModifier(ActionOwner);
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
@@ -24,7 +25,7 @@ public class Fireball : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-                cell.AgentOnTile.DealDamage(1 + modifier);
+                cell.damageable.DealDamage(1 + modifier);
             }
         }
     }
@@ -36,8 +37,8 @@ public class Fireball : AgentAction
 
     public override int CalculateModifier(Agent ActionOwner)
     {
-        Stat intelligence = ActionOwner.statSheet.GetStat("Intelligence");
-        int modifier = Mathf.RoundToInt((float)(intelligence.currentValue * 0.5));
+        int intelligenceValue = ActionOwner.statSheet.GetStatValue("Intelligence");
+        int modifier = Mathf.RoundToInt((float)(intelligenceValue * 0.5));
 
         return modifier;
     }
