@@ -79,12 +79,12 @@ public class Agent : IDamageable
         return level;
     }
 
-    public void DealDamage(int DamageTaken)
+    public void DealDamage(DamageInfo context)
     {
         AgentResource health = allResources.Find(x => x.ResourceName == "Health");
         Debug.Log("Agent health is at: " + health.currentAmount);
 
-        health.AdjustValue(-DamageTaken);
+        health.AdjustValue(-context.DamageAmount);
         Debug.Log("Agent health has dropped to: " + health.currentAmount);
 
         //Could use a AgentDamage Event later on to tell listeners that this agent has been damaged

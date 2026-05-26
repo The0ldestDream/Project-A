@@ -20,7 +20,7 @@ public class Interact : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateModifier(Agent ActionOwner)
+    public override int CalculateScalingDamage(Agent ActionOwner)
     {
         throw new System.NotImplementedException();
     }

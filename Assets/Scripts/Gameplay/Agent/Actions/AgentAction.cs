@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 public abstract class AgentAction
 {
     public string ActionName;
@@ -12,6 +13,10 @@ public abstract class AgentAction
     public AgentResource ResourceToUse;
     public int ResourceCost;
 
+    //Action Information
+    public int baseDamage;
+    public Dictionary<StatNames, float> Scaling = new Dictionary<StatNames, float>();
+    DamageType damageType;
 
     //Targeting Variables
     public TargetShape shape;
@@ -39,7 +44,7 @@ public abstract class AgentAction
 
     public abstract void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid);
 
-    public abstract int CalculateModifier(Agent ActionOwner);
+    public abstract int CalculateScalingDamage(Agent ActionOwner);
 
     public void GainExperience(float experienceGained)
     {
@@ -101,4 +106,23 @@ public abstract class AgentAction
 
     }
 
+    public float GetScalingValue(StatNames stat)
+    {
+        Scaling.TryGetValue(stat, out float value);
+        return value;
+    }
+
+    public float GetDamageModifiers(Agent agent, DamageContext context)
+    {
+        StatSheet sheet = agent.statSheet;
+        float value = 0f;
+
+
+        foreach (AgentTrait trait in sheet.allTraits)
+        {
+            value += trait.DamageModifier(context);
+        }
+
+        return value;
+    }
 }

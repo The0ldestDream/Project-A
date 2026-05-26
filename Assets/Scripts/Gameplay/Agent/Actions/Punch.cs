@@ -13,7 +13,7 @@ public class Punch : AgentAction
     {
         ActionOwner.FindDirection(ActionOwner.gridPos, target.tile);
 
-        int modifier = CalculateModifier(ActionOwner);
+        int modifier = CalculateScalingDamage(ActionOwner);
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Punch has been Used");
@@ -27,7 +27,7 @@ public class Punch : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateModifier(Agent ActionOwner)
+    public override int CalculateScalingDamage(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
         int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");

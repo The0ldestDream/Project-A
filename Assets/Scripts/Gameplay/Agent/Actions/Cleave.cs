@@ -18,7 +18,7 @@ public class Cleave : AgentAction
         {
             List<GridCell> affectedCells = shapeHelper.FindCellsInfront(grid, ActionOwner.gridPos, ActionTarget.tile, Range, Width);
 
-            int modifier = CalculateModifier(ActionOwner);
+            int modifier = CalculateScalingDamage(ActionOwner);
 
             foreach (GridCell cell in affectedCells)
             {
@@ -34,7 +34,7 @@ public class Cleave : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateModifier(Agent ActionOwner)
+    public override int CalculateScalingDamage(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
         int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");

@@ -21,7 +21,7 @@ public class LightningBolt : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-                int modifier = CalculateModifier(ActionOwner);
+                int modifier = CalculateScalingDamage(ActionOwner);
                 cell.damageable.DealDamage(1 + modifier);
             }
         }
@@ -33,7 +33,7 @@ public class LightningBolt : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateModifier(Agent ActionOwner)
+    public override int CalculateScalingDamage(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
         int intelligenceValue = ActionOwner.statSheet.GetStatValue("Intelligence");

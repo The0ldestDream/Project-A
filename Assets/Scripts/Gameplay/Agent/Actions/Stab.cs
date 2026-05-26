@@ -4,19 +4,44 @@ public class Stab : AgentAction
 {
     public Stab(int startingLevel, float expLevelUp) : base("Stab", startingLevel, 99, expLevelUp)
     {
+        baseDamage = 2;
         Range = 1;
         shape = TargetShape.Single;
         target = TargetCategory.Agent;
+
+        //Scaling Values
+        Scaling.Add(StatNames.Strength, 0.2f);
+        Scaling.Add(StatNames.Dexterity, 0.5f);
+
     }
 
     public override void Action(Agent ActionOwner, Target target, GridSystem grid)
     {
         ActionOwner.FindDirection(ActionOwner.gridPos, target.tile);
-        int modifier = CalculateModifier(ActionOwner);
+        int scalingModifier = CalculateScalingDamage(ActionOwner);
+        
+
+        DamageInfo dInfo = new DamageInfo();
+        DamageContext dContext = new DamageContext();
+
+        dInfo.Attacker = ActionOwner;
+        dContext.Attacker = ActionOwner;
+
+        
+
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Stab has been Used");
-            target.tile.damageable.DealDamage(1 + modifier);
+
+            dContext.Defender = target;
+
+            float damageModifier = GetDamageModifiers(ActionOwner, dContext);
+
+            float DamageAmount = baseDamage + scalingModifier + damageModifier;
+
+            dInfo.DamageNumbers.Add(DamageType.Piercing, (int)DamageAmount);
+
+            target.tile.damageable.DealDamage(dInfo);
         }
     }
 
@@ -25,11 +50,15 @@ public class Stab : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateModifier(Agent ActionOwner)
+    public override int CalculateScalingDamage(Agent ActionOwner)
     {
         int dexValue = ActionOwner.statSheet.GetStatValue("Dexterity");
         int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");
-        int modifier = Mathf.RoundToInt((float)(dexValue * 0.5 + strengthValue * 0.2));
+
+        float dexScaling = GetScalingValue(StatNames.Dexterity);
+        float strengthScaling = GetScalingValue(StatNames.Strength);
+
+        int modifier = Mathf.RoundToInt((float)(dexValue * dexScaling + strengthValue * strengthScaling));
 
         return modifier; 
     }

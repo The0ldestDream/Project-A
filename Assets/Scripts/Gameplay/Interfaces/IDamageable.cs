@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    void DealDamage(int DamageTaken);
+    void DealDamage(DamageInfo context);
 }

@@ -11,7 +11,7 @@ public class Charge : AgentAction
 
     public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
-        int modifier = CalculateModifier(ActionOwner);
+        int modifier = CalculateScalingDamage(ActionOwner);
 
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
@@ -50,7 +50,7 @@ public class Charge : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateModifier(Agent ActionOwner)
+    public override int CalculateScalingDamage(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
         int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");

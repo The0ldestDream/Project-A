@@ -16,7 +16,7 @@ public class Fireball : AgentAction
         ActionOwner.FindDirection(ActionOwner.gridPos, ActionTarget.tile);
 
 
-        int modifier = CalculateModifier(ActionOwner);
+        int modifier = CalculateScalingDamage(ActionOwner);
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Fireball has been Used");
@@ -35,7 +35,7 @@ public class Fireball : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateModifier(Agent ActionOwner)
+    public override int CalculateScalingDamage(Agent ActionOwner)
     {
         int intelligenceValue = ActionOwner.statSheet.GetStatValue("Intelligence");
         int modifier = Mathf.RoundToInt((float)(intelligenceValue * 0.5));
