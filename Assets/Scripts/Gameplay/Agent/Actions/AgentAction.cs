@@ -112,17 +112,31 @@ public abstract class AgentAction
         return value;
     }
 
-    public float GetDamageModifiers(Agent agent, DamageContext context)
+    public DamageInfo MergeContributions(DamageInfo dInfo, List<Contribution> contributions)
     {
-        StatSheet sheet = agent.statSheet;
-        float value = 0f;
-
-
-        foreach (AgentTrait trait in sheet.allTraits)
+        //Add the Flat Values
+        foreach (Contribution contribution in contributions)
         {
-            value += trait.DamageModifier(context);
+            if (contribution.modifierType == ModifierType.Flat)
+            {
+                dInfo.DamageNumbers[contribution.damageType] += (int)contribution.value;
+            }
         }
 
-        return value;
+        //Add the Multipliers
+        foreach (Contribution contribution in contributions)
+        {
+            if (contribution.modifierType == ModifierType.Multiplier)
+            {
+                float newValue = dInfo.DamageNumbers[contribution.damageType] * contribution.value;
+                dInfo.DamageNumbers[contribution.damageType] += (int)newValue;
+            }
+        }
+
+
+        //Return Packet
+        return dInfo;
     }
+
+
 }

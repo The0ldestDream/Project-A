@@ -22,7 +22,7 @@ public class Cleave : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-                cell.damageable.DealDamage(1 + modifier);
+                //cell.damageable.DealDamage(1 + modifier);
 
             }
         }

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class Stab : AgentAction
 {
     public Stab(int startingLevel, float expLevelUp) : base("Stab", startingLevel, 99, expLevelUp)
@@ -34,14 +34,19 @@ public class Stab : AgentAction
             Debug.Log("Stab has been Used");
 
             dContext.Defender = target;
+            //Build the base action damage 
+            float BaseActionDamage = baseDamage + scalingModifier;
+            dInfo.DamageNumbers[DamageType.Piercing] += (int)BaseActionDamage;
 
-            float damageModifier = GetDamageModifiers(ActionOwner, dContext);
+            //Now we get contributions from other sources
+            List<Contribution> contributions = ActionOwner.BuildDamage(ActionOwner, dContext);
+            dInfo = MergeContributions(dInfo, contributions);
 
-            float DamageAmount = baseDamage + scalingModifier + damageModifier;
+            //A Resolve Damage action stage here
+            DamageInfo ResolvedInfo = target.tile.damageable.ResolveDamage(dInfo);
 
-            dInfo.DamageNumbers.Add(DamageType.Piercing, (int)DamageAmount);
-
-            target.tile.damageable.DealDamage(dInfo);
+            //Apply Damage after Resolution
+            target.tile.damageable.DealDamage(ResolvedInfo);
         }
     }
 

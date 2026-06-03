@@ -17,7 +17,7 @@ public class Punch : AgentAction
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Punch has been Used");
-            target.tile.damageable.DealDamage(1 + modifier);
+            //target.tile.damageable.DealDamage(1 + modifier);
         }
 
     }

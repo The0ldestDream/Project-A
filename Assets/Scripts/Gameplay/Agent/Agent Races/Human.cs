@@ -16,6 +16,7 @@ public class Human : AgentRace
     public override void AddTraits()
     {
         RaceTraits.Add(new FormidableSolider(1, 1));
+        RaceTraits.Add(new Backstabber(1, 1));
     }
 
 }

@@ -79,12 +79,17 @@ public class Agent : IDamageable
         return level;
     }
 
-    public void DealDamage(DamageInfo context)
+    public void DealDamage(DamageInfo dInfo)
     {
         AgentResource health = allResources.Find(x => x.ResourceName == "Health");
         Debug.Log("Agent health is at: " + health.currentAmount);
 
-        health.AdjustValue(-context.DamageAmount);
+        
+        foreach (KeyValuePair<DamageType, int> pair in dInfo.DamageNumbers)
+        {
+            health.AdjustValue(-pair.Value);
+        }
+
         Debug.Log("Agent health has dropped to: " + health.currentAmount);
 
         //Could use a AgentDamage Event later on to tell listeners that this agent has been damaged
@@ -94,6 +99,55 @@ public class Agent : IDamageable
         {
             AgentDeath();
         }
+    }
+
+    public DamageInfo ResolveDamage(DamageInfo context)
+    {
+        // Everything here should refer to the defender's traits, buffs/debuffs, resistances etc
+
+        return context;
+    }
+
+    public List<Contribution> GetDamageModifiers(Agent agent, DamageContext context)
+    {
+        StatSheet sheet = agent.statSheet;
+        List<Contribution> Contributions = new List<Contribution>();
+
+        foreach (AgentTrait trait in sheet.allTraits)
+        {
+            List<Contribution> traitContribution = trait.DamageModifier(context);
+
+            if (traitContribution == null)
+            {
+                continue;
+            }
+
+            foreach (Contribution contribution in traitContribution)
+            {
+                Contributions.Add(contribution);
+            }
+        }
+
+        return Contributions;
+    }
+
+    public List<Contribution> BuildDamage(Agent ActionOwner, DamageContext dContext)
+    {
+        List<Contribution> AllContributions = new List<Contribution>();
+
+        //Traits
+        List<Contribution> traitContributions = GetDamageModifiers(ActionOwner, dContext);
+
+        foreach (Contribution contribution in traitContributions)
+        {
+            AllContributions.Add(contribution);
+        }
+
+        // Add buff/debuffs here
+
+        // Add Equipment stuff here
+
+        return AllContributions;
     }
 
     private void AgentDeath()

@@ -25,17 +25,17 @@ public class Charge : AgentAction
 
                 foreach (GridCell cell in affectedCells)
                 {
-                    cell.damageable.DealDamage(1 + modifier);
+                    //cell.damageable.DealDamage(1 + modifier);
                 }
 
-                ActionTarget.tile.damageable.DealDamage(1 + modifier);
+                //ActionTarget.tile.damageable.DealDamage(1 + modifier);
             }
             else
             {
                 ActionOwner.controller.MoveTo(ActionTarget.tile);
                 foreach (GridCell cell in affectedCells)
                 {
-                    cell.damageable.DealDamage(1 + modifier);
+                    //cell.damageable.DealDamage(1 + modifier);
                 }
             }
 

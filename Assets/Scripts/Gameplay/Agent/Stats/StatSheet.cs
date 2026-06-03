@@ -54,7 +54,7 @@ public class StatSheet
             value += trait.StatModifier(stat);
         }
 
-        //Add Buff/Debuffs in here in the same way
+        //Add Buff/Debuffs/Equipment Bonuses in here in the same way
 
 
 

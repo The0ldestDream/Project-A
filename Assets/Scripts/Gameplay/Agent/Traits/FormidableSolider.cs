@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class FormidableSolider : AgentTrait
 {
     public FormidableSolider(int startingLevel, float expLevelUp) : base("Formidable Solider", startingLevel, expLevelUp)
@@ -7,9 +7,10 @@ public class FormidableSolider : AgentTrait
 
     }
 
-    public override int DamageModifier(DamageContext damageContext)
+    public override List<Contribution> DamageModifier(DamageContext damageContext)
     {
-        return 0;
+        List<Contribution> contributions = new List<Contribution>();
+        return contributions;
     }
 
     public override int StatModifier(Stat stat)

@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+
 
 public abstract class AgentTrait
 {
@@ -17,7 +19,7 @@ public abstract class AgentTrait
 
     public abstract int StatModifier(Stat stat);
 
-    public abstract int DamageModifier(DamageContext damageContext);
+    public abstract List<Contribution> DamageModifier(DamageContext damageContext);
 
     public void GainExperience(float experienceGained)
     {

@@ -22,7 +22,7 @@ public class LightningBolt : AgentAction
             foreach (GridCell cell in affectedCells)
             {
                 int modifier = CalculateScalingDamage(ActionOwner);
-                cell.damageable.DealDamage(1 + modifier);
+                //cell.damageable.DealDamage(1 + modifier);
             }
         }
 

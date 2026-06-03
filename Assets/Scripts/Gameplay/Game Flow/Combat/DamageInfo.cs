@@ -10,8 +10,6 @@ public class DamageInfo
 
     public Dictionary<DamageType, int> DamageNumbers = new Dictionary<DamageType, int> {
 
-
-
         [DamageType.Piercing] = 0,
         [DamageType.Bludgeoning] = 0,
         [DamageType.Slashing] = 0,
@@ -20,11 +18,5 @@ public class DamageInfo
         [DamageType.Lightning] = 0,
 
     };
-
-
-
-
-
-    public int DamageAmount;
 
 }
