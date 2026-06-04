@@ -4,14 +4,21 @@ public class LightningBolt : AgentAction
 {
     public LightningBolt(int startingLevel, float expLevelUp) : base("Lightning Bolt", startingLevel, 99, expLevelUp)
     {
+        baseDamage = 5;
         Range = 10;
         shape = TargetShape.Line;
         target = TargetCategory.Tile;
+
+        Scaling.Add(StatNames.Intelligence, 0.5f);
     }
     public override void Action(Agent ActionOwner, Target target, GridSystem grid)
     {
         ActionOwner.FindDirection(ActionOwner.gridPos, target.tile);
 
+        float scalingModifier = CalculateScalingDamage(ActionOwner);
+        float BaseActionDamage = baseDamage + scalingModifier;
+        DamageContext dContext = new DamageContext();
+        dContext.Attacker = ActionOwner;
 
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
@@ -21,8 +28,20 @@ public class LightningBolt : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-                int modifier = CalculateScalingDamage(ActionOwner);
-                //cell.damageable.DealDamage(1 + modifier);
+
+                DamageInfo tempInfo = new DamageInfo();
+                tempInfo.Attacker = ActionOwner;
+                tempInfo.DamageNumbers[DamageType.Lightning] += (int)BaseActionDamage;
+
+                Target TargetedCell = new Target(cell, cell.AgentOnTile);
+                dContext.Defender = TargetedCell;
+
+                List<Contribution> tempContributions = ActionOwner.BuildDamage(ActionOwner, dContext);
+                tempInfo = MergeContributions(tempInfo, tempContributions);
+
+                DamageInfo tempResolvedInfo = cell.damageable.ResolveDamage(tempInfo);
+
+                cell.damageable.DealDamage(tempResolvedInfo);
             }
         }
 
@@ -33,11 +52,12 @@ public class LightningBolt : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateScalingDamage(Agent ActionOwner)
+    public override float CalculateScalingDamage(Agent ActionOwner)
     {
-        // Calculate the Modifier I want the Move to benefit the most from
         int intelligenceValue = ActionOwner.statSheet.GetStatValue("Intelligence");
-        int modifier = Mathf.RoundToInt((float)(intelligenceValue * 0.5));
+        float intelligenceScaling = GetScalingValue(StatNames.Intelligence);
+
+        float modifier = (intelligenceValue * intelligenceScaling);
 
         return modifier;
     }

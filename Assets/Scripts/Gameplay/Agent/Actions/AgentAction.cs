@@ -44,7 +44,7 @@ public abstract class AgentAction
 
     public abstract void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid);
 
-    public abstract int CalculateScalingDamage(Agent ActionOwner);
+    public abstract float CalculateScalingDamage(Agent ActionOwner);
 
     public void GainExperience(float experienceGained)
     {

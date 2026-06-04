@@ -18,7 +18,7 @@ public class Stab : AgentAction
     public override void Action(Agent ActionOwner, Target target, GridSystem grid)
     {
         ActionOwner.FindDirection(ActionOwner.gridPos, target.tile);
-        int scalingModifier = CalculateScalingDamage(ActionOwner);
+        float scalingModifier = CalculateScalingDamage(ActionOwner);
         
 
         DamageInfo dInfo = new DamageInfo();
@@ -55,7 +55,7 @@ public class Stab : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateScalingDamage(Agent ActionOwner)
+    public override float CalculateScalingDamage(Agent ActionOwner)
     {
         int dexValue = ActionOwner.statSheet.GetStatValue("Dexterity");
         int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");
@@ -63,7 +63,7 @@ public class Stab : AgentAction
         float dexScaling = GetScalingValue(StatNames.Dexterity);
         float strengthScaling = GetScalingValue(StatNames.Strength);
 
-        int modifier = Mathf.RoundToInt((float)(dexValue * dexScaling + strengthValue * strengthScaling));
+        float modifier = (dexValue * dexScaling + strengthValue * strengthScaling);
 
         return modifier; 
     }

@@ -4,18 +4,27 @@ public class FireSpray : AgentAction
 {
     public FireSpray(int startingLevel, float expLevelUp) : base("Fire Spray", startingLevel, 99, expLevelUp)
     {
+        baseDamage = 2;
+
         Range = 15;
         Width = 2;
         shape = TargetShape.Cone;
         target = TargetCategory.Tile;
+
+        Scaling.Add(StatNames.Intelligence, 0.3f);
     }
 
     public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
         ActionOwner.FindDirection(ActionOwner.gridPos, ActionTarget.tile);
 
+        float scalingModifier = CalculateScalingDamage(ActionOwner);
+        float BaseActionDamage = baseDamage + scalingModifier;
+        DamageContext dContext = new DamageContext();
+        dContext.Attacker = ActionOwner;
 
-        int modifier = CalculateScalingDamage(ActionOwner);
+
+        
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Fire Spray has been Used");
@@ -24,7 +33,19 @@ public class FireSpray : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-                //cell.damageable.DealDamage(1 + modifier);
+                DamageInfo tempInfo = new DamageInfo();
+                tempInfo.Attacker = ActionOwner;
+                tempInfo.DamageNumbers[DamageType.Fire] += (int)BaseActionDamage;
+
+                Target TargetedCell = new Target(cell, cell.AgentOnTile);
+                dContext.Defender = TargetedCell;
+
+                List<Contribution> tempContributions = ActionOwner.BuildDamage(ActionOwner, dContext);
+                tempInfo = MergeContributions(tempInfo, tempContributions);
+
+                DamageInfo tempResolvedInfo = cell.damageable.ResolveDamage(tempInfo);
+
+                cell.damageable.DealDamage(tempResolvedInfo);
             }
         }
     }
@@ -34,10 +55,12 @@ public class FireSpray : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateScalingDamage(Agent ActionOwner)
+    public override float CalculateScalingDamage(Agent ActionOwner)
     {
         int intelligenceValue = ActionOwner.statSheet.GetStatValue("Intelligence");
-        int modifier = Mathf.RoundToInt((float)(intelligenceValue * 0.5));
+        float intelligenceScaling = GetScalingValue(StatNames.Intelligence);
+
+        float modifier = (intelligenceValue * intelligenceScaling);
 
         return modifier;
     }

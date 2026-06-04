@@ -4,18 +4,31 @@ public class Charge : AgentAction
 {
     public Charge(int startingLevel, float expLevelUp) : base("Charge", startingLevel, 99, expLevelUp)
     {
+        baseDamage = 1;
         Range = 5;
         shape = TargetShape.Line;
         target = TargetCategory.Tile;
+
+
+        Scaling.Add(StatNames.Strength, 0.3f);
     }
 
     public override void Action(Agent ActionOwner, Target ActionTarget, GridSystem grid)
     {
-        int modifier = CalculateScalingDamage(ActionOwner);
+        float scalingModifier = CalculateScalingDamage(ActionOwner);
+        float BaseActionDamage = baseDamage + scalingModifier;
+
+        DamageContext dContext = new DamageContext();
+
+        
+        dContext.Attacker = ActionOwner;
+
 
         if (UseResource(ActionOwner, ResourceToUse, ResourceCost))
         {
             Debug.Log("Charge has been Used");
+
+
             List<GridCell> affectedCells = shapeHelper.FindCellsWithinLine(grid, ActionOwner.gridPos, ActionTarget.tile);
 
             if (ActionTarget.agent != null)
@@ -25,17 +38,49 @@ public class Charge : AgentAction
 
                 foreach (GridCell cell in affectedCells)
                 {
-                    //cell.damageable.DealDamage(1 + modifier);
+                    DamageInfo tempInfo = new DamageInfo();
+                    tempInfo.Attacker = ActionOwner;
+                    tempInfo.DamageNumbers[DamageType.Piercing] += (int)BaseActionDamage;
+
+                    Target TargetedCell = new Target(cell, cell.AgentOnTile);
+                    dContext.Defender = TargetedCell;
+
+                    List<Contribution> tempContributions = ActionOwner.BuildDamage(ActionOwner, dContext);
+                    tempInfo = MergeContributions(tempInfo, tempContributions);
+
+                    DamageInfo tempResolvedInfo = cell.damageable.ResolveDamage(tempInfo);
+
+                    cell.damageable.DealDamage(tempResolvedInfo);
                 }
 
-                //ActionTarget.tile.damageable.DealDamage(1 + modifier);
+                DamageInfo dInfo = new DamageInfo();
+                dInfo.Attacker = ActionOwner;
+                dInfo.DamageNumbers[DamageType.Piercing] += (int)BaseActionDamage;
+                List<Contribution> contributions = ActionOwner.BuildDamage(ActionOwner, dContext);
+                dInfo = MergeContributions(dInfo, contributions);
+
+                DamageInfo ResolvedInfo = ActionTarget.tile.damageable.ResolveDamage(dInfo);
+
+                ActionTarget.tile.damageable.DealDamage(ResolvedInfo);
             }
             else
             {
                 ActionOwner.controller.MoveTo(ActionTarget.tile);
                 foreach (GridCell cell in affectedCells)
                 {
-                    //cell.damageable.DealDamage(1 + modifier);
+                    DamageInfo tempInfo = new DamageInfo();
+                    tempInfo.Attacker = ActionOwner;
+                    tempInfo.DamageNumbers[DamageType.Piercing] += (int)BaseActionDamage;
+
+                    Target TargetedCell = new Target(cell, cell.AgentOnTile);
+                    dContext.Defender = TargetedCell;
+
+                    List<Contribution> tempContributions = ActionOwner.BuildDamage(ActionOwner, dContext);
+                    tempInfo = MergeContributions(tempInfo, tempContributions);
+
+                    DamageInfo tempResolvedInfo = cell.damageable.ResolveDamage(tempInfo);
+
+                    cell.damageable.DealDamage(tempResolvedInfo);
                 }
             }
 
@@ -50,11 +95,15 @@ public class Charge : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateScalingDamage(Agent ActionOwner)
+    public override float CalculateScalingDamage(Agent ActionOwner)
     {
         // Calculate the Modifier I want the Move to benefit the most from
         int strengthValue = ActionOwner.statSheet.GetStatValue("Strength");
-        int modifier = Mathf.RoundToInt((float)(strengthValue * 0.5));
+
+
+        float strengthScaling = GetScalingValue(StatNames.Strength);
+
+        float modifier = (strengthValue * strengthScaling);
 
         return modifier;
     }
