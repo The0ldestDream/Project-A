@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Sorcerer : AgentClass
 {
-    public Sorcerer(int startingLevel, float expLevelUp) : base("Sorcerer", startingLevel, expLevelUp)
+    public Sorcerer(int startingLevel, int expLevelUp) : base("Sorcerer", startingLevel, expLevelUp)
     {
         //Add starting actions
         ClassActions.Add(new Fireball(1, 0));

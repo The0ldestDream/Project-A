@@ -12,6 +12,9 @@ public class Agent : IDamageable
 
     //Agent Information
     public int AgentLevel = 1;
+    public int CurrentExp = 0;
+    public int ExpNeededToLevelUp = 100;
+
     public List<AgentClass> agentClasses = new List<AgentClass>();
     public AgentRace agentRace;
     public List<AgentAction> allActions = new List<AgentAction>();
@@ -77,6 +80,14 @@ public class Agent : IDamageable
         }
 
         return level;
+    }
+
+    public void GainExperience(int Experience)
+    {
+        agentClasses[0].GainExperience(Experience);
+
+        AgentLevel = agentClasses[0].ClassLevel;
+        agentClasses[0].GiveActions(this);
     }
 
     public void DealDamage(DamageInfo dInfo)
@@ -152,24 +163,27 @@ public class Agent : IDamageable
 
     private void AgentDeath()
     {
+        
         OnDeath?.Invoke(this);
     }
 
 
 
-    private void SetEntityOnTile(GridSystem grid, bool OnTile)
+    public void SetEntityOnTile(GridSystem grid, bool OnTile)
     {
         if (OnTile)
         {
             grid.gridArray[gridPos.x, gridPos.y].EntityOnTile = EntityType.Agent;
             grid.gridArray[gridPos.x, gridPos.y].AgentOnTile = this;
             grid.gridArray[gridPos.x, gridPos.y].damageable = this;
+            grid.gridArray[gridPos.x, gridPos.y].walkable = false;
         }
         else if (!OnTile)
         {
             grid.gridArray[gridPos.x, gridPos.y].EntityOnTile = EntityType.None;
             grid.gridArray[gridPos.x, gridPos.y].AgentOnTile = null;
             grid.gridArray[gridPos.x, gridPos.y].damageable = null;
+            grid.gridArray[gridPos.x, gridPos.y].walkable = true;
         }
 
     }

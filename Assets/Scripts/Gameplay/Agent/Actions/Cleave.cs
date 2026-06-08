@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class Cleave : AgentAction
 {
-    public Cleave(int startingLevel, float expLevelUp) : base("Cleave", startingLevel, 99, expLevelUp)
+    public Cleave(int startingLevel, int expLevelUp) : base("Cleave", startingLevel, 99, expLevelUp)
     {
         baseDamage = 3;
 

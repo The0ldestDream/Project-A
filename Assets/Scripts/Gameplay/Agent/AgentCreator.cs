@@ -9,7 +9,7 @@ public class AgentCreator
     //Races that can be played/recruited by the player
     List<AgentRace> PlayableRaces = new List<AgentRace> { new Human() };
 
-    List<AgentClass> AllClasses = new List<AgentClass> { new Fighter(1,0) };
+    List<AgentClass> AllClasses = new List<AgentClass> { new Fighter(1, 100) };
 
 
 

@@ -7,10 +7,10 @@ public abstract class AgentTrait
     public string TraitName;
 
     public int TraitLevel;
-    public float TraitExperience;
-    public float ExperienceNeededToLevelUp;
+    public int TraitExperience;
+    public int ExperienceNeededToLevelUp;
 
-    public AgentTrait(string name, int startingLevel, float expLevelUp)
+    public AgentTrait(string name, int startingLevel, int expLevelUp)
     {
         TraitName = name;
         ExperienceNeededToLevelUp = expLevelUp;
@@ -21,7 +21,7 @@ public abstract class AgentTrait
 
     public abstract List<Contribution> DamageModifier(DamageContext damageContext);
 
-    public void GainExperience(float experienceGained)
+    public void GainExperience(int experienceGained)
     {
         TraitExperience += experienceGained;
 
@@ -29,7 +29,8 @@ public abstract class AgentTrait
         {
             TraitLevel += 1;
             TraitExperience = 0;
-            ExperienceNeededToLevelUp *= 1.2f;
+            float NewExpCap = ExperienceNeededToLevelUp * 0.3f;
+            ExperienceNeededToLevelUp += (int)NewExpCap;
             TraitLevelUp();
         }
     }

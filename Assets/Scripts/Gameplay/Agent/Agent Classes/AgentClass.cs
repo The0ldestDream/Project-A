@@ -7,13 +7,13 @@ public abstract class AgentClass
 
     public int ClassLevel;
 
-    public float ClassExperience;
-    public float ExperienceNeededToLevelUp;
+    public int ClassExperience;
+    public int ExperienceNeededToLevelUp;
 
     public List<AgentAction> ClassActions = new List<AgentAction>();
 
 
-    protected AgentClass(string name, int startingLevel, float expLevelUp)
+    protected AgentClass(string name, int startingLevel, int expLevelUp)
     {
         ClassName = name;
         ExperienceNeededToLevelUp = expLevelUp;
@@ -23,16 +23,19 @@ public abstract class AgentClass
 
 
 
-    public virtual void GainExperience(float ExperienceGained)
+    public virtual void GainExperience(int ExperienceGained)
     {
-
+        Debug.Log("Agent has gained " + ExperienceGained);
         ClassExperience += ExperienceGained;
 
         if (ClassExperience >= ExperienceNeededToLevelUp)
         {
             ClassLevel += 1;
             ClassExperience = 0; // May need to change if the player, for some random reason, gains a lot of experience that may level them more than once
-            ExperienceNeededToLevelUp *= 1.2f;
+            float NewExpCap = ExperienceNeededToLevelUp * 0.3f;
+            ExperienceNeededToLevelUp += (int)NewExpCap;
+
+            Debug.Log("Agent has levelled up to " + ClassLevel);
             OnLevelUp();
         }
 
@@ -52,9 +55,16 @@ public abstract class AgentClass
 
     public void GiveActions(Agent OwnerAgent)
     {
-        foreach (AgentAction action in ClassActions)
+        List<AgentAction> newActions = new List<AgentAction>();
+
+        foreach (AgentAction classAction in ClassActions)
         {
-            OwnerAgent.allActions.Add(action);
+            AgentAction agentAction = OwnerAgent.allActions.Find(x => x.ActionName == classAction.ActionName);
+
+            if (agentAction == null)
+            {
+                OwnerAgent.allActions.Add(classAction);
+            }
         }
     }
 }

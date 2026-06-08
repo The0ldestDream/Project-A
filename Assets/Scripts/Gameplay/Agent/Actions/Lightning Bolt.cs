@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class LightningBolt : AgentAction
 {
-    public LightningBolt(int startingLevel, float expLevelUp) : base("Lightning Bolt", startingLevel, 99, expLevelUp)
+    public LightningBolt(int startingLevel, int expLevelUp) : base("Lightning Bolt", startingLevel, 99, expLevelUp)
     {
         baseDamage = 5;
         Range = 10;

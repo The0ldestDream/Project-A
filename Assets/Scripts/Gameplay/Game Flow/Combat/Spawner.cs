@@ -5,19 +5,86 @@ using System.Collections.Generic;
 public class Spawner : MonoBehaviour
 {
     public CombatManager combatManager;
-    public GameObject EnemyAgent;
+    public GameObject agentPrefab;
 
 
     public List<GameObject> EnemyAgents = new List<GameObject>();
+    public List<GameObject> FriendlyAgents = new List<GameObject>();
+
 
     private List<AgentRace> agentRaces = new List<AgentRace> {new Human()};
-    private List<AgentClass> agentClasses = new List<AgentClass> { new Fighter(1, 1) };
+    private List<AgentClass> agentClasses = new List<AgentClass> { new Fighter(1, 100) };
 
     // Update is called once per frame
     void Update()
     {
         
     }
+
+
+    public GameObject CreateAgent(AgentDescription description, LevelSetup LS, Vector3 spawnPos)
+    {
+        GridSystem grid = LS.levelGenerator.ourGrid;
+
+        //based on what is passed into the create agent we need to create what is described from it
+
+
+        AgentRace Race = null;
+        switch (description.Race)
+        {
+            case RaceType.Human:
+                Race = new Human();
+                break;
+        }
+
+        AgentClass Class = null;
+        switch (description.Class)
+        {
+            case ClassType.Fighter:
+                Class = new Fighter(description.ClassLevel, description.ClassLevel * 100); // Change MaxExp
+                break;
+            case ClassType.Sorcerer:
+                Class = new Sorcerer(description.ClassLevel, description.ClassLevel * 100);
+                break;
+            case ClassType.Rogue:
+                Class = new Rogue(description.ClassLevel, description.ClassLevel * 100);
+                break;
+
+        }
+
+        Agent newAgent = new Agent(grid,
+            grid.gridArray[(int)spawnPos.x, (int)spawnPos.y],
+            Race,
+            Class,
+            description.Alignment);
+
+
+
+
+        //Workflow for spawning an agent
+        GameObject agent = Instantiate(agentPrefab, spawnPos, Quaternion.identity);
+        AgentController AC = agent.GetComponent<AgentController>();
+        AC.Init(newAgent);
+        AC.pathfinding = combatManager.gameManager.pathfinding;
+        AIController AIC = new AIController(newAgent);
+        AC.AIC = AIC;
+
+        if (newAgent.alignment == AgentAlignment.Friendly)
+        {
+            FriendlyAgents.Add(agent);
+        }
+        else if (newAgent.alignment == AgentAlignment.Enemy)
+        {
+            EnemyAgents.Add(agent);
+        }
+        else
+        {
+            //For neutral agents, I don't know if i will have any for a while
+        }
+
+        return agent;
+    }
+
 
     public void SpawnAgent(Room CombatRoom)
     {
@@ -27,16 +94,11 @@ public class Spawner : MonoBehaviour
 
         LevelSetup LS = combatManager.gameManager.levelManager.level;
 
-        //Workflow for spawning an agent
-        GameObject agent = Instantiate(EnemyAgent, randomPos, Quaternion.identity);
-        AgentController AC = agent.GetComponent<AgentController>();
-        Agent EAgent = new Agent(LS.levelGenerator.ourGrid, LS.levelGenerator.ourGrid.gridArray[x, y], new Human(), new Fighter(1, 1), AgentAlignment.Enemy);
-        AC.Init(EAgent);
-        AC.pathfinding = combatManager.gameManager.pathfinding;
-        AIController AIC = new AIController(EAgent);
-        AC.AIC = AIC;
+        AgentDescription agentDescription = new AgentDescription(RaceType.Human, ClassType.Fighter, AgentAlignment.Enemy);
 
-        EnemyAgents.Add(agent);
+        GameObject newAgent = CreateAgent(agentDescription, LS, randomPos);
+
+     
 
     }
 }

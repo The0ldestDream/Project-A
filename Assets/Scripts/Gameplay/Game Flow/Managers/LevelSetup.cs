@@ -50,7 +50,7 @@ public class LevelSetup : MonoBehaviour
         GameObject player = Instantiate(PlayerAgent, randomPos, Quaternion.identity);
         PlayerController PC = player.GetComponent<PlayerController>();
         AgentController AC = player.GetComponent<AgentController>();
-        Agent playerAgent = new Agent(levelGenerator.ourGrid, levelGenerator.ourGrid.gridArray[x, y], new Human(), new Fighter(1, 1), AgentAlignment.Friendly);
+        Agent playerAgent = new Agent(levelGenerator.ourGrid, levelGenerator.ourGrid.gridArray[x, y], new Human(), new Fighter(1, 100), AgentAlignment.Friendly);
         AC.Init(playerAgent);
         PC.Init(playerAgent, levelGenerator.ourGrid, AC);
 

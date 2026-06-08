@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Dash : AgentAction
 {
-    public Dash(int startingLevel, float expLevelUp) : base("Dash", startingLevel, 1, expLevelUp)
+    public Dash(int startingLevel, int expLevelUp) : base("Dash", startingLevel, 1, expLevelUp)
     {
 
     }
@@ -18,7 +18,7 @@ public class Dash : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateScalingDamage(Agent ActionOwner)
+    public override float CalculateScalingDamage(Agent ActionOwner)
     {
         throw new System.NotImplementedException();
     }

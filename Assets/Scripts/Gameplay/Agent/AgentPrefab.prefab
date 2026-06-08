@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3436317650902110819}
   - component: {fileID: 7047259496640918249}
   m_Layer: 0
-  m_Name: EnemyAgent
+  m_Name: AgentPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

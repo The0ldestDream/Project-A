@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class FormidableSolider : AgentTrait
 {
-    public FormidableSolider(int startingLevel, float expLevelUp) : base("Formidable Solider", startingLevel, expLevelUp)
+    public FormidableSolider(int startingLevel, int expLevelUp) : base("Formidable Solider", startingLevel, expLevelUp)
     {
 
     }

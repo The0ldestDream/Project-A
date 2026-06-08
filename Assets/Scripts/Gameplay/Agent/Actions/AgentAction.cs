@@ -7,8 +7,8 @@ public abstract class AgentAction
     public int ActionLevel;
     public int maxActionLevel;
 
-    public float ActionExperience;
-    public float ExperienceNeededToLevelUp;
+    public int ActionExperience;
+    public int ExperienceNeededToLevelUp;
 
     public AgentResource ResourceToUse;
     public int ResourceCost;
@@ -29,7 +29,7 @@ public abstract class AgentAction
     //Helper
     public ShapeHelper shapeHelper = new ShapeHelper();
 
-    protected AgentAction(string name, int startingLevel, int maxLevel, float expLevelUp)
+    protected AgentAction(string name, int startingLevel, int maxLevel, int expLevelUp)
     {
         ActionName = name;
         ExperienceNeededToLevelUp = expLevelUp;
@@ -46,7 +46,7 @@ public abstract class AgentAction
 
     public abstract float CalculateScalingDamage(Agent ActionOwner);
 
-    public void GainExperience(float experienceGained)
+    public void GainExperience(int experienceGained)
     {
         ActionExperience += experienceGained;
 
@@ -54,7 +54,8 @@ public abstract class AgentAction
         {
             ActionLevel += 1;
             ActionExperience = 0;
-            ExperienceNeededToLevelUp *= 1.2f;
+            float NewExpCap = ExperienceNeededToLevelUp * 0.3f;
+            ExperienceNeededToLevelUp += (int)NewExpCap;
             ActionLevelUp();
         }
     }
@@ -137,6 +138,9 @@ public abstract class AgentAction
         //Return Packet
         return dInfo;
     }
+
+
+
 
 
 }

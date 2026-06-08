@@ -184,6 +184,8 @@ public class CombatManager : MonoBehaviour
         }
         AgentsInCombat.Remove(agent.controller);
         TurnOrder = temp;
+        //Do this on a seperate method later
+        DistributeExperience(agent.controller, TurnOrder);
     }
 
     public void StartTargeting(Agent ActionOwner, AgentAction action)
@@ -208,6 +210,35 @@ public class CombatManager : MonoBehaviour
         }
         return agents;
     }
+
+
+    public void DistributeExperience(AgentController DeadAgent, Queue<AgentController> Agents)
+    {
+        AgentAlignment WinningSide;
+
+        if (DeadAgent.myAgent.alignment == AgentAlignment.Enemy)
+        {
+            WinningSide = AgentAlignment.Friendly;
+        }
+        else //if (DeadAgent.myAgent.alignment == AgentAlignment.Friendly)
+        {
+            WinningSide = AgentAlignment.Enemy;
+        }
+
+
+        foreach (AgentController agent in Agents)
+        {
+            if (agent.myAgent.alignment == WinningSide)
+            {
+                agent.myAgent.GainExperience(50); //Hard value right now
+            }
+        }
+    }
+
+
+
+
+
 
     private void SubscribeAgent(AgentController ac)
     {

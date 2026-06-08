@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class FireSpray : AgentAction
 {
-    public FireSpray(int startingLevel, float expLevelUp) : base("Fire Spray", startingLevel, 99, expLevelUp)
+    public FireSpray(int startingLevel, int expLevelUp) : base("Fire Spray", startingLevel, 99, expLevelUp)
     {
         baseDamage = 2;
 

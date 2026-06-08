@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class Stab : AgentAction
 {
-    public Stab(int startingLevel, float expLevelUp) : base("Stab", startingLevel, 99, expLevelUp)
+    public Stab(int startingLevel, int expLevelUp) : base("Stab", startingLevel, 99, expLevelUp)
     {
         baseDamage = 2;
         Range = 1;

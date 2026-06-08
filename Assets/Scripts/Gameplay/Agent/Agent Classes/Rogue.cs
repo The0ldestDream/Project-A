@@ -3,7 +3,7 @@ using UnityEngine;
 public class Rogue : AgentClass
 {
 
-    public Rogue(int startingLevel, float expLevelUp) : base("Rogue", startingLevel, expLevelUp)
+    public Rogue(int startingLevel, int expLevelUp) : base("Rogue", startingLevel, expLevelUp)
     {
         //Add starting actions
         ClassActions.Add(new Stab(1, 0));

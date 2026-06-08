@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class Charge : AgentAction
 {
-    public Charge(int startingLevel, float expLevelUp) : base("Charge", startingLevel, 99, expLevelUp)
+    public Charge(int startingLevel, int expLevelUp) : base("Charge", startingLevel, 99, expLevelUp)
     {
         baseDamage = 1;
         Range = 5;

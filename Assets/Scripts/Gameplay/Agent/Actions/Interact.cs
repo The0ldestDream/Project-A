@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Interact : AgentAction
 {
-    public Interact(int startingLevel, float expLevelUp) : base("Interact", startingLevel, 1, expLevelUp)
+    public Interact(int startingLevel, int expLevelUp) : base("Interact", startingLevel, 1, expLevelUp)
     {
         Range = 1;
         shape = TargetShape.Single;
@@ -20,7 +20,7 @@ public class Interact : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateScalingDamage(Agent ActionOwner)
+    public override float CalculateScalingDamage(Agent ActionOwner)
     {
         throw new System.NotImplementedException();
     }

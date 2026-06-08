@@ -568,8 +568,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combatManager: {fileID: 540951089}
-  EnemyAgent: {fileID: 3800471751776772406, guid: b17cb31d020c3dd44aedc8ec13a154d7, type: 3}
+  agentPrefab: {fileID: 3800471751776772406, guid: b17cb31d020c3dd44aedc8ec13a154d7, type: 3}
   EnemyAgents: []
+  FriendlyAgents: []
 --- !u!4 &540951091
 Transform:
   m_ObjectHideFlags: 0

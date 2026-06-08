@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class Punch : AgentAction
 {
-    public Punch(int startingLevel, float expLevelUp) : base("Punch", startingLevel, 99, expLevelUp)
+    public Punch(int startingLevel, int expLevelUp) : base("Punch", startingLevel, 99, expLevelUp)
     {
         baseDamage = 3;
 

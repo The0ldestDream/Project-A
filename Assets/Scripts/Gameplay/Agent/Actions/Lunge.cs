@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Lunge : AgentAction
 {
-    public Lunge(int startingLevel, float expLevelUp) : base("Lunge", startingLevel, 1, expLevelUp)
+    public Lunge(int startingLevel, int expLevelUp) : base("Lunge", startingLevel, 1, expLevelUp)
     {
 
     }
@@ -18,7 +18,7 @@ public class Lunge : AgentAction
         throw new System.NotImplementedException();
     }
 
-    public override int CalculateScalingDamage(Agent ActionOwner)
+    public override float CalculateScalingDamage(Agent ActionOwner)
     {
         throw new System.NotImplementedException();
     }

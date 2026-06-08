@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 public class Backstabber : AgentTrait
 {
-    public Backstabber(int startingLevel, float expLevelUp) : base("Backstabber", startingLevel, expLevelUp)
+    public Backstabber(int startingLevel, int expLevelUp) : base("Backstabber", startingLevel, expLevelUp)
     {
 
     }

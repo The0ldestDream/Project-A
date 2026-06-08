@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class Fireball : AgentAction
 {
-    public Fireball(int startingLevel, float expLevelUp) : base("Fireball", startingLevel, 1, expLevelUp)
+    public Fireball(int startingLevel, int expLevelUp) : base("Fireball", startingLevel, 1, expLevelUp)
     {
         baseDamage = 6;
         Range = 8;
