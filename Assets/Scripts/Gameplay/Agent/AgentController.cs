@@ -31,10 +31,6 @@ public class AgentController : MonoBehaviour
     {
         state = CombatState.TurnInProgress;
 
-        //This is where I need to add more inputs
-        //Such as the capabilities to use actions and items etc
-        //For now, the agent can just click move as much as they want as well as end their turn
-
         if (myAgent.alignment == AgentAlignment.Enemy)
         {
             Debug.Log("Enemy Agent Turn!");

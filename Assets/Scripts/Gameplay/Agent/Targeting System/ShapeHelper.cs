@@ -132,7 +132,12 @@ public class ShapeHelper
                 int x = PointX + pX * offset;
                 int y = PointY + pY * offset;
 
-                CellsInCone.Add(grid.gridArray[x,y]);
+                if (x > 0 && x < grid.width && y > 0 && y < grid.height)
+                {
+                    CellsInCone.Add(grid.gridArray[x, y]);
+                }
+
+                
             }
         }
 

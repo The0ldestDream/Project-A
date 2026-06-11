@@ -7,6 +7,7 @@ public class CombatManager : MonoBehaviour
 {
     public Spawner AgentSpawner;
     public GameManager gameManager;
+    public EncounterSystem encounterSystem;
 
     public TargetingSystem targeting = new TargetingSystem();
 
@@ -19,7 +20,7 @@ public class CombatManager : MonoBehaviour
 
     void Start()
     {
-        
+        encounterSystem = new EncounterSystem(AgentSpawner);
     }
     void Update()
     {
@@ -32,9 +33,12 @@ public class CombatManager : MonoBehaviour
         currentRoom = room;
         //Spawn Combat Grid over room
         //Spawn Enemy Agents
-        AgentSpawner.SpawnAgent(room);
+        encounterSystem.StartEncounter(room);
+        
         // Get all agents involved in combat
         AgentsInCombat = GetAgentsInCombat(room);
+
+
         Debug.Log("Spawned Enemy Units: ");
         foreach (AgentController agent in AgentsInCombat)
         {
@@ -147,7 +151,15 @@ public class CombatManager : MonoBehaviour
             
         }
 
-        AgentTurnOrder.Enqueue(AgentTurnOrder.Dequeue()); // getting the player to the front
+        foreach (AgentController agent in AgentsInCombat)
+        {
+            if (agent.AIC == null)
+            {
+                AgentTurnOrder.Enqueue(AgentTurnOrder.Dequeue()); // getting the player to the front
+            }
+
+        }
+        
 
         return AgentTurnOrder;
     }

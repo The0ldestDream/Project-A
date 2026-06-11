@@ -22,7 +22,7 @@ public class Spawner : MonoBehaviour
     }
 
 
-    public GameObject CreateAgent(AgentDescription description, LevelSetup LS, Vector3 spawnPos)
+    private GameObject CreateAgent(AgentDescription description, LevelSetup LS, Vector3 spawnPos)
     {
         GridSystem grid = LS.levelGenerator.ourGrid;
 
@@ -86,19 +86,29 @@ public class Spawner : MonoBehaviour
     }
 
 
-    public void SpawnAgent(Room CombatRoom)
+    public void SpawnAgent(Room CombatRoom, AgentDescription agentDescription)
     {
-        int x = Random.Range(CombatRoom.roomBounds.xMin, CombatRoom.roomBounds.xMax - 1);
-        int y = Random.Range(CombatRoom.roomBounds.yMin, CombatRoom.roomBounds.yMax - 1);
-        Vector3 randomPos = new Vector3(x, y, 0);
-
         LevelSetup LS = combatManager.gameManager.levelManager.level;
 
-        AgentDescription agentDescription = new AgentDescription(RaceType.Human, ClassType.Fighter, AgentAlignment.Enemy);
+        Vector2Int pos = FindRandomSpawn(CombatRoom, LS.levelGenerator.ourGrid);
+        Vector3 randomPos = new Vector3(pos.x, pos.y, 0);
+
 
         GameObject newAgent = CreateAgent(agentDescription, LS, randomPos);
 
-     
+    }
 
+    public Vector2Int FindRandomSpawn(Room CombatRoom, GridSystem grid)
+    {
+        int x = Random.Range(CombatRoom.roomBounds.xMin, CombatRoom.roomBounds.xMax - 1);
+        int y = Random.Range(CombatRoom.roomBounds.yMin, CombatRoom.roomBounds.yMax - 1);
+
+        while(grid.gridArray[x, y].walkable == false)
+        {
+            x = Random.Range(CombatRoom.roomBounds.xMin, CombatRoom.roomBounds.xMax - 1);
+            y = Random.Range(CombatRoom.roomBounds.yMin, CombatRoom.roomBounds.yMax - 1);
+        }
+
+        return new Vector2Int(x,y);
     }
 }
