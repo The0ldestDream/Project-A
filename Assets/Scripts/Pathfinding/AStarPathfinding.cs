@@ -124,7 +124,10 @@ public class AStarPathfinding
 
     private int manhattanDistance(GridCell a, GridCell b)
     {
-
+        if (a == null || b == null)
+        {
+            Debug.LogError("Null cell passed to ManhattanDistance");
+        }
         int distance = Mathf.Abs((a.x - b.x) + (a.y - b.y));
 
         return distance;

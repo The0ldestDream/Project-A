@@ -35,6 +35,10 @@ public class Cleave : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
+                if (!CheckIfCellIsValid(cell))
+                {
+                    continue;
+                }
                 DamageInfo tempInfo = new DamageInfo();
                 tempInfo.Attacker = ActionOwner;
                 tempInfo.DamageNumbers[DamageType.Slashing] += (int)BaseActionDamage;

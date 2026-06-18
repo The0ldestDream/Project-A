@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour
     private PlayerMode mode = PlayerMode.Exploration;
 
 
-    //Refactor later
-    public List<Door> doors = new List<Door>();
 
 
 

@@ -38,6 +38,10 @@ public class Charge : AgentAction
 
                 foreach (GridCell cell in affectedCells)
                 {
+                    if (!CheckIfCellIsValid(cell))
+                    {
+                        continue;
+                    }
                     DamageInfo tempInfo = new DamageInfo();
                     tempInfo.Attacker = ActionOwner;
                     tempInfo.DamageNumbers[DamageType.Piercing] += (int)BaseActionDamage;
@@ -68,6 +72,10 @@ public class Charge : AgentAction
                 ActionOwner.controller.MoveTo(ActionTarget.tile);
                 foreach (GridCell cell in affectedCells)
                 {
+                    if (!CheckIfCellIsValid(cell))
+                    {
+                        continue;
+                    }
                     DamageInfo tempInfo = new DamageInfo();
                     tempInfo.Attacker = ActionOwner;
                     tempInfo.DamageNumbers[DamageType.Piercing] += (int)BaseActionDamage;

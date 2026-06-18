@@ -140,7 +140,17 @@ public abstract class AgentAction
     }
 
 
-
+    public bool CheckIfCellIsValid(GridCell cell)
+    {
+        if (cell.damageable == null || !cell.damageable.IsAlive())
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
 
 
 }

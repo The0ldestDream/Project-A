@@ -531,7 +531,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 540951091}
-  - component: {fileID: 540951090}
   - component: {fileID: 540951089}
   m_Layer: 0
   m_Name: CombatManager
@@ -552,25 +551,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 473e5daf8e00cea418baf4f9ddc4640f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AgentSpawner: {fileID: 540951090}
+  AgentSpawner: {fileID: 0}
   gameManager: {fileID: 2047137656}
   currentAgent: {fileID: 0}
---- !u!114 &540951090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 540951088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7089d8dfc097a4581c2f99d4498d52, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  combatManager: {fileID: 540951089}
-  agentPrefab: {fileID: 3800471751776772406, guid: b17cb31d020c3dd44aedc8ec13a154d7, type: 3}
-  EnemyAgents: []
-  FriendlyAgents: []
 --- !u!4 &540951091
 Transform:
   m_ObjectHideFlags: 0
@@ -988,6 +971,7 @@ GameObject:
   - component: {fileID: 2047137652}
   - component: {fileID: 2047137657}
   - component: {fileID: 2047137658}
+  - component: {fileID: 2047137659}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1063,9 +1047,6 @@ MonoBehaviour:
   levelGenerator: {fileID: 2047137655}
   levelRenderer: {fileID: 2047137653}
   levelGenerated: 0
-  PlayerAgent: {fileID: 1563802960888283061, guid: c1420465539ac7147805291a6f89aa4d, type: 3}
-  spawnedPlayer: {fileID: 0}
-  camera: {fileID: 519420028}
 --- !u!114 &2047137655
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1095,6 +1076,7 @@ MonoBehaviour:
   levelManager: {fileID: 2047137658}
   combatManager: {fileID: 540951089}
   uiManager: {fileID: 2047137657}
+  agentSpawner: {fileID: 2047137659}
 --- !u!114 &2047137657
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1128,6 +1110,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   level: {fileID: 2047137654}
+  agentSpawner: {fileID: 2047137659}
+  activeAgents: []
+  camera: {fileID: 519420028}
+  spawnedPlayer: {fileID: 0}
+--- !u!114 &2047137659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047137646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce7089d8dfc097a4581c2f99d4498d52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combatManager: {fileID: 540951089}
+  playerPrefab: {fileID: 1563802960888283061, guid: c1420465539ac7147805291a6f89aa4d, type: 3}
+  agentPrefab: {fileID: 3800471751776772406, guid: b17cb31d020c3dd44aedc8ec13a154d7, type: 3}
+  EnemyAgents: []
+  FriendlyAgents: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

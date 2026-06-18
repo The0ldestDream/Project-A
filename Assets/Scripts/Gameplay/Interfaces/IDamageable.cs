@@ -6,4 +6,5 @@ public interface IDamageable
 
     DamageInfo ResolveDamage(DamageInfo context);
 
+    bool IsAlive();
 }

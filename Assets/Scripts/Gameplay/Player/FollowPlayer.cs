@@ -13,10 +13,10 @@ public class FollowPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        Vector3 currentPos = new Vector3(Player.transform.position.x, Player.transform.position.y, transform.position.z);
-        transform.position = currentPos;
-
-
+        if (Player != null)
+        {
+            Vector3 currentPos = new Vector3(Player.transform.position.x, Player.transform.position.y, transform.position.z);
+            transform.position = currentPos;
+        }
     }
 }

@@ -34,7 +34,11 @@ public class AIController
                 {
                     if (cell.AgentOnTile != null && cell.AgentOnTile.controller.AIC != this)
                     {
-                        score++;
+                        if (myAgent.alignment != cell.AgentOnTile.alignment)
+                        {
+                            score++;
+                        }
+                        
                     }
 
                 }
@@ -67,7 +71,7 @@ public class AIController
     {
         List<Target> targets = targeting.ReturnValidTargets(grid, myAgent, action);
 
-        int closestManhattenDistance = 10000;
+        int closestManhattenDistance = int.MaxValue;
         Target closestTarget = null;
 
         foreach (Target target in targets)

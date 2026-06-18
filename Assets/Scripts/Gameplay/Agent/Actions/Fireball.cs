@@ -5,7 +5,7 @@ public class Fireball : AgentAction
 {
     public Fireball(int startingLevel, int expLevelUp) : base("Fireball", startingLevel, 1, expLevelUp)
     {
-        baseDamage = 6;
+        baseDamage = 1;
         Range = 8;
         Radius = 2;
         shape = TargetShape.Radius;
@@ -33,6 +33,11 @@ public class Fireball : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
+                if (!CheckIfCellIsValid(cell))
+                {
+                    continue;
+                }
+
                 DamageInfo tempInfo = new DamageInfo();
                 tempInfo.Attacker = ActionOwner;
                 tempInfo.DamageNumbers[DamageType.Fire] += (int)BaseActionDamage;

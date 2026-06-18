@@ -4,7 +4,7 @@ public class LightningBolt : AgentAction
 {
     public LightningBolt(int startingLevel, int expLevelUp) : base("Lightning Bolt", startingLevel, 99, expLevelUp)
     {
-        baseDamage = 5;
+        baseDamage = 1;
         Range = 10;
         shape = TargetShape.Line;
         target = TargetCategory.Tile;
@@ -28,7 +28,10 @@ public class LightningBolt : AgentAction
 
             foreach (GridCell cell in affectedCells)
             {
-
+                if (!CheckIfCellIsValid(cell))
+                {
+                    continue;
+                }
                 DamageInfo tempInfo = new DamageInfo();
                 tempInfo.Attacker = ActionOwner;
                 tempInfo.DamageNumbers[DamageType.Lightning] += (int)BaseActionDamage;

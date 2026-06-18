@@ -4,7 +4,7 @@ public class AgentDescription
 {
     public RaceType Race;
     public ClassType Class;
-    public int ClassLevel;
+    public int ClassLevel = 1; // Needs to be moved to constructor
     public AgentAlignment Alignment;
 
     public List<AgentTrait> agentTraits; // We won't need this for now

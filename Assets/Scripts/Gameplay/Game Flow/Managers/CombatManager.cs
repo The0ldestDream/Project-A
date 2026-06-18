@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 
@@ -20,11 +21,16 @@ public class CombatManager : MonoBehaviour
 
     void Start()
     {
-        encounterSystem = new EncounterSystem(AgentSpawner);
+        
     }
     void Update()
     {
         
+    }
+
+    public void Init()
+    {
+        encounterSystem = new EncounterSystem(AgentSpawner);
     }
 
 
@@ -46,7 +52,10 @@ public class CombatManager : MonoBehaviour
         }
         TurnOrder = DetermineTurnOrder(AgentsInCombat);
         currentAgent = TurnOrder.Peek();
-        StartNextTurn();
+        StartCoroutine(WaitTime(10));
+
+        
+
     }
 
     public void CombatCleanUp()
@@ -155,7 +164,7 @@ public class CombatManager : MonoBehaviour
         {
             if (agent.AIC == null)
             {
-                AgentTurnOrder.Enqueue(AgentTurnOrder.Dequeue()); // getting the player to the front
+                //AgentTurnOrder.Enqueue(AgentTurnOrder.Dequeue()); // getting the player to the front
             }
 
         }
@@ -258,13 +267,20 @@ public class CombatManager : MonoBehaviour
         ac.OnTurnEnded += HandleTurnEnded;
 
         ac.myAgent.OnDeath += RemoveAgentFromTurnOrder;
-
+        
     }
     private void UnsubscribeAgent(AgentController ac)
     {
         ac.OnTurnEnded -= HandleTurnEnded;
         ac.myAgent.OnDeath -= RemoveAgentFromTurnOrder;
     }
+
+    IEnumerator WaitTime(float timetowait)
+    {
+        yield return new WaitForSeconds(timetowait);
+        StartNextTurn();
+    }
+
 
 
     //Events 

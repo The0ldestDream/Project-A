@@ -17,7 +17,11 @@ public class Move : AgentAction
         {
             GridCell nearestcell = shapeHelper.NearestUnoccupiedCell(grid, ActionOwner.gridPos, ActionTarget.tile);
 
-            ActionOwner.controller.MoveTo(nearestcell);
+            if (nearestcell != null)
+            {
+                ActionOwner.controller.MoveTo(nearestcell);
+            }
+            
         }
         else
         {

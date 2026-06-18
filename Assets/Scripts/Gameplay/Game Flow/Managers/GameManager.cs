@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     public CombatManager combatManager;
     public UIManager uiManager;
 
+    public Spawner agentSpawner;
+
+
     public AStarPathfinding pathfinding = new AStarPathfinding();
 
     private void OnEnable()
@@ -30,7 +33,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        levelManager.agentSpawner = agentSpawner;
+        combatManager.AgentSpawner = agentSpawner;
+
         levelManager.InitLevel();
+        combatManager.Init();
+
         ChangeMode(PlayerMode.Exploration, playerCharacter);
         
     }
@@ -40,10 +48,9 @@ public class GameManager : MonoBehaviour
     {
         if (playerCharacter == null && levelManager.level.levelGenerated == true) 
         {
-            playerCharacter = levelManager.level.spawnedPlayer.GetComponent<PlayerController>();
+            playerCharacter = levelManager.spawnedPlayer.GetComponent<PlayerController>();
             pathfinding.grid = levelManager.level.levelGenerator.ourGrid;
             playerCharacter.agentController.pathfinding = pathfinding;
-            playerCharacter.doors = levelManager.level.levelGenerator.tGen.allDoors;
         }
     }
 
@@ -123,10 +130,6 @@ public class GameManager : MonoBehaviour
         OnCombatEnded?.Invoke();
     }
 
-    //public static void RaisePlayerInteracted(Door door)
-    //{
-    //    OnPlayerInteracted?.Invoke(door);
-    //}
 
 
 }

@@ -33,11 +33,12 @@ public class AgentController : MonoBehaviour
 
         if (myAgent.alignment == AgentAlignment.Enemy)
         {
-            Debug.Log("Enemy Agent Turn!");
+            Debug.Log("Enemy " + myAgent.agentClasses[0].ClassName + " Turn!");
 
             AIC.DetermineAction(grid, agents);
+            StartCoroutine(WaitForActionsToFinish(5));
 
-            EndTurn();
+            
         }
 
     }
@@ -84,6 +85,11 @@ public class AgentController : MonoBehaviour
 
     }
 
+    IEnumerator WaitForActionsToFinish(float waitTime)
+    {
+        yield return new WaitForSeconds(waitTime);
+        EndTurn();
+    }
 
     //Visual Stuff
     public void UpdateVisualPosition()

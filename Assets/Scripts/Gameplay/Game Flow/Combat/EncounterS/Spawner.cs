@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class Spawner : MonoBehaviour
 {
     public CombatManager combatManager;
+
+    public GameObject playerPrefab;
     public GameObject agentPrefab;
 
 
@@ -12,19 +14,9 @@ public class Spawner : MonoBehaviour
     public List<GameObject> FriendlyAgents = new List<GameObject>();
 
 
-    private List<AgentRace> agentRaces = new List<AgentRace> {new Human()};
-    private List<AgentClass> agentClasses = new List<AgentClass> { new Fighter(1, 100) };
-
-    // Update is called once per frame
-    void Update()
+    private GameObject CreateAgent(AgentDescription description, LevelManager LM, Vector3 spawnPos) // For non player agent
     {
-        
-    }
-
-
-    private GameObject CreateAgent(AgentDescription description, LevelSetup LS, Vector3 spawnPos)
-    {
-        GridSystem grid = LS.levelGenerator.ourGrid;
+        GridSystem grid = LM.level.levelGenerator.ourGrid;
 
         //based on what is passed into the create agent we need to create what is described from it
 
@@ -82,20 +74,156 @@ public class Spawner : MonoBehaviour
             //For neutral agents, I don't know if i will have any for a while
         }
 
+
+        newAgent.OnSpawn += LM.OnAgentSpawn;
+
+        newAgent.AgentSpawn();
+
         return agent;
     }
 
-
-    public void SpawnAgent(Room CombatRoom, AgentDescription agentDescription)
+    private GameObject CreateAgent(Agent agent, LevelManager LM, Vector3 spawnPos)
     {
-        LevelSetup LS = combatManager.gameManager.levelManager.level;
+        GridSystem grid = LM.level.levelGenerator.ourGrid;
 
-        Vector2Int pos = FindRandomSpawn(CombatRoom, LS.levelGenerator.ourGrid);
+        agent.gridPos = grid.gridArray[(int)spawnPos.x, (int)spawnPos.y];
+
+        //Workflow for spawning an agent
+        GameObject newagent = Instantiate(agentPrefab, spawnPos, Quaternion.identity);
+        AgentController AC = newagent.GetComponent<AgentController>();
+        AC.Init(agent);
+        AC.pathfinding = combatManager.gameManager.pathfinding;
+        AIController AIC = new AIController(agent);
+        AC.AIC = AIC;
+
+        if (agent.alignment == AgentAlignment.Friendly)
+        {
+            FriendlyAgents.Add(newagent);
+        }
+        else if (agent.alignment == AgentAlignment.Enemy)
+        {
+            EnemyAgents.Add(newagent);
+        }
+        else
+        {
+            //For neutral agents, I don't know if i will have any for a while
+        }
+
+
+
+        return newagent;
+    }
+    public void SpawnAgent(Room SpawnRoom, AgentDescription agentDescription)
+    {
+        LevelManager LM = combatManager.gameManager.levelManager;
+
+        Vector2Int pos = FindRandomSpawn(SpawnRoom, LM.level.levelGenerator.ourGrid);
         Vector3 randomPos = new Vector3(pos.x, pos.y, 0);
 
 
-        GameObject newAgent = CreateAgent(agentDescription, LS, randomPos);
+        GameObject newAgent = CreateAgent(agentDescription, LM, randomPos);
 
+    }
+    public void SpawnAgent(Room SpawnRoom, Agent agent)
+    {
+        LevelManager LM = combatManager.gameManager.levelManager;
+
+        Vector2Int pos = FindRandomSpawn(SpawnRoom, LM.level.levelGenerator.ourGrid);
+        Vector3 randomPos = new Vector3(pos.x, pos.y, 0);
+
+
+        GameObject newAgent = CreateAgent(agent, LM, randomPos);
+    }
+
+    private GameObject CreatePlayer(AgentDescription description, LevelManager LM, Vector3 spawnPos)
+    {
+        GridSystem grid = LM.level.levelGenerator.ourGrid;
+
+
+        GameObject player = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+        PlayerController PC = player.GetComponent<PlayerController>();
+        AgentController AC = player.GetComponent<AgentController>();
+
+        AgentRace Race = null;
+        switch (description.Race)
+        {
+            case RaceType.Human:
+                Race = new Human();
+                break;
+        }
+
+        AgentClass Class = null;
+        switch (description.Class)
+        {
+            case ClassType.Fighter:
+                Class = new Fighter(description.ClassLevel, description.ClassLevel * 100); // Change MaxExp
+                break;
+            case ClassType.Sorcerer:
+                Class = new Sorcerer(description.ClassLevel, description.ClassLevel * 100);
+                break;
+            case ClassType.Rogue:
+                Class = new Rogue(description.ClassLevel, description.ClassLevel * 100);
+                break;
+
+        }
+
+        Agent newAgent = new Agent(grid,
+            grid.gridArray[(int)spawnPos.x, (int)spawnPos.y],
+            Race,
+            Class,
+            description.Alignment);
+
+        AC.Init(newAgent);
+        PC.Init(newAgent, grid, AC);
+
+        newAgent.OnSpawn += LM.OnAgentSpawn;
+
+        newAgent.AgentSpawn();
+
+        return player;
+    }
+
+    private GameObject CreatePlayer(Agent agent, LevelManager LM, Vector3 spawnPos)
+    {
+        GridSystem grid = LM.level.levelGenerator.ourGrid;
+
+        agent.gridPos = grid.gridArray[(int)spawnPos.x, (int)spawnPos.y];
+
+        GameObject player = Instantiate(playerPrefab, spawnPos, Quaternion.identity);
+        PlayerController PC = player.GetComponent<PlayerController>();
+        AgentController AC = player.GetComponent<AgentController>();
+
+
+        AC.Init(agent);
+        PC.Init(agent, grid, AC);
+
+        return player;
+    }
+
+    public GameObject SpawnPlayer(Room SpawnRoom, AgentDescription description)
+    {
+        LevelManager LM = combatManager.gameManager.levelManager;
+
+        Vector2Int pos = FindRandomSpawn(SpawnRoom, LM.level.levelGenerator.ourGrid);
+        Vector3 randomPos = new Vector3(pos.x, pos.y, 0);
+
+
+        GameObject newAgent = CreatePlayer(description, LM, randomPos);
+
+        return newAgent;
+    }
+
+    public GameObject SpawnPlayer(Room SpawnRoom, Agent agent)
+    {
+        LevelManager LM = combatManager.gameManager.levelManager;
+
+        Vector2Int pos = FindRandomSpawn(SpawnRoom, LM.level.levelGenerator.ourGrid);
+        Vector3 randomPos = new Vector3(pos.x, pos.y, 0);
+
+
+        GameObject newAgent = CreatePlayer(agent, LM, randomPos);
+
+        return newAgent;
     }
 
     public Vector2Int FindRandomSpawn(Room CombatRoom, GridSystem grid)

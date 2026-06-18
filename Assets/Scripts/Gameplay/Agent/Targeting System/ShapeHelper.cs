@@ -191,13 +191,13 @@ public class ShapeHelper
             }
         }
 
-        int closestManhattenDistance = Mathf.FloorToInt(Mathf.Infinity);
+        int closestManhattenDistance = int.MaxValue;
         GridCell closestCell = null;
 
         foreach (GridCell cell in unoccupiedCells)
         {
-            int dx = Mathf.Abs(Start.x - End.x);
-            int dy = Mathf.Abs(Start.y - End.y);
+            int dx = Mathf.Abs(Start.x - cell.x);
+            int dy = Mathf.Abs(Start.y - cell.y);
 
             int manhatten = dx + dy;
 

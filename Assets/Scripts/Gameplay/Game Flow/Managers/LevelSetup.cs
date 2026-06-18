@@ -7,11 +7,6 @@ public class LevelSetup : MonoBehaviour
 
     public bool levelGenerated = false;
 
-    public GameObject PlayerAgent;
-    public GameObject spawnedPlayer;
-
-    public GameObject camera;
-
 
     //Events
 
@@ -31,35 +26,13 @@ public class LevelSetup : MonoBehaviour
     {
         levelGenerator.GenerateLevel(data);
         levelRenderer.RenderLevel();
-
-        SpawnPlayer(levelGenerator.spawnRoom);
         levelGenerated = true;
     }
 
 
 
 
-    private void SpawnPlayer(Room SpawnRoom)
-    {
-        int x = Random.Range(SpawnRoom.roomBounds.xMin, SpawnRoom.roomBounds.xMax - 1);
-        int y = Random.Range(SpawnRoom.roomBounds.yMin, SpawnRoom.roomBounds.yMax - 1);
-        Vector3 randomPos = new Vector3(x, y, 0);
 
-
-        //Workflow for spawning an agent
-        GameObject player = Instantiate(PlayerAgent, randomPos, Quaternion.identity);
-        PlayerController PC = player.GetComponent<PlayerController>();
-        AgentController AC = player.GetComponent<AgentController>();
-        Agent playerAgent = new Agent(levelGenerator.ourGrid, levelGenerator.ourGrid.gridArray[x, y], new Human(), new Fighter(1, 100), AgentAlignment.Friendly);
-        AC.Init(playerAgent);
-        PC.Init(playerAgent, levelGenerator.ourGrid, AC);
-
-
-        spawnedPlayer = player;
-
-        FollowPlayer followPlayer = camera.GetComponent<FollowPlayer>();
-        followPlayer.Init(player.transform);
-    }
 
 
 

@@ -23,8 +23,6 @@ public class Agent : IDamageable
 
     public Direction agentFacingDirection = Direction.None;
 
-    public bool isAlive;
-
     public AgentAlignment alignment;
 
     //List of Status Effects
@@ -43,7 +41,6 @@ public class Agent : IDamageable
         statSheet = new StatSheet(10,10,10,10);
         allResources.Add(new Health(statSheet));
         allResources.Add(new ActionPoint());
-        isAlive = true;
 
         allActions.Add(new Move(1, 1));
         allActions.Add(new Interact(1, 1));
@@ -93,7 +90,7 @@ public class Agent : IDamageable
     public void DealDamage(DamageInfo dInfo)
     {
         AgentResource health = allResources.Find(x => x.ResourceName == "Health");
-        Debug.Log("Agent health is at: " + health.currentAmount);
+        Debug.Log(agentClasses[0].ClassName + " health is at: " + health.currentAmount);
 
         
         foreach (KeyValuePair<DamageType, int> pair in dInfo.DamageNumbers)
@@ -101,7 +98,7 @@ public class Agent : IDamageable
             health.AdjustValue(-pair.Value);
         }
 
-        Debug.Log("Agent health has dropped to: " + health.currentAmount);
+        Debug.Log(agentClasses[0].ClassName + " health has dropped to: " + health.currentAmount);
 
         //Could use a AgentDamage Event later on to tell listeners that this agent has been damaged
 
@@ -109,6 +106,20 @@ public class Agent : IDamageable
         if (health.currentAmount <= 0)
         {
             AgentDeath();
+        }
+    }
+
+    public bool IsAlive()
+    {
+        AgentResource health = allResources.Find(x => x.ResourceName == "Health");
+
+        if (health.currentAmount <= 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 
@@ -161,10 +172,15 @@ public class Agent : IDamageable
         return AllContributions;
     }
 
+
+    public void AgentSpawn()
+    {
+        OnSpawn?.Invoke(this);
+    }
     private void AgentDeath()
     {
-        
         OnDeath?.Invoke(this);
+      
     }
 
 
@@ -219,6 +235,8 @@ public class Agent : IDamageable
     }
 
     //Events
+    public event Action<Agent> OnSpawn;
     public event Action<Agent> OnDeath;
+
 
 }

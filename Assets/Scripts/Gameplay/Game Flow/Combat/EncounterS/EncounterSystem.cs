@@ -26,7 +26,7 @@ public class EncounterSystem
     {
         EncounterDescription encounter = new EncounterDescription();
 
-        int numberOfAgents = UnityEngine.Random.Range(1,5);
+        int numberOfAgents = UnityEngine.Random.Range(1,2);
 
         Array classtypes = Enum.GetValues(typeof(ClassType));
             
