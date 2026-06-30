@@ -37,6 +37,16 @@ public class LevelManager : MonoBehaviour
 
         newLevelData.maxTreeDepth = 2 + FloorNumber;
 
+        if (FloorNumber % 2 == 0) // Condition for determining boss floor
+        {
+            newLevelData.BossFloor = true;
+        }
+        else
+        {
+            newLevelData.BossFloor = false;
+        }
+
+
         return newLevelData;
     }
 

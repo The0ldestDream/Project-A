@@ -20,6 +20,7 @@ public class Agent : IDamageable
     public List<AgentAction> allActions = new List<AgentAction>();
     public StatSheet statSheet;
     public List<AgentResource> allResources = new List<AgentResource>();
+    public Inventory inventory = new Inventory();
 
     public Direction agentFacingDirection = Direction.None;
 

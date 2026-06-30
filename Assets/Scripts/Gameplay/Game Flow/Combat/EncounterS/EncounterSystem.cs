@@ -14,7 +14,9 @@ public class EncounterSystem
 
     public void StartEncounter(Room RoomEncounter)
     {
-        EncounterDescription description = MakeAgentDescriptions();
+        EncounterDescription description = MakeAgentDescriptions(RoomEncounter.TypeOfRoom);
+
+
         foreach (AgentDescription agentDescription in description.descriptions)
         {
             spawner.SpawnAgent(RoomEncounter, agentDescription);
@@ -22,7 +24,7 @@ public class EncounterSystem
     }
     
 
-    public EncounterDescription MakeAgentDescriptions()
+    public EncounterDescription MakeAgentDescriptions(RoomType roomType)
     {
         EncounterDescription encounter = new EncounterDescription();
 
@@ -30,15 +32,35 @@ public class EncounterSystem
 
         Array classtypes = Enum.GetValues(typeof(ClassType));
             
-        for (int i = 0; i < numberOfAgents; i++)
+
+
+        switch (roomType)
         {
-            int randomIndex = UnityEngine.Random.Range(0, classtypes.Length-1);
-            ClassType randomClass = (ClassType)classtypes.GetValue(randomIndex);
+            case RoomType.NormalRoom:
+                for (int i = 0; i < numberOfAgents; i++)
+                {
+                    int randomIndex = UnityEngine.Random.Range(0, classtypes.Length - 1);
+                    ClassType randomClass = (ClassType)classtypes.GetValue(randomIndex);
 
-            AgentDescription agentDescription = new AgentDescription(RaceType.Human, randomClass, AgentAlignment.Enemy);
+                    AgentDescription agentDescription = new AgentDescription(RaceType.Human, randomClass, AgentAlignment.Enemy);
 
-            encounter.descriptions.Add(agentDescription);
+                    encounter.descriptions.Add(agentDescription);
+                }
+                break;
+            case RoomType.BossRoom:
+                AgentDescription bossDescription = new AgentDescription(RaceType.Human, ClassType.Fighter, AgentAlignment.Enemy);
+                Debug.Log("BOSS HAS BEEN GENERATED");
+                bossDescription.ClassLevel = 5;
+
+                encounter.descriptions.Add(bossDescription);
+                break;
+
         }
+
+
+
+
+
 
         return encounter;
     }

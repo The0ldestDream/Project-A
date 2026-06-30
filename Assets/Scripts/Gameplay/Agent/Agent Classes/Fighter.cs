@@ -18,10 +18,12 @@ public class Fighter : AgentClass
 
         if (ClassLevel == 2)
         {
-            ClassActions.Add(new Charge(1, 0));
             ClassActions.Add(new Cleave(1, 0));
+        }
 
-            
+        if (ClassLevel == 3)
+        {
+            ClassActions.Add(new Charge(1, 0));
         }
 
     }

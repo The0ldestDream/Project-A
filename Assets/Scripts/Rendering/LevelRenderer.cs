@@ -46,7 +46,7 @@ public class LevelRenderer : MonoBehaviour
                 tilemap.SetTile(cellPos, tileData.spawn);
 
             }
-            if (room.TypeOfRoom == RoomType.StairRoom)
+            if (room.StairRoom)
             {
                 Vector3Int cellPos = new Vector3Int(lGen.tGen.stairTile.gridPosition.x, lGen.tGen.stairTile.gridPosition.y, 0);
                 tilemap.SetTile(cellPos, tileData.stairs);

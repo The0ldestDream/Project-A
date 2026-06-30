@@ -4,6 +4,7 @@ public class LevelData
 {
     //
     public int LevelNumber;
+    public bool BossFloor;
     //Grid Data
     public int GridHeight;
     public int GridWidth;

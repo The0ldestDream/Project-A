@@ -7,6 +7,7 @@ public class Room
     public int buffer = 3;
 
     public RoomType TypeOfRoom = RoomType.NormalRoom;
+    public bool StairRoom;
 
     public List<Door> roomDoors = new List<Door>();
 

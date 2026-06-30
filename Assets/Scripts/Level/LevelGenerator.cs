@@ -14,6 +14,7 @@ public class LevelGenerator : MonoBehaviour
 
     public Room spawnRoom;
     public Room stairRoom;
+    public Room bossRoom;
 
     public void GenerateLevel(LevelData levelData)
     {
@@ -31,6 +32,15 @@ public class LevelGenerator : MonoBehaviour
         //Choose Spawn and Stair Points
         spawnRoom = defineRooms.ChooseSpawnRoom(tGen);
         stairRoom = defineRooms.ChooseStairRoom(tGen);
+
+        //Check if level is a boss floor
+        if (levelData.BossFloor)
+        {
+            Debug.Log("Boss Floor has been Generated!");
+            //Choose Boss Room;
+            bossRoom = defineRooms.ChooseBossRoom(tGen);
+        }
+
 
     }
 

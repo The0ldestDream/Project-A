@@ -39,6 +39,9 @@ public class CombatManager : MonoBehaviour
         currentRoom = room;
         //Spawn Combat Grid over room
         //Spawn Enemy Agents
+
+
+
         encounterSystem.StartEncounter(room);
         
         // Get all agents involved in combat
@@ -48,14 +51,11 @@ public class CombatManager : MonoBehaviour
         Debug.Log("Spawned Enemy Units: ");
         foreach (AgentController agent in AgentsInCombat)
         {
-            Debug.Log(agent);
+            Debug.Log(agent.myAgent.agentClasses[0].ClassName);
         }
         TurnOrder = DetermineTurnOrder(AgentsInCombat);
         currentAgent = TurnOrder.Peek();
         StartCoroutine(WaitTime(10));
-
-        
-
     }
 
     public void CombatCleanUp()
@@ -251,12 +251,17 @@ public class CombatManager : MonoBehaviour
         {
             if (agent.myAgent.alignment == WinningSide)
             {
+
                 agent.myAgent.GainExperience(50); //Hard value right now
             }
         }
     }
 
 
+    private void GetAveragePartyLevel()
+    {
+
+    }
 
 
 
