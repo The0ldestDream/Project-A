@@ -47,6 +47,11 @@ public class Agent : IDamageable
         allActions.Add(new Interact(1, 1));
         agentClass.GiveActions(this);
         agentRace.GiveActionsandTraits(this);
+
+
+
+
+        inventory.Add(new HealthPotion());
     }
 
 

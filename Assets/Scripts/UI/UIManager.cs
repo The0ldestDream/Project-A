@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject buttonPrefab;
     public Transform panel;
+    public Transform ItemPanel;
     public AgentController agenttouse;
 
     GameObject explorationUIObj;
@@ -66,6 +67,7 @@ public class UIManager : MonoBehaviour
                     if (!combatUI.buttonscreated)
                     {
                         combatUI.CreateActionButtons();
+                        combatUI.CreateItemButtons();
                     }    
                     
                 }
@@ -85,6 +87,7 @@ public class UIManager : MonoBehaviour
         combatUI.agenttouse = agenttouse;
         combatUI.buttonPrefab = buttonPrefab;
         combatUI.panel = panel;
+        combatUI.ItemPanel = ItemPanel;
 
         combatUI.InitUI();
     }

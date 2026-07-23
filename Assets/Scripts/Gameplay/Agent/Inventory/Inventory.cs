@@ -4,6 +4,11 @@ public class Inventory
 {
     private List<ItemStack> items = new List<ItemStack>();
 
+    public List<ItemStack> GetItemList()
+    {
+        return items;
+    }
+
 
     public void Add(Item item)
     {

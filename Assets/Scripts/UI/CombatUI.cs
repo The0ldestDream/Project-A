@@ -10,15 +10,19 @@ public class CombatUI : MonoBehaviour
 
     
     public List<Button> ActionButtons = new List<Button>();
+    public List<Button> ItemButtons = new List<Button>();
     private Vector2 buttonOffset = new Vector2(0, -100);
 
     public AgentController agenttouse;
     public GameObject buttonPrefab;
     public Transform panel;
+    public Transform ItemPanel;
+
 
     public GridCellHighlighter highlighter;
 
     public AgentAction selectedAction;
+    public Item selectedItem;
     private List<GridCell> targetCells = new List<GridCell>();
     private List<Target> targetList = new List<Target>();
 
@@ -32,7 +36,7 @@ public class CombatUI : MonoBehaviour
 
     public void CreateActionButtons()
     {
-        RemoveButtons();
+        RemoveButtons(ActionButtons);
         //Essientally getting all the actions that the agent has and creating buttons for each one
         foreach (AgentAction action in agenttouse.myAgent.allActions)
         {
@@ -73,6 +77,49 @@ public class CombatUI : MonoBehaviour
         }
     }
 
+    public void CreateItemButtons()
+    {
+        RemoveButtons(ItemButtons);
+        //Essientally getting all the actions that the agent has and creating buttons for each one
+        foreach (ItemStack item in agenttouse.myAgent.inventory.GetItemList())
+        {
+            //Instatiating the button and placing it under the panel
+            //Then assigning the text of the button to the name of the action
+            GameObject button = Instantiate(buttonPrefab, ItemPanel);
+            TextMeshProUGUI buttontext = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (buttontext != null)
+            {
+                buttontext.text = item.item.ItemName;
+            }
+            else
+            {
+                Debug.Log("TMP Text is not found");
+            }
+
+            //Getting the actual button and assigning it to the Action's execute function
+            Button buttonParent = button.GetComponent<Button>();
+            Item capturedItem = item.item;
+            buttonParent.onClick.AddListener(() => SelectedItem(capturedItem));
+
+            ItemButtons.Add(buttonParent);
+        }
+
+        buttonscreated = true;
+
+        int index = 0;
+        foreach (Button button1 in ItemButtons)
+        {
+            RectTransform rectTransform = button1.GetComponent<RectTransform>();
+
+            Vector2 newPosition = buttonOffset * (index + 1);
+            rectTransform.anchoredPosition = newPosition;
+
+
+            index++;
+
+        }
+    }
+
 
     private void SelectedAction(AgentAction action)
     {
@@ -85,6 +132,22 @@ public class CombatUI : MonoBehaviour
         selectedAction = action;
 
     }
+
+    private void SelectedItem(Item item)
+    {
+        Debug.Log(item.ItemName + " Used");
+
+        if(item.Activate(agenttouse.myAgent))
+        {
+            agenttouse.myAgent.inventory.Remove(item);
+            selectedItem = null;
+        }
+
+
+        RemoveButtons(ItemButtons);
+        CreateItemButtons();
+    }
+
 
     private void HandleGivenTargets(List<Target> targets)
     {
@@ -126,20 +189,21 @@ public class CombatUI : MonoBehaviour
         }
     }
 
-    private void RemoveButtons()
+    private void RemoveButtons(List<Button> buttons)
     {
-        foreach (Button button in ActionButtons)
+        foreach (Button button in buttons)
         {
             Destroy(button.gameObject);
         }
 
-        ActionButtons.Clear();
+        buttons.Clear();
 
     }
 
     public void DestroySelf()
     {
-        RemoveButtons();
+        RemoveButtons(ActionButtons);
+        RemoveButtons(ItemButtons);
         Destroy(gameObject);
     }
 

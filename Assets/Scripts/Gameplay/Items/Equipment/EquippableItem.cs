@@ -4,7 +4,10 @@ public abstract class EquippableItem : Item
 {
     public EquipmentSlot slot;
 
-
+    public override bool Activate(Agent agent)
+    {
+        throw new System.NotImplementedException();
+    }
 
     public void Equip(Agent agent)
     {
