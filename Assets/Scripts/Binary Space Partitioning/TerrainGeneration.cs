@@ -406,6 +406,15 @@ public class TerrainGeneration
     }
 
 
+    public GridCell GetRandomCellInRoom(Room room)
+    {
+        int x = Random.Range(room.roomBounds.xMin + 2, room.roomBounds.xMax - 2);
+        int y = Random.Range(room.roomBounds.yMin + 2, room.roomBounds.yMax - 2);
+
+        return gridSystem.gridArray[x, y];
+    }
+
+
     public void ClearLevel()
     {
         allCorridors.Clear();

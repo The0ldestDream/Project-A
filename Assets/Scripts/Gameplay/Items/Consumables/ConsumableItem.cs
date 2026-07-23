@@ -1,8 +1,13 @@
 using UnityEngine;
 
-public abstract class ConsumableItem : Item
+public class ConsumableItem : Item
 {
-
+    public ConsumableItem(ItemDescription itemDescription)
+    {
+        ItemName = itemDescription.ItemName;
+        itemEffects = itemDescription.itemEffects;
+        ID = itemDescription.ID;
+    }
 
     public override bool Activate(Agent agent)
     {

@@ -4,6 +4,8 @@ public class LevelManager : MonoBehaviour
 {
     public LevelSetup level;
     public Spawner agentSpawner;
+    public ItemSpawner itemSpawner;
+    public ItemDistributor itemDistributor = new ItemDistributor();
 
     private int currentFloor = 1;
 
@@ -15,7 +17,7 @@ public class LevelManager : MonoBehaviour
 
     public void Init()
     {
-
+        itemDistributor.itemSpawner = itemSpawner;
     }
 
     public void InitLevel()
@@ -23,6 +25,8 @@ public class LevelManager : MonoBehaviour
         currentFloor = 1;
         level.GenerateEntireLevel(GenerateLevelData(currentFloor));
         SpawnPlayer(level.levelGenerator.spawnRoom);
+        // here
+        itemDistributor.DistributeItems(level.levelGenerator.tGen);
     }
 
 

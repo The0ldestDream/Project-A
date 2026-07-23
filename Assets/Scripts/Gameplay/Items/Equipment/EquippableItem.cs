@@ -1,8 +1,15 @@
 using UnityEngine;
 
-public abstract class EquippableItem : Item
+public class EquippableItem : Item
 {
     public EquipmentSlot slot;
+
+
+    public EquippableItem(ItemDescription itemDescription)
+    {
+        ItemName = itemDescription.ItemName;
+        itemEffects = itemDescription.itemEffects;
+    }
 
     public override bool Activate(Agent agent)
     {

@@ -1048,6 +1048,7 @@ GameObject:
   - component: {fileID: 2047137657}
   - component: {fileID: 2047137658}
   - component: {fileID: 2047137659}
+  - component: {fileID: 2047137660}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1188,6 +1189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
   level: {fileID: 2047137654}
   agentSpawner: {fileID: 2047137659}
+  itemSpawner: {fileID: 2047137660}
   activeAgents: []
   camera: {fileID: 519420028}
   spawnedPlayer: {fileID: 0}
@@ -1208,6 +1210,20 @@ MonoBehaviour:
   agentPrefab: {fileID: 3800471751776772406, guid: b17cb31d020c3dd44aedc8ec13a154d7, type: 3}
   EnemyAgents: []
   FriendlyAgents: []
+--- !u!114 &2047137660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047137646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ac536997499fe4d98ec1c1774197f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ItemSpawner
+  itemPrefab: {fileID: 7632343817161381736, guid: 30599591d6e0b7e4cb08894bc25c827d, type: 3}
+  combatManager: {fileID: 540951089}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

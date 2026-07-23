@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class DefineRooms
 {
-    
+
     public Room ChooseSpawnRoom(TerrainGeneration tGen)
     {
 
-        int RanRoom = Random.Range(0 ,tGen.allRooms.Count);
+        int RanRoom = Random.Range(0, tGen.allRooms.Count);
         Room randomRoom = new Room();
 
         if (!tGen.allRooms[RanRoom].StairRoom && tGen.allRooms[RanRoom].TypeOfRoom != RoomType.BossRoom)
@@ -61,4 +61,7 @@ public class DefineRooms
         //Some rooms can be shop rooms or heal rooms like in PMD and Hades
         //Assign the types here and then handling the generation maybe in the encounter system?
     }
+
+
+
 }

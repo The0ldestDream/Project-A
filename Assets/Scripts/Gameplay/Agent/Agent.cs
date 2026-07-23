@@ -51,7 +51,7 @@ public class Agent : IDamageable
 
 
 
-        inventory.Add(new HealthPotion());
+        
     }
 
 

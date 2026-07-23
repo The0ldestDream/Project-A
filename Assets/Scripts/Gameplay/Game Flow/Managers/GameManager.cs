@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         levelManager.agentSpawner = agentSpawner;
         combatManager.AgentSpawner = agentSpawner;
 
+        levelManager.Init();
         levelManager.InitLevel();
         combatManager.Init();
 
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
     {
         if (playerCharacter == null && levelManager.level.levelGenerated == true) 
         {
+            //levelManager.itemDistributor.itemSpawner.combatManager = combatManager;
             playerCharacter = levelManager.spawnedPlayer.GetComponent<PlayerController>();
             pathfinding.grid = levelManager.level.levelGenerator.ourGrid;
             playerCharacter.agentController.pathfinding = pathfinding;
